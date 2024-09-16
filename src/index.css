@@ -1,0 +1,41 @@
+/* index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.shadow-navbar {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Ajuste os valores conforme necessário */
+}
+
+.navbar-bg {
+  background: linear-gradient(to right, var(--secundary), var(--secundary/90));
+  width: 100%;
+  height: 122px; /* Ajuste a altura conforme necessário */
+  color: #000;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Ajuste os valores conforme necessário */
+}
+
+/* Estilos para o modo escuro */
+body.dark .navbar-bg {
+  background: linear-gradient(to right, #333, #444); /* Ajuste conforme necessário */
+  color: #e0e0e0; /* Cor do texto no modo escuro */
+}
+
+body.dark .text-[#000] {
+  color: #e0e0e0; /* Cor do texto no modo escuro */
+}
+
+/* Estilos adicionais para componentes no modo escuro */
+body.dark .bg-gradient-to-r {
+  background: linear-gradient(to right, #333, #444); /* Ajuste conforme necessário */
+}
+
+body.dark .shadow-navbar {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); /* Ajuste conforme necessário */
+}
+
+/* Mantenha as cores dos cartões e outros elementos fixos */
+body.dark .fixed-card, .fixed-card-content {
+  color: #000; /* Cor do texto dos cartões no modo escuro */
+  background-color: #fff; /* Cor de fundo dos cartões no modo escuro */
+}
