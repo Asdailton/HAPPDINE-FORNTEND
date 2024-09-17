@@ -187,7 +187,7 @@ const Navbar = () => {
             )}
           </button>
           <button
-            className="w-[90px] h-10 rounded-full"
+            className="w-[90px] h-10 rounded-full outline-none"
             onClick={toggleDarkMode}
           >
             <img src={darkMode ? './src/image/ModosTemas/ModoEscuro/IconesNavbar/TemaClaro.png' : './src/image/ModosTemas/ModoClaro/IconesNavbar/Temaescuro.png'} alt="Modo Noturno" className="w-[31px] h-[31px]" />

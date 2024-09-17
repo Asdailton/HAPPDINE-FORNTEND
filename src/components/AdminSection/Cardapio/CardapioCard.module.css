@@ -1,0 +1,34 @@
+/* CardapioCard.module.css */
+
+.carouselItem {
+  margin-left: 1rem; /* Default margin */
+  margin-right: 1rem; /* Default margin */
+}
+
+@media (min-width: 640px) { /* sm */
+  .carouselItem {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) { /* md */
+  .carouselItem {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+}
+
+@media (min-width: 1024px) { /* lg */
+  .carouselItem {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+}
+
+@media (min-width: 1280px) { /* xl */
+  .carouselItem {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+}

@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import RatingComponent from './Stars.jsx'
+import axios from 'axios';  // Importando axios
+import Stars from './Stars.jsx';
+import ModalComponent from './Modal.jsx';
+import mais from '../../image/+.png';
+import selo from '../../image/FeedBacks/green.png';
+import { useTranslation } from 'react-i18next';
 
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 1024 },
-    items: 2, 
+    items: 2,
     slidesToSlide: 1,
   },
   desktop: {
@@ -26,16 +31,43 @@ const responsive = {
   },
 };
 
-const reviews = [
-  { id: 1, name:'Livia Almeida', identity:'Colaborador', content: "aii gostei horrores desse doce nossa q doce bom top 10 doces lindos icnriveis", img:'https://via.placeholder.com/150' },
-  { id: 2, name:'Gui Sampaio', identity:'Visitante', content: "Review 2", img:'https://via.placeholder.com/150' },
-  { id: 3, name:'Isa Rocha', identity:'Visitante', content: "Review 3", img:'https://via.placeholder.com/150'},
-  { id: 4, name:'Isa Pereira', identity:'Colaborador', content: "Review 4", img:'https://via.placeholder.com/150'},
-  { id: 5, name:'Adailton', identity:'Visitante', content: "Review 5", img:'https://via.placeholder.com/150' },
-];
-
 const Avaliacoes = () => {
-    return (
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const { t } = useTranslation();
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+
+  // Função para buscar os feedbacks com axios
+  const getFeedbacks = async () => {
+    try {
+      // Fazendo requisição para as duas URLs usando axios
+      const [websiteResponse, restauranteResponse] = await Promise.all([
+        axios.get('http://localhost:8080/api/comentarios/website'),
+        axios.get('http://localhost:8080/api/comentarios/restaurante'),
+      ]);
+
+      // Combinando os dados das duas respostas
+      const combinedFeedbacks = [
+        ...websiteResponse.data, 
+        ...restauranteResponse.data
+      ];
+
+      // Atualizando o estado com os feedbacks combinados
+      setFeedbacks(combinedFeedbacks);
+    } catch (error) {
+      console.error('Erro ao buscar os feedbacks:', error);
+    }
+  };
+
+  // useEffect para buscar os feedbacks quando o componente for montado
+  useEffect(() => {
+    getFeedbacks();
+  }, []);
+
+  return (
+    <div>
       <Carousel
         responsive={responsive}
         centerMode={true}
@@ -43,27 +75,39 @@ const Avaliacoes = () => {
         infinite={true}
         showDots={false}
         containerClass="carousel-container"
-        itemClass="carousel-item p-2" 
-       
-
+        itemClass="carousel-item p-2"
       >
-    
-        {reviews.map(review => (
-        
+        {feedbacks.map((review) => (
           <div
             key={review.id}
-            className="bg-white p-8 mx-2 shadow-custom-pink min-h-[35vh] w-[90%] mt-[90px] flex flex-col "
+            className="bg-white p-8 mx-2 shadow-custom-pink min-h-[35vh] w-[90%] mt-[90px] flex flex-col relative"
           >
-            
-            <h1 className='text-lg font-semibold'>{review.name}</h1>
-            <h2 className='text-md text-[14px] text-[#7D8389]'>{review.identity}</h2>
-            <p className="text-sm text-center mt-2">{review.content}</p>
-          
+            <div className="w-full flex justify-between">
+              <div>
+                <h1 className="text-lg font-semibold">{review.nome}</h1>
+                <h2 className="text-md text-[14px] text-[#7D8389]">{review.timestampp}</h2>
+              </div>
+              <div>
+                <img className="w-9" src={selo} alt="" />
+              </div>
+            </div>
+
+            <p className="text-sm text-center mt-2">{review.comentario}</p>
+
+            {/* Adicione estas classes para fixar o Stars na parte inferior */}
+            <div className="absolute bottom-12 w-full">
+              <Stars corRegistrada={review.cor_estrela} quantidade={review.estrela}/>
+            </div>
           </div>
         ))}
-
       </Carousel>
-  
+      <div className="bg-[#4E5256] mt-[20px] w-[20%] h-[40px] ml-[47px] md:w-[7%] md:mt-[40px] flex">
+        <button onClick={openModal} className="w-full justify-center flex items-center">
+          <img src={mais} alt={t('abrir modal')} />
+        </button>
+      </div>
+      <ModalComponent isOpen={modalIsOpen} onRequestClose={closeModal} />
+    </div>
   );
 };
 

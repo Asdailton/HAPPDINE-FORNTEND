@@ -28,7 +28,7 @@ function Carrosel() {
             <img
               src={slide}
               alt={`Slide ${index}`}
-              className='w-full h-[532px] md:h-[600px] sm:h-[100px] object-cover' // Ajuste a altura com base no tamanho da tela
+              className='w-full h-[532px] md:h-[300px] lg:h-[400px] 2xl:h-[500px] sm:h-[100px] object-cover' // Ajuste a altura com base no tamanho da tela
             />
           </SwiperSlide>
         ))}

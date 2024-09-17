@@ -36,8 +36,8 @@ function Beneficios() {
     const mao = darkMode ? maoDark : maoLight;
 
     return (
-        <div className="w-[100%] min-h-[100vh] md:h-[80vh] items-center">
-            <div className="flex items-center p-12">
+        <div className="w-[100%]  items-center">
+            <div className="flex items-center mt-[4%] 2xl:mt[2%]">
                 <div className="flex-1 flex justify-end pr-2 sm:pr-4">
                     <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
                 </div>
@@ -51,9 +51,9 @@ function Beneficios() {
                 </div>
             </div>
 
-            <div className="flex gap-[150px] flex-wrap justify-center p-[90px] md:gap-40 md:h-[60vh]">
+            <div className="flex gap-[150px] flex-wrap justify-center px-[90px] md:gap-40 md:h-[40vh] mb-[5%]">
                 <div
-                    data-aos="zoom-in-up"
+                    
                     className="flex flex-col justify-center items-center md:w-[16%]"
                 >
                     <img
@@ -62,14 +62,14 @@ function Beneficios() {
                         alt={t('Rapidez na execução e funcionalidades')}
                     />
                     <p
-                        data-aos-duration="1500"
+                       
                         className="text-center mt-[10px] text-black dark:text-white"
                     >
                         {t('Rapidez na execução e funcionalidades')}
                     </p>
                 </div>
                 <div
-                    data-aos="zoom-in-up"
+                  
                     className="flex flex-col justify-center items-center md:w-[16%]"
                 >
                     <img
@@ -82,7 +82,7 @@ function Beneficios() {
                     </p>
                 </div>
                 <div
-                    data-aos="zoom-in-up"
+                   
                     className="flex flex-col justify-center items-center md:w-[16%]"
                 >
                     <img

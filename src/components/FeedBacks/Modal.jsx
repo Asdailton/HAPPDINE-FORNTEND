@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import RatingComponent from './Stars.jsx'; 
+import RatingComponent from './StarsModal.jsx'; 
 import React, { useState } from 'react';
 import { z } from 'zod';
 import axios from 'axios';

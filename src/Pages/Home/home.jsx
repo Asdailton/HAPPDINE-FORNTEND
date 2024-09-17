@@ -7,11 +7,12 @@ import '../../i18n/i18n.js';
 import Footer from '../../components/Footer/footer.jsx';
 import bannerdown from '../../image/bannerdown.png';
 import Avaliacoes from '../../components/FeedBacks/Avaliacoes.jsx';
-import mais from '../../image/+.png';
+
 import ModalComponent from '../../components/FeedBacks/Modal.jsx';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Beneficios from '../../components/Beneficios.jsx';
+
 
 AOS.init({
   duration: 1200,
@@ -20,27 +21,23 @@ AOS.init({
 
 const Home = () => {
   const { t } = useTranslation();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+ 
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  
 
-  useEffect(() => {
-    AOS.init({
-      offset: 200,
-      duration: 1000,
-      easing: 'ease-in',
-      delay: 80,
-    });
-  }, []);
 
   return (
     <div className="overflow-x-hidden dark:bg-darkBackground">
       <Navbar />
       <Carrosel />
       <Monitoramento />
-      <div className="bg-red-600 w-[100%]">
-        <img className="w-full h-full" src={bannerdown} alt="Banner" />
+      <div className=" w-[100%]">
+            <img 
+        className="w-full 2xl:h-[500px] md:h-auto " 
+        src={bannerdown} 
+        alt="Banner" 
+      />
+
       </div>
 
      <div>
@@ -61,13 +58,8 @@ const Home = () => {
             {t('Compartilhe todas as suas experiências com o HAPPDINE!')}
           </h1>
         </div>
-        <Avaliacoes />
-        <div className="bg-[#4E5256] mt-[20px] w-[20%] h-[40px] ml-[47px] md:w-[7%] md:mt-[40px] flex">
-          <button onClick={openModal} className="w-full justify-center flex items-center">
-            <img src={mais} alt={t('abrir modal')} />
-          </button>
-        </div>
-        <ModalComponent isOpen={modalIsOpen} onRequestClose={closeModal} />
+        <Avaliacoes/>
+        
       </div>
       <Footer/>
     </div>
