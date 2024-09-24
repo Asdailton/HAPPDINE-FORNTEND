@@ -5,7 +5,10 @@ import axios from 'axios';  // Importando axios
 import Stars from './Stars.jsx';
 import ModalComponent from './Modal.jsx';
 import mais from '../../image/+.png';
-import selo from '../../image/FeedBacks/green.png';
+import seloVerde from '../../image/FeedBacks/green.png';
+import seloRoxo from '../../image/FeedBacks/purple.png';
+import seloAzul from '../../image/FeedBacks/blue.png';
+import seloPreto from '../../image/FeedBacks/preto.png'; // Supondo que você tenha um selo preto
 import { useTranslation } from 'react-i18next';
 
 const responsive = {
@@ -56,6 +59,7 @@ const Avaliacoes = () => {
 
       // Atualizando o estado com os feedbacks combinados
       setFeedbacks(combinedFeedbacks);
+      console.log(combinedFeedbacks)
     } catch (error) {
       console.error('Erro ao buscar os feedbacks:', error);
     }
@@ -65,6 +69,14 @@ const Avaliacoes = () => {
   useEffect(() => {
     getFeedbacks();
   }, []);
+
+  // Mapeamento das cores para os selos
+  const seloMap = {
+    '#10AAFD': seloAzul,   // Azul
+    '#C535BC': seloRoxo,   // Roxo
+    '#219557': seloVerde,  // Verde
+    '#2E3033': seloPreto,  // Preto
+  };
 
   return (
     <div>
@@ -88,15 +100,16 @@ const Avaliacoes = () => {
                 <h2 className="text-md text-[14px] text-[#7D8389]">{review.timestampp}</h2>
               </div>
               <div>
-                <img className="w-9" src={selo} alt="" />
+                {/* Renderizando o selo com base na cor */}
+                <img className="w-9" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
               </div>
             </div>
 
-            <p className="text-sm text-center mt-2">{review.comentario}</p>
+            <p className="text-[16px] text-left mt-2">{review.comentario}</p>
 
             {/* Adicione estas classes para fixar o Stars na parte inferior */}
             <div className="absolute bottom-12 w-full">
-              <Stars corRegistrada={review.cor_estrela} quantidade={review.estrela}/>
+              <Stars corRegistrada={review.corEstrela} quantidade={review.estrela}/>
             </div>
           </div>
         ))}

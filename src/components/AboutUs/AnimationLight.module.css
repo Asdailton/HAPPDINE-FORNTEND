@@ -1,0 +1,95 @@
+.conteiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white; /* Fundo claro */
+}
+
+.dinamico {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  padding-left: 100px;
+  padding-right: 110px;
+}
+
+.dinamico li.first {
+  animation-delay: 0s; /* Início imediato */
+}
+
+/* Classe específica para a segunda palavra */
+.dinamico li.second {
+  animation-delay: 1.5s; /* Início após 1.5 segundos */
+}
+
+/* Classe específica para a terceira palavra */
+.dinamico li.third {
+  animation-delay: 3s; /* Início após 3 segundos */
+}
+
+.dinamico li {
+  font-size: calc(64px);
+  font-weight: bold;
+  text-shadow:
+    1px 1px 0 rgb(58, 59, 62), /* Sombra do texto escura */
+    -1px -1px 0 rgb(58, 59, 62),
+    1px -1px 0 rgb(58, 59, 62),
+    -1px 1px 0 rgb(58, 59, 62);
+  animation: fadeInColorLight 5s infinite; /* Animação para o modo claro */
+  white-space: nowrap;
+}
+
+@keyframes fadeInColorLight {
+  0% { color: white; }
+  50% { color: black; } /* Muda para preto no meio da animação */
+  100% { color: white } /* Volta à cor inicial */
+}
+
+/* Media Queries para ajustar o design em diferentes tamanhos de tela */
+
+@media (max-width: 1400px) {
+  .dinamico li {
+    font-size: 50px;
+  }
+  .dinamico {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .dinamico li {
+    font-size: 40px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .dinamico {
+    flex-direction: column; /* Empilha as palavras verticalmente */
+    justify-content: center;
+    font-size: 2px; /* Centraliza verticalmente as palavras */
+    padding-left: 11%;
+    padding-right: 6%; 
+  }
+  
+  /* Centralizando cada item na tela mobile */
+  .dinamico li.first {
+    text-align: left;
+  }
+
+  .dinamico li {
+    font-size: 37px; /* Tamanho fixo da fonte em dispositivos móveis */
+    /* Espaço entre as palavras */
+    text-align: center; /* Centraliza o texto horizontalmente */
+    width: 100%; /* Garante que as palavras ocupem toda a largura disponível */
+  }
+
+  /* Corrigindo o seletor para aplicar o transform */
+  .dinamico li.second {
+    transform: translateX(19%); /* Mover o segundo item para a direita */
+  }
+}

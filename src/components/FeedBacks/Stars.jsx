@@ -15,10 +15,11 @@ const Stars = ({corRegistrada, quantidade}) => {
                     initialRating={quantidade}
                 
                     emptySymbol={<span style={{ fontSize: '23px', color: '#ccc' }}>★</span>}
-                    fullSymbol={<span style={{ fontSize: '23px', corRegistrada }}>★</span>}
+                    fullSymbol={<span style={{ fontSize: '23px', color: corRegistrada }}>★</span>}
                     fractions={1}
                     start={0}
                     stop={5}
+                    readonly
                 />
             </div>
        

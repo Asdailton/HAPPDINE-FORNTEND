@@ -21,9 +21,6 @@ AOS.init({
 
 const Home = () => {
   const { t } = useTranslation();
- 
-
-  
 
 
   return (
@@ -50,15 +47,18 @@ const Home = () => {
           background: 'linear-gradient(to left, rgba(78, 82, 86, 1) 57%, rgba(46, 48, 51, 1) 100%)',
         }}
       >
-        <div className="md:justify-start pl-[80px] pt-[80px] flex">
+        <div className="md:justify-start pl-[45px] md:pl-[80px] pt-[80px] flex">
           <h1 className="text-white text-[40px] font-semibold">{t('#BatePapo!')}</h1>
         </div>
-        <div className="justify-start pl-[80px] pt-[2px] flex">
+        <div className="justify-start pl-[45px] md:pl-[80px] pt-[2px] flex">
           <h1 className="text-white text-[12px] font-medium">
             {t('Compartilhe todas as suas experiências com o HAPPDINE!')}
           </h1>
         </div>
-        <Avaliacoes/>
+        <div className='md:pl-[34px]'> 
+           <Avaliacoes/>
+        </div>
+       
         
       </div>
       <Footer/>

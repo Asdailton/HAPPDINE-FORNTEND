@@ -3,13 +3,15 @@ import RatingComponent from './StarsModal.jsx';
 import React, { useState } from 'react';
 import { z } from 'zod';
 import axios from 'axios';
-import successIcon from '../../image/successIcon.svg'
-
+import successIcon from '../../image/FeedBacks/success.gif'
+import fecharModoClaro from '../../image/FeedBacks/FecharModoClaro.svg'
+import fecharModoEscuro from '../../image/FeedBacks/FecharModoEscuro.svg'
+import { useEffect } from 'react';
 Modal.setAppElement('#root');
 
 const feedbackschema = z.object({
     nome: z.string().min(3, "O nome é obrigatório"),
-    comentario: z.string().min(3, "O mínimo de caracteres é 3.").max(50, "O máximo de caracteres é 50"),
+    comentario: z.string().min(3, "O mínimo de caracteres é 3.").max(80, "O máximo de caracteres é 50"),
     opcao: z.string().min(1, "A opção é obrigatória"),
     estrela: z.number().min(1, "A avaliação deve ser de 1 a 5").max(5, "A avaliação deve ser de 1 a 5"),
     timestampp: z.string().nonempty("O timestamp é obrigatório")
@@ -23,9 +25,25 @@ const ModalComponent = ({ isOpen, onRequestClose, contentLabel }) => {
     const [errors, setErrors] = useState({});  
     const [showModalSuccess, setShowModalSuccess] = useState(false);
     const [colorStar, setColorStar] = useState('');
-   
+    const [darkMode, setDarkMode] = useState(false);
+     
+    
+    useEffect(() => {
+        // Função para ler e definir o valor de darkMode
+        const checkDarkMode = () => {
+            const storedDarkMode = localStorage.getItem('darkMode');
+            setDarkMode(storedDarkMode === 'true');
+        };
 
-    // Get current date for timestamp
+        checkDarkMode();
+
+        
+        
+    }, []); 
+
+    //fará a condição de que se o darkMode for verdadeiro, a imagem ModoEscuro será ativada, se não 
+    const fecharModal = darkMode ? fecharModoEscuro : fecharModoClaro;
+   // Pega o timestampp atual , a data 
     const currentTimestamp = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
 
     async function handleSubmit() {
@@ -41,6 +59,7 @@ const ModalComponent = ({ isOpen, onRequestClose, contentLabel }) => {
             timestampp: currentTimestamp 
         });
         
+        //pega a cor salva da estrela
         const savedColor = localStorage.getItem('color');
         if (savedColor) {
             setColorStar(savedColor);
@@ -96,8 +115,8 @@ const ModalComponent = ({ isOpen, onRequestClose, contentLabel }) => {
             overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75 z-40"
         >
             <div className="bg-white p-6  shadow-lg w-full max-w-md dark:bg-[#2E3033] ">
-                <div>
-
+                <div className='w-full flex justify-end'>
+                   <img src={fecharModal} alt="" />
                 </div>
                 <h1 className='text-[#4E5256] text-[30px] font-boschfont text-center mb-[15px] italic font-black dark:text-white '>
                     #BatePapo!
@@ -161,9 +180,9 @@ const ModalComponent = ({ isOpen, onRequestClose, contentLabel }) => {
                 </div>
                 {showModalSuccess && (
                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                        <div className="bg-white p-6 border border-gray-300 flex items-center justify-center">
-                            <p className="text-black">Comentário enviado com sucesso</p>
-                            <img src={successIcon} alt="" />
+                        <div className="bg-white dark:bg-[#2E3033] p-10 border border-gray-300 flex items-center justify-center">
+                            <p className="text-black dark:text-white text-[20px]">Comentário enviado com <strong>sucesso</strong></p>
+                            <img className='w-[43px]' src={successIcon} alt="" />
                         </div>
                     </div>
                 )}
