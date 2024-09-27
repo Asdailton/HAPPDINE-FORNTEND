@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import editar from '../../../../image/CardapioAdmin/Editar.svg'
+import editar from '../../../../image/CardapioAdmin/Editar.svg';
 import ModalModaCasa from "./ModalModaCasa";
-import { useState } from "react";
 
 const responsive = {
   superLargeDesktop: {
@@ -23,7 +22,7 @@ const responsive = {
   },
   tablet: {
     breakpoint: { max: 768, min: 464 },
-    items: 1, // Permite que um card e meio apareçam
+    items: 1,
     slidesToSlide: 1,
   },
   mobile: {
@@ -33,26 +32,54 @@ const responsive = {
   },
 };
 
-const cardapios = [
-  { id: 1, diaSemana: 'Seg', data: '1 Mar', content: "Filé de frango grelhado; Iscas de fígado aceboladas; Omelete; Kibe de cenoura; Berinjela; Legumes sauté; 4 Tipos de Saladas; Melão" },
-  { id: 2, diaSemana: 'Ter', data: '2 Mar', content: 'Filé de frango grelhado; Iscas de fígado aceboladas; Omelete; Kibe de cenoura; Berinjela; Legumes sauté; 4 Tipos de Saladas; Melão' },
-  { id: 3, diaSemana: 'Qua', data: '3 Mar', content: 'Filé de frango grelhado; Iscas de fígado aceboladas; Omelete; Kibe de cenoura; Berinjela; Legumes sauté; 4 Tipos de Saladas; Melão' },
-  { id: 4, diaSemana: 'Qui', data: '4 Mar', content: 'Filé de frango grelhado; Iscas de fígado aceboladas; Omelete; Kibe de cenoura; Berinjela; Legumes sauté; 4 Tipos de Saladas; Melão' },
-  { id: 5, diaSemana: 'Sexta', data: '5 Mar', content: 'Filé de frango grelhado; Iscas de fígado aceboladas; Omelete; Kibe de cenoura; Berinjela; Legumes sauté; 4 Tipos de Saladas; Melão' },
-];
-
 const CardapioCardModaCasa = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [cardapios, setCardapios] = useState([]);
 
-    const openModal = () => setModalIsOpen(true);
-    const closeModal = () => setModalIsOpen(false);
+  // Função para abrir o modal
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+
+  // Função para formatar a data como "Seg" e "1 Mar"
+  const formatarDiaSemana = (data) => {
+    return new Date(data).toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
+  };
+
+  const formatarData = (data) => {
+    return new Date(data).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+  };
+
+  // Fazer a requisição para a API
+  useEffect(() => {
+    const fetchCardapios = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8080/modadacasa/cardapios');
+        const data = await response.json();
+
+        // Mapear a resposta da API para o formato que o componente espera
+        const cardapiosFormatados = data.map(item => ({
+          id: item.id_cardapio,
+          diaSemana: formatarDiaSemana(item.data),  // Formatar dia da semana
+          data: formatarData(item.data),  // Formatar data no formato "1 Mar"
+          content: `${item.prato_principal}; ${item.guarnicao}; Sobremesa: ${item.sobremesa}; Salada: ${item.salada}`,
+        }));
+
+        setCardapios(cardapiosFormatados);
+      } catch (error) {
+        console.error('Erro ao buscar os cardápios:', error);
+      }
+    };
+
+    fetchCardapios();
+  }, []);
+
   return (
     <Carousel
       responsive={responsive}
       centerMode={true}
       arrows={true}
       containerClass="flex overflow-hidden p-4"
-      itemClass="flex justify-center mx-4 " // Ajusta a margem horizontal entre os cards
+      itemClass="flex justify-center mx-4"
     >
       {cardapios.map(cardapio => (
         <div
@@ -65,11 +92,11 @@ const CardapioCardModaCasa = () => {
               <button
                 onClick={openModal}
                 className="bg-transparent border-none p-0 cursor-pointer"
-                aria-label="Open Modal" // For accessibility
+                aria-label="Open Modal"
               >
                 <img 
                   src={editar} 
-                  alt="Folha" 
+                  alt="Editar" 
                   className="" 
                 />
               </button>
@@ -84,10 +111,10 @@ const CardapioCardModaCasa = () => {
             ))}
           </div>
           <ModalModaCasa
-        isOpen={modalIsOpen} 
-        onRequestClose={closeModal} 
-        contentLabel="Modal Grill e Bem estar" 
-      />
+            isOpen={modalIsOpen} 
+            onRequestClose={closeModal} 
+            contentLabel="Modal Grill e Bem estar" 
+          />
         </div>
       ))}
     </Carousel>
