@@ -1,0 +1,43 @@
+/* html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden; /* Impede rolagem */
+ 
+ 
+    .conteiner {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #4E5256; /* Cor de fundo padrão */
+        position: relative; /* Para posicionar o pseudo-elemento */
+        color: white; /* Define a cor do texto como branca */
+        font-family: Arial, sans-serif; /* Define a fonte padrão */
+        z-index: 1; /* Garante que o texto esteja acima do pseudo-elemento */
+    }
+     
+    .conteiner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(180, 180, 180, 0.5), rgba(190, 190, 190, 0) 80%),
+                    radial-gradient(circle, rgba(150, 150, 150, 0.5), rgba(180, 180, 180, 0) 80%),
+                    radial-gradient(circle, rgba(120, 120, 120, 0.5), rgba(150, 150, 150, 0) 80%);
+        background-size: 300% 300%;
+        animation: rotateBackground 20s linear infinite;
+       
+    }
+     
+    @keyframes rotateBackground {
+        0% {
+            background-position: 0% 0%, 100% 0%, 0% 100%;
+        }
+        100% {
+            background-position: 100% 100%, 0% 100%, 100% 0%;
+        }
+    }
+     

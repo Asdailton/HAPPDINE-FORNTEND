@@ -81,7 +81,7 @@ const Cardapio = () => {
             </div>
 
             <div className="w-[100%] h-[70vh] lg:h-[80vh] items-center 2xl:h-[57vh] flex justify-center"> 
-                <div className='lg:w-[80%] gap-4 h-[80%] lg:h-[80%] 2xl:h-[80%] items-center 2xl:w-[70%] flex flex-wrap justify-center lg:gap-2'>
+                <div className='lg:w-[80%] gap-4 h-[80%] lg:h-[60%] 2xl:h-[70%] items-center 2xl:w-[80%] flex flex-wrap justify-center lg:gap-2'>
 
                     <button
                         className={styles.first}

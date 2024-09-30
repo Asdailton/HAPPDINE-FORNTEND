@@ -6,10 +6,10 @@ import 'swiper/css/pagination';
 import R01 from '../../image/Fotos_Carrosel/restaurante-01.jpg'
 import R02 from '../../image/Fotos_Carrosel/restaurante-02.jpg'
 import R03 from '../../image/Fotos_Carrosel/restaurante-03.jpg'
-import R04 from '../../image/Fotos_Carrosel/JACKAN.jpeg'
+
 
 function Carrosel() {
-  const slides = [ R01, R02, R03, R04];
+  const slides = [ R01, R02, R03];
 
   return (
     <div className='relative w-full overflow-hidden'>

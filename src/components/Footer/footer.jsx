@@ -27,7 +27,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="mt-6">
-                    <div className="w-full h-0.5 bg-black"></div> {/* Linha abaixo do conteúdo */}
+                    <div className="w-full h-0.5 bg-black dark:bg-white"></div> {/* Linha abaixo do conteúdo */}
                 </div>
                 <p className="text-base md:text-lg font-semibold mt-6 text-left text-[#4E5256] dark:text-white">
                     {t('© Robert Bosch GmbH 2024, all rights reserved')}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Filas from '../../image/Monitoramento/FilaTempoReal.png';
-import Grafico from '../../image/Monitoramento/GraficoPessoasFila.png'; 
+import Filas from '../../image/Monitoramento/Fila.png';
+import Grafico from '../../image/Monitoramento/Grafico.png'; 
 import DeBemComAVida from '../../image/ModosTemas/ModoClaro/IconesMonitoramento/DBemCVida.svg'; 
 import ReceitaChefe from '../../image/ModosTemas/ModoClaro/IconesMonitoramento/ReceitaChefe.svg'; 
 import ModaCasa from '../../image/ModosTemas/ModoClaro/IconesMonitoramento/ModaCasa.svg'; 
@@ -104,9 +104,7 @@ const Monitoramento = () => {
       </div>
 
       {/* Área abaixo do monitoramento */}
-      <div className="w-full bg-lightBackground dark:bg-darkBackground">
-        {/* Conteúdo da área */}
-      </div>
+    
     </div>
   );
 };

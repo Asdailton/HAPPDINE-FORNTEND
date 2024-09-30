@@ -1,8 +1,8 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import { useTranslation } from 'react-i18next';
-import Filas from '../../image/Monitoramento/FilaTempoReal.png';
-import GraficoImg from '../../image/Monitoramento/GraficoPessoasFila.png';
+import Filas from '../../image/Monitoramento/Fila.png';
+import GraficoImg from '../../image/Monitoramento/Grafico.png';
 import DeBemComAVida from '../../image/ModosTemas/ModoClaro/IconesMonitoramento/DBemCVida.svg'; 
 import ReceitaChefe from '../../image/ModosTemas/ModoClaro/IconesMonitoramento/ReceitaChefe.svg'; 
 import ModaCasa from '../../image/ModosTemas/ModoClaro/IconesMonitoramento/ModaCasa.svg'; 
@@ -62,7 +62,7 @@ const Grafico = () => {
             <p className="text-sm md:text-base font-medium mb-2 text-center text-lightText dark:text-darkText">
               {t('Gráfico Pessoas nas filas x Horário')}
             </p>
-            <img src={GraficoImg} alt="Imagem de Gráfico" className="w-full max-w-[100%] h-auto object-cover" />
+            <img src={GraficoImg} alt="Imagem de Gráfico" className=" max-w-[100%] h-auto object-cover" />
           </div>
         </div>
       </div>

@@ -76,12 +76,12 @@
     
 }
 .third:hover{
-    background:#12818F;
+    background:#9E2896;
     transition: 0.3 ease
 }
 
 .fourth:hover{
-    background:#9E2896;
+    background: #12818F;
     transition: 0.3 ease
 }
 
