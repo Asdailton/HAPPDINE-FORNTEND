@@ -129,7 +129,7 @@ const Cardapio = () => {
             <Moda
                 isOpen={modaIsOpen}
                 onRequestClose={closeModa}
-                content={modaContent}
+                
             />
             <Grill
                 isOpen={grillIsOpen}

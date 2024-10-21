@@ -36,6 +36,7 @@ const ModalComponent = ({ isOpen, onRequestClose, contentLabel }) => {
         };
 
         checkDarkMode();
+        
 
         
         

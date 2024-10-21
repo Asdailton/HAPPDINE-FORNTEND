@@ -57,7 +57,7 @@ const Navbar = () => {
       )}
  
       {/* Barra de navegação principal */}
-      <div className={`- z-50 navbar-bg shadow-navbar h-[123px] transition-transform duration-300 ease-in-out ${isOpen ? 'lg:hidden' : ''} bg-white text-black`}>
+      <div className={`- z-50 border-b h-[123px] transition-transform duration-300 ease-in-out ${isOpen ? 'lg:hidden' : ''} bg-white text-black`}>
         <div className="container mx-auto flex items-center h-full px-4">
           {/* Div para o logo */}
           <div className="flex-shrink-0">

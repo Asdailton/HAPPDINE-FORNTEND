@@ -1,0 +1,88 @@
+
+
+.first{
+    width: 75%; /* Para telas pequenas */
+    height: 22%; /* Para telas pequenas */
+    background: linear-gradient(to left, #4E5256, #2E3033);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+    text-color:white;
+}
+
+.second{
+    width: 75%; /* Para telas pequenas */
+    height: 22%; /* Para telas pequenas */
+    background: linear-gradient(to left, #4E5256, #2E3033);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+    text-color:white;
+}
+
+.third{
+    width: 75%; /* Para telas pequenas */
+    height: 22%; /* Para telas pequenas */
+    background: linear-gradient(to left, #4E5256, #2E3033);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+    text-color:white;
+}
+
+.fourth{
+    width: 75%; /* Para telas pequenas */
+    height: 22%; /* Para telas pequenas */
+    background: linear-gradient(to left, #4E5256, #2E3033);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+    text-color:white;
+}
+
+@media (min-width: 1024px) { /* Para telas maiores (lg) */
+    .first,
+    .second,
+    .third,
+    .fourth {
+        width: 40%; /* Para telas grandes */
+        height: 45%; /* Para telas grandes */
+    }
+}
+
+@media (min-width: 1536px) { /* Para telas extra grandes (2xl) */
+    .first,
+    .second,
+    .third,
+    .fourth {
+        width: 45%; /* Para telas 2xl */
+        height: 45%; /* Para telas 2xl */
+    }
+}
+
+
+.first:hover {
+    background: #007BC0;
+    transition: 0.3 ease /* Cor de fundo ao passar o mouse */
+}
+
+.second:hover{
+    background: #219557;
+    transition: 0.3 ease
+    
+}
+.third:hover{
+    background:#9E2896;
+    transition: 0.3 ease
+}
+
+.fourth:hover{
+    background: #12818F;
+    transition: 0.3 ease
+}
+
+

@@ -10,6 +10,7 @@ import CardapioPage from "../Pages/AdminSection/CardapioPage.jsx";
 import  AvisosPage  from "../Pages/AdminSection/AvisosPage.jsx";
 import FeedBackPage from "../Pages/AdminSection/FeedBackPage.jsx";
 import LoginPage from "../Pages/AdminSection/LoginPage.jsx";
+import HomeAdminPage from "../Pages/AdminSection/HomeAdminPage.jsx";
 const AppRouter = () => (
   <Router>
     <Routes>
@@ -21,9 +22,11 @@ const AppRouter = () => (
 
      
       <Route path="/admin/login" element={<LoginPage/>} />
+      <Route path="admin/home" element={<HomeAdminPage/>}/>
       <Route path="/admin/cardapio" element={<CardapioPage/>} />
       <Route path="/admin/avisos" element={<AvisosPage/>} />
       <Route path="/admin/feedbacks" element={<FeedBackPage/>}/>
+      
 
     </Routes>
   </Router>
