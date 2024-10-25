@@ -7,17 +7,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Poppins", "sans-serif"],
-        cursive: ["Pacifico", "cursive"],
+        sans: ['boschRegular', 'sans-serif'],
+        bold: ['boschBold', 'sans-serif'], // Adicione sua fonte aqui
       },
       colors: {
-        lightBackground: "#FFFFFF", // Cor de fundo no modo claro
-        darkBackground: "#2E3033", // Cor de fundo no modo escuro
-        lightText: "#000000", // Cor do texto no modo claro
-        darkText: "#e0e0e0", // Cor do texto no modo escuro
+        lightBackground: "#FFFFFF", 
+        darkBackground: "#2E3033",
+        lightText: "#000000", 
+        darkText: "#e0e0e0", 
       },
     },
   },
-  darkMode: 'class', // Habilita o modo escuro usando a classe 'dark'
+  darkMode: 'class',
   plugins: [],
 }

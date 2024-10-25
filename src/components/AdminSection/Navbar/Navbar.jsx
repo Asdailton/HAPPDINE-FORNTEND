@@ -63,11 +63,11 @@ const Navbar = () => {
           <div className="flex-shrink-0">
             <div className="flex flex-col items-start ml-5">
               <div className="relative">
-                <Link to="/" className="text-2xl md:text-3xl lg:text-4xl font-extrabold">
+                <Link to="/" className=" font-bold  text-2xl md:text-3xl lg:text-4xl font-extrabold">
                   HAPPDINE
                 </Link>
                 {/* Ajuste o espaçamento vertical entre HAPPDINE e ADMIN aqui */}
-                <span className="text-sm md:text-base" style={{ color: '#B2B9C0', position: 'absolute', top: '95%', left: 0, marginTop: '-8px', fontWeight: '800' }}>
+                <span className=" font-bold  text-sm md:text-base" style={{ color: '#B2B9C0', position: 'absolute', top: '95%', left: 0, marginTop: '-8px', fontWeight: '800' }}>
                   ADMIN
                 </span>
               </div>

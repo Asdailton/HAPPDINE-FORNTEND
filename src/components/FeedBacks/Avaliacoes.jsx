@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 1024 },
-    items: 2,
+    items: 2.7,
     slidesToSlide: 1,
   },
   desktop: {
@@ -87,21 +87,21 @@ const Avaliacoes = () => {
         infinite={true}
         showDots={false}
         containerClass="carousel-container"
-        itemClass="carousel-item p-2"
+        itemClass="p-2 flex justify-center items-center"
       >
         {feedbacks.map((review) => (
           <div
             key={review.id}
-            className="bg-white p-8 mx-2 shadow-custom-pink min-h-[35vh] w-[90%] mt-[90px] flex flex-col relative"
+            className="bg-white px-8 py-10  shadow-custom-pink min-h-[30vh] w-[90%] mt-[90px] flex flex-col relative"
           >
             <div className="w-full flex justify-between">
               <div>
-                <h1 className="text-lg font-semibold">{review.nome}</h1>
+                <h1 className="text-[18px] font-semibold">{review.nome}</h1>
                 <h2 className="text-md text-[14px] text-[#7D8389]">{review.timestampp}</h2>
               </div>
               <div>
                 {/* Renderizando o selo com base na cor */}
-                <img className="w-9" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
+                <img className="w-8" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
               </div>
             </div>
 

@@ -21,9 +21,7 @@ body.dark .navbar-bg {
   color: #e0e0e0; /* Cor do texto no modo escuro */
 }
 
-body.dark .text-[#000] {
-  color: #e0e0e0; /* Cor do texto no modo escuro */
-}
+
 
 /* Estilos adicionais para componentes no modo escuro */
 body.dark .bg-gradient-to-r {
@@ -38,4 +36,18 @@ body.dark .shadow-navbar {
 body.dark .fixed-card, .fixed-card-content {
   color: #000; /* Cor do texto dos cartões no modo escuro */
   background-color: #fff; /* Cor de fundo dos cartões no modo escuro */
+}
+
+
+@font-face {
+  font-family: 'boschRegular';
+  src: url('../fontes/BoschSans-Regular-v5_003.woff2') format('woff2');
+      
+}
+
+@font-face {
+  font-family: 'boschBold';
+  src: url('../fontes/BoschSans-Bold-v5_003.woff') format('woff2'); 
+  font-weight: bold;
+  font-style: normal; 
 }

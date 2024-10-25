@@ -1,296 +1,258 @@
-import React, { useState, useRef } from 'react';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import eye from '../../../image/FeedbacksAdmin/eye.png';
-import green from '../../../image/FeedbacksAdmin/green.png';
-import blue from '../../../image/FeedbacksAdmin/blue.png';
-import purple from '../../../image/FeedbacksAdmin/purple.png';
-import preto from '../../../image/FeedbacksAdmin/preto.png';
-import Modal from 'react-modal';
-import rejected from '../../../image/FeedbacksAdmin/deletanimated.gif'
-import check from '../../../image/FeedbacksAdmin/checkanimated.gif'
+import React, { useState, useEffect } from 'react'; // Importa React e hooks
+import Carousel from 'react-multi-carousel'; // Importa componente de carousel
+import 'react-multi-carousel/lib/styles.css'; // Importa estilos do carousel
+import axios from 'axios'; // Importa biblioteca Axios para fazer requisições HTTP
+import Modal from 'react-modal'; // Importa componente de modal
+import eye from '../../../image/FeedbacksAdmin/eye.png'; // Imagem do ícone de visualização
+import seloVerde from '../../../image/FeedbacksAdmin/green.png'; // Imagem do selo verde
+import seloAzul from '../../../image/FeedbacksAdmin/blue.png'; // Imagem do selo azul
+import seloRoxo from '../../../image/FeedbacksAdmin/purple.png'; // Imagem do selo roxo
+import seloPreto from '../../../image/FeedbacksAdmin/preto.png'; // Imagem do selo preto
+import rejected from '../../../image/FeedbacksAdmin/deletanimated.gif'; // Imagem do ícone de rejeição
+import check from '../../../image/FeedbacksAdmin/checkanimated.gif'; // Imagem do ícone de aprovação
+import Stars from './Stars'; // Componente de estrelas
 
+Modal.setAppElement('#root'); // Define o elemento raiz para o modal
 
-
-Modal.setAppElement('#root');
-
+// Configura as resoluções do carousel
 const responsive = {
-  superLargeDesktop: {
-    breakpoint: { max: 4000, min: 1024 },
-    items: 3.5,
-    slidesToSlide: 1,
-  },
-  desktop: {
-    breakpoint: { max: 1500, min: 768 },
-    items: 2.2,
-    slidesToSlide: 1,
-  },
-  tablet: {
-    breakpoint: { max: 868, min: 464 },
-    items: 1,
-    slidesToSlide: 1,
-  },
-  mobile: {
-    breakpoint: { max: 640, min: 0 },
-    items: 0.2,
-    slidesToSlide: 1,
-  },
+  superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 3.5, slidesToSlide: 1 },
+  desktop: { breakpoint: { max: 1500, min: 768 }, items: 2.2, slidesToSlide: 1 },
+  tablet: { breakpoint: { max: 868, min: 464 }, items: 1, slidesToSlide: 1 },
+  mobile: { breakpoint: { max: 640, min: 0 }, items: 0.2, slidesToSlide: 1 },
 };
-
-const reviews = [
-  { id: 1, name: 'Caio Eduardo', identity: 'Colaborador', content: "O HAPPDINE mudou tudo, acredito que agora o restaurante está bem mais organizado, não há mais tantas filas como antes.." },
-  { id: 2, name: 'jonatas', identity: 'Visitante', content: "esse aaaaaaaaauygyu ytfytfytfytfytfytfy   u uyguyguyguyguy uyguyguy uyg yguyguyguy ." },
-  { id: 3, name: 'gilberto', identity: 'Visitante', content: "qro me mata." },
-  { id: 4, name: 'agronegocio', identity: 'Colaborador', content: "mae tem cafe." },
-  { id: 5, name: 'alguem me salva', identity: 'Visitante', content: "jair bolsonaro." },
-];
-
-const selos = [blue, purple, green, preto];
-
-const getRandomSelo = () => {
-  const randomIndex = Math.floor(Math.random() * selos.length);
-  return selos[randomIndex];
-};
-
-
-
-
 
 const Feedbacks = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedReview, setSelectedReview] = useState(null);
-  const [approvedReviews, setApprovedReviews] = useState([]);
-  const [rejectedReviews, setRejectedReviews] = useState([]);
+  // Estados para gerenciar os feedbacks, modais e mensagens
+  const [reviews, setReviews] = useState([]); // Feedbacks pendentes
+  const [modalIsOpen, setModalIsOpen] = useState(false); // Controle do modal
+  const [selectedReview, setSelectedReview] = useState(null); // Feedback selecionado
+  const [approvedReviews, setApprovedReviews] = useState([]); // Feedbacks aprovados
+  const [rejectedReviews, setRejectedReviews] = useState([]); // Feedbacks rejeitados
+  const [modalIsVisible, setModalIsVisible] = useState(false); // Controle de mensagem de aprovação
+  const [showRejectMessage, setShowRejectMessage] = useState(false); // Controle de mensagem de rejeição
 
-  const [modalIsVisible, setModalIsVisible] = useState(false); // so pro aceito 
-  const [showRejectMessage, setShowRejectMessage] = useState(false); // so pro rejeitado
+  // Função para buscar os feedbacks da API
+  const getFeedbacks = async () => {
+    try {
+      // Faz requisições simultâneas para buscar feedbacks do site e do restaurante
+      const [websiteResponse, restauranteResponse] = await Promise.all([
+        axios.get('http://localhost:8080/api/comentarios/admin/website'),
+        axios.get('http://localhost:8080/api/comentarios/admin/restaurante'),
+      ]);
 
+      // Filtra feedbacks pendentes (não aprovados)
+      const pendingWebsiteReviews = websiteResponse.data.filter(review => review.aprovado === false);
+      const pendingRestauranteReviews = restauranteResponse.data.filter(review => review.aprovado === false);
+
+      // Junta feedbacks pendentes
+      setReviews([...pendingWebsiteReviews, ...pendingRestauranteReviews]);
+
+      // Filtra feedbacks aprovados
+      const approvedWebsiteReviews = websiteResponse.data.filter(review => review.aprovado === true);
+      const approvedRestauranteReviews = restauranteResponse.data.filter(review => review.aprovado === true);
+
+      // Junta feedbacks aprovados
+      setApprovedReviews([...approvedWebsiteReviews, ...approvedRestauranteReviews]);
+    } catch (error) {
+      console.error('Erro ao buscar feedbacks:', error); // Log de erro
+    }
+  };
+
+  // useEffect para buscar feedbacks ao carregar o componente
+  useEffect(() => {
+    getFeedbacks();
+  }, []);
+
+  // Função para abrir o modal com o feedback selecionado
   const openModal = (review) => {
     setSelectedReview(review);
     setModalIsOpen(true);
   };
 
-  
-
+  // Função para fechar o modal
   const closeModal = () => {
     setModalIsOpen(false);
     setSelectedReview(null);
   };
 
-  const handleAccept = () => {
+  // Mapeamento das cores para os selos
+  const seloMap = {
+    '#10AAFD': seloAzul,   // Azul
+    '#C535BC': seloRoxo,   // Roxo
+    '#219557': seloVerde,  // Verde
+    '#2E3033': seloPreto,  // Preto
+  };
+
+  // Função para aceitar um feedback
+  const handleAccept = async () => {
     if (selectedReview) {
-      setApprovedReviews((prev) => [...prev, selectedReview]);
-      
-      setModalIsVisible(true);
-      
-      setTimeout(() => {
-        setModalIsVisible(false);
-        setModalIsOpen(false);
-      }, 1000);
+      try {
+        // Atualiza o feedback para aprovado
+        const updatedReview = {
+          ...selectedReview,
+          isAprovado: true,  // Usar "aprovado" para alinhar com a API
+        };
+
+        await axios.put(`http://localhost:8080/api/comentarios/admin/${selectedReview.id}`, updatedReview);
+
+        // Atualiza a lista de feedbacks aprovados no frontend
+        setApprovedReviews((prev) => [...prev, updatedReview]);
+        setModalIsVisible(true); // Mostra mensagem de sucesso
+
+        // Recarrega os feedbacks para refletir a mudança
+        getFeedbacks();
+
+        // Fecha o modal após um tempo
+        setTimeout(() => {
+          setModalIsVisible(false);
+          closeModal();
+        }, 1000);
+      } catch (error) {
+        console.error('Erro ao aprovar o feedback:', error); // Log de erro
+      }
     }
   };
 
+  // Função para rejeitar um feedback
   const handleReject = () => {
     if (selectedReview) {
-    setRejectedReviews((prev) => [...prev, selectedReview]);
-    
-    setShowRejectMessage(true);
-  
-  
-    setTimeout(() => {
-      setShowRejectMessage(false)
-      setModalIsOpen(false);
-    }, 1500);
-  }
+      setRejectedReviews(prev => [...prev, selectedReview]); // Adiciona feedback à lista de rejeitados
+      setShowRejectMessage(true); // Mostra mensagem de rejeição
 
+      // Fecha o modal após um tempo
+      setTimeout(() => {
+        setShowRejectMessage(false);
+        closeModal();
+      }, 1500);
+    }
   };
-  
-
-
- 
- const pendingReviews = reviews.filter(review => !approvedReviews.includes(review) && !rejectedReviews.includes(review));
 
   return (
-    <>
-      <div className="mb-8">
-
-
-      <div className='w-[100%]  2xl:h-[45vh] lg:h-[53vh] flex justify-center items-center'>
-  <div className='bg-[#2E3033] p-10 items-center w-[95%] 2xl:h-[40vh]'>
-    <p className='text-white mb-4 font-bold'>Feedbacks:</p> 
-    <Carousel
-      responsive={responsive}
-      centerMode={true}
-      infinite={true}
-      showDots={false}
-      containerClass="carousel-container"
-      itemClass="p-2 flex justify-center items-center mx-0"
-      ariaHideApp={false}
-    >
-      {pendingReviews.map(review => (
-        <div
-          key={review.id}
-          className="bg-[#FFFBFB] shadow-custom-pink 2xl:h-[23vh] lg:h-[29vh] w-[97%] flex flex-col justify-between p-5 relative
-          transform transition-transform duration-300 hover:scale-105"
-        >
-          
-          <div className="flex justify-between items-start">
-            <div className="w-[90%]">
-              <h1 className='2xl:text-[14px] lg:text-[11px] font-semibold'>{review.name}</h1>
-              <h2 className='2xl:text-[11px] lg:text-[9px] text-[#7D8389]'>{review.identity}</h2>
-            </div>
-            <div className="flex justify-end w-[6%]">
-              <img className="w-full" src={getRandomSelo()} alt="Selo" />
-            </div>
-          </div>
-
-       
-          <div className="flex-1 mt-2">
-            <p className="2xl:text-[13px] lg:text-[10.5px] text-start w-[80%]">{review.content}</p>
-          </div>
-
-         
-          <div className="absolute bottom-3 right-3 cursor-pointer" onClick={() => openModal(review)}>
-            <img className='w-5 h-3' src={eye} alt="Eye icon" />
-          </div>
-        </div>
-      ))}
-    </Carousel>
-  </div>
-</div>
-
-        
+    <> 
+      {/* Título da seção de feedbacks */}
+      <div className="flex items-center justify-center p-[90px] gap-6">
+        <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '10%' }} />
+        <p className="text-[34px] font-semibold">#BatePapo</p>
+        <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '10%' }} />
       </div>
 
-    
-      <div>
-       
-      <div className=' w-[100%]  2xl:h-[35vh] flex justify-center items-center'>
-        <div className='bg-[#00884A] lg:p-10 lg:h-[52vh] items-center w-[95%] 2xl:h-[40vh]'>
-          <p className='text-white  mb-4 font-bold'>Feedbacks aprovados:</p>
+      {/* Seção de feedbacks pendentes */}
+      <div className="w-full 2xl:h-[45vh] lg:h-[53vh] flex justify-center items-center mb-6">
+        <div className="bg-gradient-to-b from-[#2E3033] to-[#4E5256] px-10 pt-13 w-[95%] 2xl:h-[40vh]">
+          <p className="text-white mb-4 font-bold text-[27px]">Feedbacks:</p>
           <Carousel
-          responsive={responsive}
-          centerMode={true}
-          arrows={false}
-          infinite={true}
-          showDots={false}
-          containerClass="carousel-container"
-          itemClass="p-2 flex justify-center items-center mx-0"
-          
-        >
-          {approvedReviews.map(review => (
-            <div
-              key={review.id}
-              className="bg-[#FFFBFB] shadow-custom-pink 2xl:h-[23vh] p-5 lg:h-[29vh] w-[97%] flex flex-col justify-between
-              transform transition-transform duration-300 hover:scale-105"
-            >
-              <div className="flex  justify-between items-start">
-                <div className="  w-[90%]">
-                  <h1 className=' 2xl:text-[14px] lg:text-[11px] font-semibold'>{review.name}</h1>
-                  <h2 className='2xl:text-[11px]  lg:text-[9px] text-[#7D8389]'>{review.identity}</h2>
-                  <p className="2xl:text-[13px] lg:text-[11px] text-start w-[80%]">{review.content}</p>
-                  
+            responsive={responsive}
+            centerMode
+            infinite
+            showDots={false}
+            containerClass="carousel-container"
+            itemClass="p-2 flex justify-center items-center"
+          >
+            {reviews.map((review) => (
+              <div
+                key={review.id}
+                className="bg-[#FFFBFB] shadow-custom-pink   w-[97%] p-5 flex flex-col justify-between transform transition-transform duration-300 hover:scale-105"
+              >
+                {/* Informações do feedback */}
+                <div className="flex justify-between items-start">
+                  <div className="w-[90%]">
+                    <h1 className='2xl:text-[18px] lg:text-[18px] font-semibold'>{review.nome}</h1>
+                    <h2 className='2xl:text-[11px] lg:text-[10px] text-[#7D8389]'>{review.timestampp}</h2>
+                  </div>
+                  <div className="flex justify-end w-[6%]">
+                    <img className="w-9" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
+                  </div>
                 </div>
-                <div className="flex justify-end w-[6%]">
-                  <img className="w-full" src={getRandomSelo()} alt="Selo" />
+
+                {/* Comentário do feedback */}
+                <div className="flex-1 mt-2">
+                  <p className="2xl:text-[16px] lg:text-[13px] text-start w-[80%]">{review.comentario}</p>
+                </div>
+                <div>
+                 <Stars corRegistrada={review?.corEstrela} quantidade={review?.estrela}/> {/* Componente de estrelas */}
+                </div>
+
+                {/* Ícone para abrir o modal */}
+                <div className="absolute bottom-3 right-3 cursor-pointer" onClick={() => openModal(review)}>
+                  <img className='w-5 h-3' src={eye} alt="Eye icon" />
                 </div>
               </div>
-              
+            ))}
+          </Carousel>
+        </div>
+      </div>
+
+      {/* Seção de feedbacks aprovados */}
+      <div className='w-[100%] 2xl:h-[35vh] flex justify-center items-center mb-10'>
+        <div className='h-screen bg-gradient-to-b from-[#00884A] to-[#37A264] p-10 w-[95%] 2xl:h-[40vh]'>
+          <p className='text-white mb-4  text-[27px] font-bold'>Feedbacks Aprovados:</p>
+          <Carousel
+            responsive={responsive}
+            centerMode
+            infinite
+            showDots={false}
+            containerClass="carousel-container"
+            itemClass="p-2 flex justify-center items-center"
+          >
+            {approvedReviews.map((approvedReview) => (
+              <div
+                key={approvedReview.id}
+                className='bg-[#FFFBFB] shadow-custom-pink 2xl:h-[23vh] lg:h-[29vh] w-[97%] flex flex-col justify-between p-5 relative
+          transform transition-transform duration-300 hover:scale-105'
+              >
+                <div className='flex justify-between items-start'>
+                  <div className='w-[90%]'>
+                    <h1 className='2xl:text-[18px] lg:text-[18px] font-semibold'>{approvedReview.nome}</h1>
+                    <h2 className='2xl:text-[11px] lg:text-[10px] text-[#7D8389]'>{approvedReview.timestampp}</h2>
+                  </div>
+                  <div className='flex justify-end w-[6%]'>
+                    <img className='w-9' src={seloMap[approvedReview.corEstrela]} alt="Selo correspondente" />
+                  </div>
+                </div>
+                <div className='flex-1 mt-2'>
+                  <p className='2xl:text-[16px] lg:text-[13px] text-start w-[80%]'>{approvedReview.comentario}</p>
+                </div>
+                <div>
+                 <Stars corRegistrada={approvedReview?.corEstrela} quantidade={approvedReview?.estrela}/> {/* Componente de estrelas */}
+                </div>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      </div>
+
+      {/* Modal de feedback */}
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.75)' }, content: { top: '20%', left: '20%', right: '20%', bottom: '20%', backgroundColor: '#2E3033', color: 'white' } }}>
+        {selectedReview && (
+          <>
+            {/* Informações do feedback no modal */}
+            <h2 className="text-xl font-semibold mb-4">{selectedReview.nome}</h2>
+            <p>{selectedReview.timestampp}</p>
+            <p className="my-4">{selectedReview.comentario}</p>
+            <div className="flex justify-between mt-4">
+              <button onClick={handleAccept} className="bg-green-500 text-white px-4 py-2 rounded">Aceitar</button>
+              <button onClick={handleReject} className="bg-red-500 text-white px-4 py-2 rounded">Rejeitar</button>
             </div>
-          ))}
-        </Carousel> 
-      
-        </div>
-      </div>
-
-
-        
-      </div>
-
-      {selectedReview && (
-        <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        className="2xl:w-[30%] lg:w-[40%] w-[50%] bg-white flex flex-col p-5  mx-auto my-auto 2xl:h-[50%] lg:h-[55%] 
-          focus:outline-none "
-        overlayClassName="fixed inset-0 bg-black bg-opacity-30 flex"
-      > 
-      <div className='w-[7%] ml-[90%]  flex justify-center items-center '>
-        <img className="w-[full]" src={getRandomSelo()} alt="Selo" />
-    
-      </div>
-      <div className=' justify-center  flex flex-col w-[100%]'>
-        
-      
-      <div className='w-[100%]  flex '>
-        <p className='font-bold flex text-[25px] '>{selectedReview.name}</p>
-     
-            
-      </div>
-        
-        <p className=' text-[#7D8389] '>{selectedReview.identity}</p>
-        <div className='w-[100%]  mt-2  h-[60%]'>
-          <div className=' lg:h-[15vh]'>
-          <p className='2xl:text-[120%] lg:text-[100%]'>{selectedReview.content}</p>
-          </div>
-        
-        </div>
-       
-      
-      </div>
-      
-        
-      <div className="flex font-bold  lg:mt-8 2xl:mt-20 gap-4 flex-wrap ">
-          <button 
-            onClick={handleAccept} 
-            className="bg-[#00884A] text-white px-4 py-2 min-w-[120px]">
-            Aprovar
-            
-          </button>
-
-        {modalIsVisible && (
-        <div className="fixed font-normal inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-12 lg:w-[40%] 2xl:w-[30%]  text-[86%] border border-gray-300 flex items-center justify-center">
-            
-            <p className="lg:mr-[30px]">Comentário aprovado com <strong>sucesso!</strong>
-
-            </p>
-            <img className='w-[10%]' src={check}>
-            </img>
-          
-          </div>
-        </div>
-      )}
-
-       
-
-          <button 
-            onClick={handleReject} 
-            className="bg-[#2E3033] text-white px-10 py-2 min-w-[120px]">
-            Descartar
-          </button>
-        </div>
-
-
-
-       {showRejectMessage && (
-      <div className="fixed font-normal inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div className="bg-white p-12 lg:w-[40%] 2xl:w-[30%] text-[86%] border border-gray-300 flex items-center justify-center">
-          <p className="lg:mr-[30px]">Comentário rejeitado com <strong>sucesso!</strong></p>
-          <img src={rejected} alt="Reject Icon" className='w-[10%]' />
-        </div>
-      </div>
-    )}
-            
+          </>
+        )}
       </Modal>
-      
-      )}
 
-      <div className='border-b border-[#B2B9C0]  w-[100%] h-[30vh]'>
-        
-      </div>
+      {/* Mensagens de feedback */}
+      {modalIsVisible && (
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-10">
+          <img src={check} alt="Feedback aprovado" className="w-16 h-16 animate-bounce" />
+          <p className="text-green-500 font-bold">Feedback Aceito!</p>
+        </div>
+      )}
+      {showRejectMessage && (
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-10">
+          <img src={rejected} alt="Feedback rejeitado" className="w-16 h-16 animate-bounce" />
+          <p className="text-red-500 font-bold">Feedback Rejeitado!</p>
+        </div>
+      )}
     </>
   );
 };
 
-export default Feedbacks;
+export default Feedbacks; // Exporta o componente Feedbacks

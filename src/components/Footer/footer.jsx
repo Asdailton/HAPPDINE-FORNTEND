@@ -13,7 +13,7 @@ const Footer = () => {
                     <hr className="border-t border-black mt-[30px] mb-[30px]" style={{ width: '0%' }} />
                 </div>
                 <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center">
-                    <h1 className="text-2xl md:text-4xl font-extrabold text-[#4E5256] dark:text-white">HAPPDINE</h1>
+                    <h1 className="text-2xl md:text-4xl font-bold text-[#4E5256] dark:text-white">HAPPDINE</h1>
                     <div className="flex flex-col md:flex-row md:justify-end gap-4 md:gap-8 mt-4 md:mt-0 w-full">
                         <Link to="/sobre-nos" className="text-left md:text-lg font-semibold text-[#4E5256] dark:text-white">
                             {t('Sobre nós')}

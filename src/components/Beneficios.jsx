@@ -42,7 +42,7 @@ function Beneficios() {
                     <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
                 </div>
 
-                <h1 className="px-4 text-3xl sm:text-xl md:text-5xl lg:text-3xl font-semibold text-center whitespace-nowrap text-lightText dark:text-darkText">
+                <h1 className=" font-bold px-4 text-3xl sm:text-xl md:text-5xl lg:text-3xl font-semibold text-center whitespace-nowrap text-lightText dark:text-darkText">
                     {t('Benefícios')}
                 </h1>
 
