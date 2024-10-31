@@ -4,7 +4,7 @@ import fogo from '../../../../image/CardapioAdmin/Fogo.svg'; // Importa a imagem
 
 const SectionGrill = () => { // Define o componente funcional SectionGrill.
     return( // Retorna o JSX a ser renderizado.
-        <div className="w-full bg-[#9E2896] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between"> 
+        <div className="w-full bg-gradient-to-r from-[#9E2896] to-[#671761] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between"> 
             {/* Contêiner principal com largura total, cor de fundo, e espaçamentos verticais e horizontais. */}
             
             <div className="flex flex-col justify-center items-center mt-[70px] ml-[25px]"> 

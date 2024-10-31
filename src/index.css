@@ -51,3 +51,29 @@ body.dark .fixed-card, .fixed-card-content {
   font-weight: bold;
   font-style: normal; 
 }
+
+@font-face {
+  font-family: 'boschItalic';
+  src: url('../fontes/BoschSans-Italic-v5_003.woff') format('woff'); 
+  font-weight: bold;
+  font-style: normal; 
+}
+
+@font-face {
+  font-family: 'boschItalicBold';
+  src: url('../fontes/BoschSans-BoldItalic-v5_003.woff') format('woff'); 
+  font-weight: bold;
+  font-style: normal; 
+}
+
+@font-face {
+  font-family: 'boschMedium';
+  src: url('../fontes/BoschSans-Medium-v5_003.woff') format('woff'); 
+  font-weight: bold;
+  font-style: normal; 
+}
+
+
+
+
+

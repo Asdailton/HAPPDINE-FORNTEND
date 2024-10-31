@@ -1,56 +1,54 @@
-import Modal from 'react-modal'; // Importa o componente Modal do react-modal.
-import DBem from '../../image/Cardapio/Folha.png'; // Importa imagem para o modal.
-import { useState, useEffect, useCallback } from 'react'; // Importa hooks do React.
-import setaDireita from '../../image/Cardapio/setaDireita.svg'; // Importa ícone da seta direita.
-import setaEsquerda from '../../image/Cardapio/setaEsquerda.svg'; // Importa ícone da seta esquerda.
+import Modal from 'react-modal';
+import DBem from '../../image/Cardapio/Folha.png';
+import { useState, useEffect, useCallback } from 'react';
+import setaDireita from '../../image/Cardapio/setaDireita.svg';
+import setaEsquerda from '../../image/Cardapio/setaEsquerda.svg';
 
-// Componente DeBem que recebe props para controlar abertura e fechamento do modal.
 const DeBem = ({ isOpen, onRequestClose }) => {
-  // Define estados para armazenar cardápios, índice selecionado e possíveis erros.
   const [cardapios, setCardapios] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [error, setError] = useState(null);
 
-  // Função que busca os cardápios na API.
   const fetchCardapios = useCallback(async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/debemcomavida/cardapios'); // Chama a API.
-      const data = await response.json(); // Converte resposta para JSON.
-      console.log('Dados recebidos da API:', data); // Log dos dados recebidos.
+      const response = await fetch('http://127.0.0.1:8080/debemcomavida/cardapios');
+      const data = await response.json();
+      console.log('Dados recebidos da API:', data);
 
-      const formattedDays = getFormattedDays(data); // Formata os dias e cardápios.
-      setCardapios(formattedDays); // Atualiza estado com os cardápios formatados.
+      const formattedDays = getFormattedDays(data);
+      setCardapios(formattedDays);
     } catch (err) {
-      console.error('Erro ao buscar os cardápios:', err); // Exibe erro no console.
-      setError('Não foi possível carregar os cardápios.'); // Define mensagem de erro.
+      console.error('Erro ao buscar os cardápios:', err);
+      setError('Não foi possível carregar os cardápios.');
     }
   }, []);
 
-  // Executa a função fetchCardapios apenas uma vez ao montar o componente.
   useEffect(() => {
     fetchCardapios();
   }, [fetchCardapios]);
 
-  // Função que formata os dias da semana com base nos dados recebidos.
   const getFormattedDays = (data) => {
-    const today = new Date(); // Obtém a data atual.
-    const dayOfWeek = today.getDay(); // Obtém o dia da semana (0 = domingo).
-    const thisMonday = new Date(today); 
-    thisMonday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Calcula a segunda-feira da semana atual.
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const thisMonday = new Date(today);
 
-    // Cria uma lista com todos os dias da semana.
+    if (dayOfWeek === 0) { // Domingo
+      thisMonday.setDate(today.getDate() - 6);
+    } else {
+      thisMonday.setDate(today.getDate() - (dayOfWeek - 1));
+    }
+
     const allDays = Array.from({ length: 7 }, (_, i) => {
       const day = new Date(thisMonday);
-      day.setDate(thisMonday.getDate() + i); // Define cada dia.
+      day.setDate(thisMonday.getDate() + i);
       return {
         diaSemana: formatarDiaSemana(day),
-        data: day.toISOString().split('T')[0], // Formata a data como string ISO.
-        content: 'Nenhum cardápio disponível', // Conteúdo padrão.
+        data: day.toISOString().split('T')[0], // Formato YYYY-MM-DD
+        content: 'Nenhum cardápio disponível',
         id: day.toISOString().split('T')[0],
       };
     });
 
-    // Substitui dias na lista com os cardápios recebidos da API.
     data.forEach((item) => {
       const index = allDays.findIndex((d) => d.data === new Date(item.data).toISOString().split('T')[0]);
       if (index !== -1) {
@@ -67,30 +65,25 @@ const DeBem = ({ isOpen, onRequestClose }) => {
       }
     });
 
-    return allDays; // Retorna a lista formatada.
+    return allDays; // Retorna todos os dias
   };
 
-  // Função para formatar o dia da semana.
-  const formatarDiaSemana = (data) => 
+  const formatarDiaSemana = (data) =>
     new Date(data).toLocaleDateString('pt-BR', { weekday: 'long' }).replace('.', '');
 
-  // Função para formatar a data no formato 'dia de mês de ano'.
-  const formatarData = (data) => 
+  const formatarData = (data) =>
     new Date(data).toLocaleDateString('pt-BR', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     }).replace(',', '');
 
-  // Avança para o próximo cardápio na lista.
-  const handleNext = () => 
+  const handleNext = () =>
     setSelectedIndex((prevIndex) => (prevIndex + 1) % cardapios.length);
 
-  // Volta para o cardápio anterior na lista.
-  const handlePrevious = () => 
+  const handlePrevious = () =>
     setSelectedIndex((prevIndex) => (prevIndex - 1 + cardapios.length) % cardapios.length);
 
-  // Define o cardápio selecionado com base no índice atual.
   const selectedCardapio = cardapios[selectedIndex] || {
     diaSemana: 'N/A',
     data: 'N/A',
@@ -102,32 +95,35 @@ const DeBem = ({ isOpen, onRequestClose }) => {
     },
   };
 
-  // Verifica se há um cardápio disponível.
-  const isCardapioDisponivel = selectedCardapio.content.prato_principal !== 'Indisponível';
+  // Verifica se o comprimento do array é 7
+  const isCardapioCompleto = cardapios.length === 7;
 
-  // Renderiza o modal com o conteúdo.
   return (
     <Modal
-      isOpen={isOpen} // Controla se o modal está aberto.
-      onRequestClose={onRequestClose} // Fecha o modal ao clicar fora.
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
       contentLabel="De Bem Com a Vida"
       className="bg-white w-[92%] max-w-[600px] h-auto shadow-lg md:w-[50%] lg:max-w-[600px]"
       overlayClassName="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center"
       shouldCloseOnOverlayClick={true}
     >
-      <div className="w-full p-8 md:p-10 bg-[#219557] h-full">
+      <div className="w-full p-8 md:p-12 bg-[#219557] h-full">
         <div className="flex items-center gap-4 mb-1">
-          <img src={DBem} className="w-12 h-auto" alt="Moda da Casa" />
-          <h1 className="text-[36px] font-semibold text-white">De Bem Com a Vida</h1>
+          <img src={DBem} className="w-8 md:w-11 h-auto" alt="Moda da Casa" />
+          <h1 className="text-[20px] md:text-[36px] font-bold text-white">De Bem Com a Vida</h1>
         </div>
 
-        <div className="flex items-center gap-4 justify-start mb-6">
+        <div className="flex items-center gap-4 justify-start mb-6 mt-3">
           <button onClick={handlePrevious} className="focus:outline-none">
             <img src={setaEsquerda} alt="Previous" className="w-4 h-4 hover:opacity-80" />
           </button>
 
-          <h2 className="text-[20px] font-bold text-white">
-            {selectedCardapio.diaSemana}, dia {formatarData(selectedCardapio.data)}
+          <h2 className="text-[15px] md:text-[20px] font-bold text-white ">
+            {isCardapioCompleto ? (
+              `${selectedCardapio.diaSemana}, dia ${formatarData(selectedCardapio.data)}`
+            ) : (
+              "Cardápio em Produção"
+            )}
           </h2>
 
           <button onClick={handleNext} className="focus:outline-none">
@@ -135,18 +131,22 @@ const DeBem = ({ isOpen, onRequestClose }) => {
           </button>
         </div>
 
-        <div className="text-left text-white font-semibold text-[16px]">
+        <div className="text-left text-white font-bold text-[16px]">
           {error ? (
             <p className="text-white">{error}</p>
-          ) : isCardapioDisponivel ? (
-            <>
-              <p className="mb-1">{selectedCardapio.content.prato_principal}</p>
-              <p className="mb-1">{selectedCardapio.content.guarnicao}</p>
-              <p className="mb-1">{selectedCardapio.content.sobremesa}</p>
-              <p className="mb-1">{selectedCardapio.content.salada}</p>
-            </>
           ) : (
-            <p className="text-white">Ainda estamos preparando o cardápio, volte mais tarde</p>
+            <>
+              {isCardapioCompleto ? (
+                <>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.prato_principal}</p>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.guarnicao}</p>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.sobremesa}</p>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.salada}</p>
+                </>
+              ) : (
+                <p className="text-white">Cardápio em Produção.</p>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -7,8 +7,8 @@ const Footer = () => {
  
     return (
         <>
-            <div className="w-full h-px bg-[#B2B9C0]"></div> {/* Linha separadora acima do footer */}
-            <footer className="flex flex-col p-6 md:p-12 lg:p-24 dark:bg-[#2E3033]">
+            
+            <footer className="flex flex-col p-6 md:p-12 lg:p-24  border-t dark:border-t-[#555555] dark:bg-[#2E3033]">
                 <div className="flex-1 flex justify-end pr-2 sm:pr-0">
                     <hr className="border-t border-black mt-[30px] mb-[30px]" style={{ width: '0%' }} />
                 </div>

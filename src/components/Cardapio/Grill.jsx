@@ -1,100 +1,90 @@
 import Modal from 'react-modal' // Importa o componente Modal para exibir uma janela modal.
 import grill from '../../image/Cardapio/Grill.png' // Imagem do "Grill".
-import { useState, useEffect } from 'react'; // Hooks do React para estado e efeito colateral.
+import { useState, useEffect, useCallback } from 'react'; // Hooks do React para estado e efeito colateral.
 
 import setaDireita from '../../image/Cardapio/setaDireita.svg' // Imagem da seta direita.
 import setaEsquerda from '../../image/Cardapio/setaEsquerda.svg' // Imagem da seta esquerda.
 
 const Grill = ({isOpen, onRequestClose, conteudo}) => { 
-  const [cardapios, setCardapios] = useState([]); // Estado para armazenar cardápios.
-  const [selectedIndex, setSelectedIndex] = useState(0); // Controla o índice do cardápio exibido.
+  const [cardapios, setCardapios] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [error, setError] = useState(null);
 
-  // Hook de efeito para buscar dados da API quando o componente é montado.
+  const fetchCardapios = useCallback(async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8080/grillebemestar/cardapios');
+      const data = await response.json();
+      console.log('Dados recebidos da API:', data);
+
+      const formattedDays = getFormattedDays(data);
+      setCardapios(formattedDays);
+    } catch (err) {
+      console.error('Erro ao buscar os cardápios:', err);
+      setError('Não foi possível carregar os cardápios.');
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchCardapios = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8080/debemcomavida/cardapios'); 
-        const data = await response.json(); // Converte a resposta para JSON.
+    fetchCardapios();
+  }, [fetchCardapios]);
 
-        const today = new Date(); // Obtém a data atual.
-        const dayOfWeek = today.getDay(); // Obtém o dia da semana.
-        const thisMonday = new Date(today); 
-        thisMonday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Define a segunda-feira da semana atual.
+  const getFormattedDays = (data) => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const thisMonday = new Date(today);
 
-        const allDays = []; // Cria um array para os sete dias da semana.
-        for (let i = 0; i < 7; i++) {
-          const day = new Date(thisMonday);
-          day.setDate(thisMonday.getDate() + i); // Adiciona um dia à data.
-          allDays.push({
-            diaSemana: formatarDiaSemana(day),
-            data: day.toISOString().split('T')[0], 
-            content: 'Nenhum cardápio disponível',
-            id: day.toISOString().split('T')[0],
-          });
-        }
+    if (dayOfWeek === 0) { // Domingo
+      thisMonday.setDate(today.getDate() - 6);
+    } else {
+      thisMonday.setDate(today.getDate() - (dayOfWeek - 1));
+    }
 
-        const cardapiosFormatados = data.map((item) => ({ 
-          id: item.id_cardapio,
-          diaSemana: formatarDiaSemana(new Date(item.data)), 
-          data: new Date(item.data).toISOString().split('T')[0], 
+    const allDays = Array.from({ length: 7 }, (_, i) => {
+      const day = new Date(thisMonday);
+      day.setDate(thisMonday.getDate() + i);
+      return {
+        diaSemana: formatarDiaSemana(day),
+        data: day.toISOString().split('T')[0], // Formato YYYY-MM-DD
+        content: 'Nenhum cardápio disponível',
+        id: day.toISOString().split('T')[0],
+      };
+    });
+
+    data.forEach((item) => {
+      const index = allDays.findIndex((d) => d.data === new Date(item.data).toISOString().split('T')[0]);
+      if (index !== -1) {
+        allDays[index] = {
+          ...allDays[index],
           content: {
             prato_principal: item.prato_principal || 'Indisponível',
             guarnicao: item.guarnicao || 'Indisponível',
             sobremesa: item.sobremesa || 'Indisponível',
             salada: item.salada || 'Indisponível',
           },
-        }));
-
-        // Integra os cardápios com os dias da semana.
-        cardapiosFormatados.forEach((cardapio) => {
-          const index = allDays.findIndex((d) => d.data === cardapio.data);
-          if (index !== -1) {
-            allDays[index] = {
-              ...allDays[index],
-              content: cardapio.content,
-              id: cardapio.id,
-            };
-          }
-        });
-
-        setCardapios(allDays); // Atualiza o estado com os cardápios formatados.
-      } catch (error) {
-        console.error('Erro ao buscar os cardápios:', error); // Exibe erro em caso de falha na requisição.
+          id: item.id_cardapio,
+        };
       }
-    };
+    });
 
-    fetchCardapios(); // Chama a função de busca.
-  }, []);
-
-  // Formata o nome do dia da semana para exibição.
-  const formatarDiaSemana = (data) => {
-    return new Date(data)
-      .toLocaleDateString('pt-BR', { weekday: 'long' })
-      .replace('.', '');
+    return allDays; // Retorna todos os dias
   };
 
-  // Formata a data para o formato "dia de mês de ano".
-  const formatarData = (data) => {
-    return new Date(data)
-      .toLocaleDateString('pt-BR', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })
-      .replace(',', '');
-  };
+  const formatarDiaSemana = (data) =>
+    new Date(data).toLocaleDateString('pt-BR', { weekday: 'long' }).replace('.', '');
 
-  // Avança para o próximo cardápio.
-  const handleNext = () => {
+  const formatarData = (data) =>
+    new Date(data).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).replace(',', '');
+
+  const handleNext = () =>
     setSelectedIndex((prevIndex) => (prevIndex + 1) % cardapios.length);
-  };
 
-  // Retorna para o cardápio anterior.
-  const handlePrevious = () => {
+  const handlePrevious = () =>
     setSelectedIndex((prevIndex) => (prevIndex - 1 + cardapios.length) % cardapios.length);
-  };
 
-  // Cardápio selecionado atualmente.
   const selectedCardapio = cardapios[selectedIndex] || {
     diaSemana: 'N/A',
     data: 'N/A',
@@ -106,8 +96,8 @@ const Grill = ({isOpen, onRequestClose, conteudo}) => {
     },
   };
 
-  // Verifica se há um cardápio disponível.
-  const isCardapioDisponivel = selectedCardapio.content.prato_principal !== 'Indisponível';
+  // Verifica se o comprimento do array é 7
+  const isCardapioCompleto = cardapios.length === 7;
 
   return (
     <Modal
@@ -120,17 +110,21 @@ const Grill = ({isOpen, onRequestClose, conteudo}) => {
     >
       <div className="w-full p-8 md:p-10 bg-[#9E2896] h-full">
         <div className="flex items-center gap-4 mb-1">
-          <img src={grill} className="w-12 h-auto" alt="Moda da Casa" />
-          <h1 className="text-[36px] font-semibold text-white">Grill</h1>
+          <img src={grill} className="w-6 md:w-11 h-auto" alt="Moda da Casa" />
+          <h1 className="text-[20px] md:text-[36px] font-bold text-white">Grill</h1>
         </div>
 
-        <div className="flex items-center gap-4 justify-start mb-6">
+        <div className="flex items-center gap-4 justify-start mb-6 mt-3">
           <button onClick={handlePrevious} className="focus:outline-none">
             <img src={setaEsquerda} alt="Previous" className="w-4 h-4 hover:opacity-80" />
           </button>
 
-          <h2 className="text-[20px] font-bold text-white">
-            {selectedCardapio.diaSemana}, dia {formatarData(selectedCardapio.data)}
+          <h2 className="text-[15px] md:text-[20px] font-bold text-white ">
+            {isCardapioCompleto ? (
+              `${selectedCardapio.diaSemana}, dia ${formatarData(selectedCardapio.data)}`
+            ) : (
+              "Cardápio em Produção"
+            )}
           </h2>
 
           <button onClick={handleNext} className="focus:outline-none">
@@ -138,16 +132,22 @@ const Grill = ({isOpen, onRequestClose, conteudo}) => {
           </button>
         </div>
 
-        <div className="text-left text-white font-semibold text-[16px]">
-          {isCardapioDisponivel ? (
-            <>
-              <p className="mb-1">{selectedCardapio.content.prato_principal}</p>
-              <p className="mb-1">{selectedCardapio.content.guarnicao}</p>
-              <p className="mb-1">{selectedCardapio.content.sobremesa}</p>
-              <p className="mb-1">{selectedCardapio.content.salada}</p>
-            </>
+        <div className="text-left text-white font-bold text-[16px]">
+          {error ? (
+            <p className="text-white">{error}</p>
           ) : (
-            <p className="text-white">Ainda estamos preparando o cardápio, volte mais tarde</p>
+            <>
+              {isCardapioCompleto ? (
+                <>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.prato_principal}</p>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.guarnicao}</p>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.sobremesa}</p>
+                  <p className="text-[12px] md:text-[16px] mb-1">{selectedCardapio.content.salada}</p>
+                </>
+              ) : (
+                <p className="text-[12px] md:text-[16px] mb-1 text-white">Cardápio em Produção.</p>
+              )}
+            </>
           )}
         </div>
       </div>

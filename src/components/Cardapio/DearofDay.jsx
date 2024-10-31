@@ -3,13 +3,13 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import Graphs from './Graphs';
 import check from '../../image/Notificacao/success.gif';
+
 const DearOfDay = () => {
     const { t } = useTranslation();
     const [selectedCardapio, setSelectedCardapio] = useState('');
     const [restaurantes, setRestaurantes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-   
     const [modalOpen, setModalOpen] = useState(false);
 
     const Checkbox = (id) => {
@@ -22,6 +22,7 @@ const DearOfDay = () => {
                 const response = await axios.get("http://127.0.0.1:8080/api/restaurante");
                 setRestaurantes(response.data);
                 localStorage.setItem('restaurantes', JSON.stringify(response.data));
+                console.log(response.data)
             } catch (error) {
                 console.error("Error fetching restaurantes:", error);
                 setError("Erro ao carregar os restaurantes.");
@@ -47,18 +48,17 @@ const DearOfDay = () => {
           
             setModalOpen(true);
             setTimeout(() => {
-              setModalOpen(false);
-            }, 2000); // Fechar modal de sucesso após 3 segundos
+                setModalOpen(false);
+            }, 2000); // Close success modal after 2 seconds
           
         } catch (error) {
-            
+            console.error("Error sending vote:", error);
         }
     };
 
     const firstColumn = restaurantes.slice(0, Math.ceil(restaurantes.length / 2));
     const secondColumn = restaurantes.slice(Math.ceil(restaurantes.length / 2));
 
-    // Função para fechar o modal
     const closeModal = () => {
         setModalOpen(false);
     };
@@ -70,7 +70,7 @@ const DearOfDay = () => {
             }}
             className="2xl:py-[150px] py-[70px] lg:py-[100px] flex flex-col justify-center"
         >
-            <div className="flex flex-col justify-center w-[100%] ">
+            <div className="flex flex-col justify-center w-full">
                 <div className="flex items-center justify-center w-full gap-4">
                     <div className="border-t w-[6%] flex border-white"></div>
                     <h1 className="2xl:text-3xl lg:text-3xl text-[19px] font-bold text-white dark:text-white">
@@ -83,12 +83,8 @@ const DearOfDay = () => {
                 </p>
             </div>
 
-            <div className="flex lg:flex-row flex-col justify-center items-center ">
-                <div className="flex flex-col px-[60px] lg:w-[45%] w-[100%] 2xl:w-[36%] xl:w-[38%] ml-[4%]  border-r ">
-                    <p className="text-white text-[12px] lg:mb-[30px]">
-                        Qual cardápio te agradou mais?
-                    </p>
-
+            <div className="flex lg:flex-row flex-col justify-center items-center">
+                <div className="flex flex-col px-[60px] lg:w-[45%] w-full 2xl:w-[36%] xl:w-[38%] ml-[4%] border-r">
                     <div className="flex flex-col lg:flex-row justify-between w-full gap-5 mt-[15px]">
                         {/* Coluna 1 */}
                         <div className="flex flex-col gap-5">
@@ -101,15 +97,20 @@ const DearOfDay = () => {
                                         className="w-5 h-5 border-none appearance-none"
                                         style={{
                                             backgroundColor: selectedCardapio === restaurante.id ? restaurante.cor : '#E0E2E5',
+                                            borderColor: restaurante.cor,
+                                            borderWidth: '2px',
+                                            borderStyle: 'solid',
                                         }}
                                     />
-                                    {restaurante.nome}
+                                    <span style={{ color: selectedCardapio === restaurante.id ? restaurante.cor : '#ffffff' }}>
+                                        {restaurante.nome}
+                                    </span>
                                 </label>
                             ))}
                         </div>
 
                         {/* Coluna 2 */}
-                        <div className="flex flex-col gap-5 ">
+                        <div className="flex flex-col gap-5">
                             {secondColumn.map((restaurante) => (
                                 <label key={restaurante.id} className="text-white flex gap-4">
                                     <input
@@ -119,9 +120,14 @@ const DearOfDay = () => {
                                         className="w-5 h-5 border-none appearance-none"
                                         style={{
                                             backgroundColor: selectedCardapio === restaurante.id ? restaurante.cor : '#E0E2E5',
+                                            borderColor: restaurante.cor,
+                                            borderWidth: '2px',
+                                            borderStyle: 'solid',
                                         }}
                                     />
-                                    {restaurante.nome}
+                                    <span style={{ color: selectedCardapio === restaurante.id ? restaurante.cor : '#ffffff' }}>
+                                        {restaurante.nome}
+                                    </span>
                                 </label>
                             ))}
                         </div>
@@ -134,8 +140,10 @@ const DearOfDay = () => {
                         Enviar
                     </button>
                 </div>
-                <div className=" lg:block w-px bg-white h-full mx-4"></div> 
-                <div className="2xl:w-[40%] lg:w-[40%] h-full  ">
+
+                <div className="lg:block w-px bg-white h-full mx-4"></div>
+                
+                <div className="2xl:w-[40%] lg:w-[40%] h-full">
                     <Graphs />
                 </div>
             </div>

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'; // Importa os hooks useState e useEffect do React
-import { z, ZodError } from 'zod'; // Importa a biblioteca Zod para validação de esquemas
-import Modal from 'react-modal'; // Importa o componente Modal
-import folhaColorida from '../../../../image/CardapioAdmin/FolhaColorida.svg'; // Importa imagem de folha colorida
-import fecharModal from '../../../../image/FeedBacks/FecharModoClaro.svg'; // Importa imagem de fechar modal
-import check from '../../../../image/Notificacao/success.gif'; // Importa imagem de sucesso
-import axios from 'axios'; // Importa a biblioteca axios para requisições HTTP
+import React, { useState, useEffect } from 'react';
+import { z, ZodError } from 'zod';
+import Modal from 'react-modal';
+import folhaColorida from '../../../../image/CardapioAdmin/FolhaColorida.svg';
+import fecharModal from '../../../../image/FeedBacks/FecharModoClaro.svg';
+import check from '../../../../image/Notificacao/success.gif'; // Imagem de sucesso
+import axios from 'axios';
 
-Modal.setAppElement('#root'); // Define o elemento de app para acessibilidade do modal
+Modal.setAppElement('#root');
 
-// Define o esquema de validação para os dados do cardápio
 const cardapioSchema = z.object({
   data: z.string().min(1, "A data é obrigatória"),
   guarnicao: z.string().min(3, "A guarnição é obrigatória"),
@@ -17,19 +16,18 @@ const cardapioSchema = z.object({
   sobremesa: z.string().min(3, 'A sobremesa é obrigatória'),
 });
 
-// Componente ModalBemVida
 const ModalBemVida = ({
-  isOpen, // Prop que indica se o modal está aberto
-  onRequestClose, // Função chamada para fechar o modal
-  contentLabel, // Rótulo do conteúdo do modal
-  pratoPrincipal, // Prato principal atual (para edição)
-  guarnicao, // Guarnição atual (para edição)
-  sobremesa, // Sobremesa atual (para edição)
-  salada, // Salada atual (para edição)
-  dataCardapio, // Data do cardápio atual (para edição)
-  idCardapio, // ID do cardápio (para edição)
+  isOpen,
+  onRequestClose,
+  contentLabel,
+  pratoPrincipal,
+  guarnicao,
+  sobremesa,
+  salada,
+  dataCardapio,
+  idCardapio,
+  
 }) => {
-  // Estado inicial dos dados do formulário
   const initialFormData = {
     data: dataCardapio, // Data atual no formato yyyy-mm-dd
     pratoPrincipal: '',
@@ -38,14 +36,12 @@ const ModalBemVida = ({
     salada: '',
   };
 
-  // Estados do componente
-  const [formData, setFormData] = useState(initialFormData); // Dados do formulário
-  const [errors, setErrors] = useState({}); // Erros de validação
-  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
-  const [showErrorModal, setShowErrorModal] = useState(false); // Estado do modal de erro
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado do modal de sucesso
+  const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // Efeito para atualizar os dados do formulário quando as props mudam
   useEffect(() => {
     if (idCardapio) {
       setFormData({
@@ -56,97 +52,92 @@ const ModalBemVida = ({
         salada: salada || '',
       });
     } else {
-      setFormData(initialFormData); // Reseta os dados se não houver ID
+      setFormData(initialFormData);
     }
   }, [pratoPrincipal, guarnicao, sobremesa, salada, dataCardapio, idCardapio]);
 
-  // Função para lidar com as mudanças nos campos do formulário
   const handleChange = (e) => {
-    const { name, value } = e.target; // Desestrutura o nome e o valor do campo
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, // Atualiza o estado do formulário
+      [name]: value,
     }));
   };
 
-  // Função para fechar o modal e limpar os dados do formulário
   const handleCloseModal = () => {
     setFormData(initialFormData); // Limpa os campos do formulário
     onRequestClose(); // Fecha o modal
+    
   };
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do formulário
-    setIsLoading(true); // Ativa o estado de carregamento
-    setErrors({}); // Reseta os erros
-    setShowErrorModal(false); // Esconde o modal de erro
-    setShowSuccessModal(false); // Esconde o modal de sucesso
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors({});
+    setShowErrorModal(false);
+    setShowSuccessModal(false);
 
     try {
-      cardapioSchema.parse(formData); // Valida os dados do formulário
-      await enviarInformacoes(); // Envia as informações para o servidor
-      atualizarCardapio(); // Atualiza o cardápio (não definido neste trecho)
-      setShowSuccessModal(true); // Mostra o modal de sucesso
+      cardapioSchema.parse(formData);
+      await enviarInformacoes();
+      atualizarCardapio();
+      setShowSuccessModal(true);
       console.log('Informações enviadas com sucesso.');
       setTimeout(() => {
-        onRequestClose(); // Fecha o modal após 2 segundos
+        onRequestClose();
       }, 2000);
     } catch (err) {
       if (err instanceof ZodError) {
-        const fieldErrors = {}; // Objeto para armazenar erros de campo
+        const fieldErrors = {};
         err.errors.forEach((error) => {
-          fieldErrors[error.path[0]] = error.message; // Mapeia erros de validação para o campo correspondente
+          fieldErrors[error.path[0]] = error.message;
         });
-        setErrors(fieldErrors); // Atualiza o estado de erros
-        setShowErrorModal(true); // Mostra o modal de erro
+        setErrors(fieldErrors);
+        setShowErrorModal(true);
         setTimeout(() => {
-          setShowErrorModal(false); // Esconde o modal de erro após 1,5 segundos
+          setShowErrorModal(false);
         }, 1500);
         console.log('Erro na validação:', fieldErrors);
       }
     }
-    setIsLoading(false); // Desativa o estado de carregamento
+    setIsLoading(false);
   };
 
-  // Função para enviar as informações para o servidor
   const enviarInformacoes = async () => {
-    const urlPost = "http://127.0.0.1:8080/debemcomavida/cardapios"; // URL para criação
-    const urlPut = `http://127.0.0.1:8080/debemcomavida/cardapios/${idCardapio}`; // URL para atualização
+    const urlPost = "http://127.0.0.1:8080/debemcomavida/cardapios";
+    const urlPut = `http://127.0.0.1:8080/debemcomavida/cardapios/${idCardapio}`;
 
     try {
       if (!idCardapio) {
-        // Se não houver ID, realiza um POST
         await axios.post(urlPost, {
           prato_principal: formData.pratoPrincipal,
           guarnicao: formData.guarnicao,
           sobremesa: formData.sobremesa,
           salada: formData.salada,
           data: formData.data,
-          fk_restaurante: "34000000-0000-0000-0000-000000000000", // ID do restaurante (hardcoded)
+          fk_restaurante: "34000000-0000-0000-0000-000000000000",
         });
       } else {
-        // Se houver ID, realiza um PUT
         await axios.put(urlPut, {
           data: formData.data,
           prato_principal: formData.pratoPrincipal,
           guarnicao: formData.guarnicao,
           sobremesa: formData.sobremesa,
           salada: formData.salada,
-          fk_restaurante: "34000000-0000-0000-0000-000000000000", // ID do restaurante (hardcoded)
+          fk_restaurante: "34000000-0000-0000-0000-000000000000",
         });
       }
       console.log('Requisição realizada com sucesso.');
-      setShowSuccessModal(true); // Mostra o modal de sucesso
+      setShowSuccessModal(true);
       setTimeout(() => {
-        setShowSuccessModal(false); // Esconde o modal de sucesso após 2 segundos
+        setShowSuccessModal(false);
       }, 2000);
     } catch (error) {
-      console.error('Erro ao enviar as informações:', error); // Loga o erro
-      setShowErrorModal(true); // Mostra o modal de erro
+      console.error('Erro ao enviar as informações:', error);
+      setShowErrorModal(true);
     }
   };
-
+  
   return (
     <>
       {/* Modal de Erro */}
@@ -168,105 +159,100 @@ const ModalBemVida = ({
         </div>
       )}
 
-      {/* Componente Modal */}
       <Modal
-        isOpen={isOpen} // Verifica se o modal deve ser aberto
-        onRequestClose={onRequestClose} // Função para fechar o modal
-        contentLabel={contentLabel} // Rótulo do conteúdo do modal
-        shouldCloseOnOverlayClick={true} // Permite fechar o modal clicando fora
-        className="fixed inset-0 flex items-center justify-center p-4 z-50" // Classes CSS para o modal
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50" // Classes CSS para o overlay do modal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        contentLabel={contentLabel}
+        shouldCloseOnOverlayClick={true}
+        className="fixed inset-0 flex items-center justify-center p-4 z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40"
       >
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-          <div className="flex justify-between">
-            <h2 className="text-lg font-semibold">Adicionar/Editar Cardápio</h2>
-            <button onClick={handleCloseModal}>
-              <img src={fecharModal} alt="Fechar" />
-            </button>
+        <div className="bg-white p-6 shadow-lg w-full max-w-[90vw] md:max-w-[600px] 2xl:max-h-[956px] md:max-h-[80vh] overflow-auto mx-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div>
+            <img 
+              src={fecharModal} 
+              alt="Fechar modal" 
+              className="cursor-pointer" 
+              onClick={handleCloseModal} 
+            />
           </div>
+          <div className="flex flex-col items-center w-full pt-[70px]">
+            <img src={folhaColorida} alt="Folha Colorida" className="w-[60px] md:w-[72px]" />
+            <h1 className="text-[16px] md:text-[18px] mb-4 mt-2">De Bem Com a Vida</h1>
 
-          {/* Formulário */}
-          <form onSubmit={handleSubmit}>
-            <div className="my-4">
-              <label htmlFor="data" className="block mb-1">
-                Data:
-              </label>
-              <input
-                type="date"
-                name="data"
-                value={formData.data}
-                onChange={handleChange}
-                className="border border-gray-300 p-2 rounded w-full"
-              />
-              {errors.data && <span className="text-red-500">{errors.data}</span>} {/* Erro de validação */}
-            </div>
-            <div className="my-4">
-              <label htmlFor="pratoPrincipal" className="block mb-1">
-                Prato Principal:
-              </label>
-              <input
-                type="text"
-                name="pratoPrincipal"
-                value={formData.pratoPrincipal}
-                onChange={handleChange}
-                className="border border-gray-300 p-2 rounded w-full"
-              />
-              {errors.pratoPrincipal && <span className="text-red-500">{errors.pratoPrincipal}</span>} {/* Erro de validação */}
-            </div>
-            <div className="my-4">
-              <label htmlFor="guarnicao" className="block mb-1">
-                Guarnição:
-              </label>
-              <input
-                type="text"
-                name="guarnicao"
-                value={formData.guarnicao}
-                onChange={handleChange}
-                className="border border-gray-300 p-2 rounded w-full"
-              />
-              {errors.guarnicao && <span className="text-red-500">{errors.guarnicao}</span>} {/* Erro de validação */}
-            </div>
-            <div className="my-4">
-              <label htmlFor="sobremesa" className="block mb-1">
-                Sobremesa:
-              </label>
-              <input
-                type="text"
-                name="sobremesa"
-                value={formData.sobremesa}
-                onChange={handleChange}
-                className="border border-gray-300 p-2 rounded w-full"
-              />
-              {errors.sobremesa && <span className="text-red-500">{errors.sobremesa}</span>} {/* Erro de validação */}
-            </div>
-            <div className="my-4">
-              <label htmlFor="salada" className="block mb-1">
-                Salada:
-              </label>
-              <input
-                type="text"
-                name="salada"
-                value={formData.salada}
-                onChange={handleChange}
-                className="border border-gray-300 p-2 rounded w-full"
-              />
-              {errors.salada && <span className="text-red-500">{errors.salada}</span>} {/* Erro de validação */}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading} // Desabilita o botão se está carregando
-              className={`bg-blue-500 text-white p-2 rounded ${
-                isLoading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-            >
-              {isLoading ? 'Enviando...' : 'Enviar'} {/* Texto do botão */}
-            </button>
-          </form>
+            <form className="w-full flex flex-col px-[10px] md:px-[20px]" onSubmit={handleSubmit}>
+              {/* Campos do Formulário */}
+              <div className="mb-4">
+                <label htmlFor="data" className="block text-sm font-medium text-black">Data</label>
+                <input
+                  type="date"
+                  id="data"
+                  name="data"
+                  value={formData.data}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[38px] focus:outline-none px-2 pt-1"
+                />
+                {errors.data && <p className="text-red-500 text-sm">{errors.data}</p>}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="guarnicao" className="block text-sm font-medium text-black">Guarnição</label>
+                <textarea
+                  id="guarnicao"
+                  name="guarnicao"
+                  value={formData.guarnicao}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
+                />
+                {errors.guarnicao && <p className="text-red-500 text-sm">{errors.guarnicao}</p>}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="pratoPrincipal" className="block text-sm font-medium text-black">Prato Principal</label>
+                <textarea
+                  id="pratoPrincipal"
+                  name="pratoPrincipal"
+                  value={formData.pratoPrincipal}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
+                />
+                {errors.pratoPrincipal && <p className="text-red-500 text-sm">{errors.pratoPrincipal}</p>}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="salada" className="block text-sm font-medium text-black">Salada</label>
+                <textarea
+                  id="salada"
+                  name="salada"
+                  value={formData.salada}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
+                />
+                {errors.salada && <p className="text-red-500 text-sm">{errors.salada}</p>}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="sobremesa" className="block text-sm font-medium text-black">Sobremesa</label>
+                <textarea
+                  id="sobremesa"
+                  name="sobremesa"
+                  value={formData.sobremesa}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
+                />
+                {errors.sobremesa && <p className="text-red-500 text-sm">{errors.sobremesa}</p>}
+              </div>
+              <button
+                type="submit"
+                className="px-6 py-2 bg-[#00884A] text-white text-[15px] md:text-[17px] shadow-sm"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Enviando...' : 'Enviar'}
+              </button>
+            </form>
+          </div>
         </div>
       </Modal>
     </>
   );
 };
 
-export default ModalBemVida; // Exporta o componente
+export default ModalBemVida;

@@ -6,7 +6,7 @@ import talher from '../../../../image/CardapioAdmin/Talher.svg';
 const SectionReceitaChefe = () => {
     return (
         // Cria um contêiner para a seção com fundo verde e preenchimento
-        <div className="w-full bg-[#12818F] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between">
+        <div className="w-full bg-gradient-to-r from-[#12818F] to-[#0A4F4B] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between">
             {/* Contêiner para o título da seção */}
             <div className="flex flex-col justify-center items-center mt-[70px] ml-[25px]">
                 {/* Imagem do talher */}

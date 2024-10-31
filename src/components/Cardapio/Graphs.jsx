@@ -79,7 +79,7 @@ const Graphs = () => {
                                     style={{
                                         width: `${(item.votes / maxVotes) * 100}%`,
                                         height: '100%',
-                                        backgroundColor: item.color || 'rgba(75, 192, 192, 0.6)', // Cor de fundo da barra
+                                        backgroundColor: item.color , // Cor de fundo da barra
                                         position: 'absolute',
                                         top: 0,
                                         left: 0,

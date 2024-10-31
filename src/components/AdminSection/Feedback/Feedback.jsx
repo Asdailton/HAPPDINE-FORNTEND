@@ -139,7 +139,7 @@ const Feedbacks = () => {
 
       {/* Seção de feedbacks pendentes */}
       <div className="w-full 2xl:h-[45vh] lg:h-[53vh] flex justify-center items-center mb-6">
-        <div className="bg-gradient-to-b from-[#2E3033] to-[#4E5256] px-10 pt-13 w-[95%] 2xl:h-[40vh]">
+        <div className="bg-gradient-to-r from-[#2E3033] to-[#4E5256] px-10 pt-13 w-[95%] 2xl:h-[40vh]">
           <p className="text-white mb-4 font-bold text-[27px]">Feedbacks:</p>
           <Carousel
             responsive={responsive}

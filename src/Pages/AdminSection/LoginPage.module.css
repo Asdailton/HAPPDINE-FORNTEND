@@ -3,41 +3,53 @@
     height: 100%;
     overflow: hidden; /* Impede rolagem */
  
+    .container h1, h3{
+        z-index: 1;
+    }
+
+    .containerB{
+        z-index: 1;
+    }
  
-    .conteiner {
+    .container {
         width: 100%;
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #4E5256; /* Cor de fundo padrão */
-        position: relative; /* Para posicionar o pseudo-elemento */
-        color: white; /* Define a cor do texto como branca */
-        font-family: Arial, sans-serif; /* Define a fonte padrão */
-        z-index: 1; /* Garante que o texto esteja acima do pseudo-elemento */
+        background-color: #4E5256;
+        position: relative;
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden; /* Para evitar rolagem */
     }
-     
-    .conteiner::before {
+    
+    .container::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle, rgba(180, 180, 180, 0.5), rgba(190, 190, 190, 0) 80%),
-                    radial-gradient(circle, rgba(150, 150, 150, 0.5), rgba(180, 180, 180, 0) 80%),
-                    radial-gradient(circle, rgba(120, 120, 120, 0.5), rgba(150, 150, 150, 0) 80%);
+        background: radial-gradient(circle, rgba(224, 226, 229, 0.5), rgba(180, 180, 180, 0) 80%),
+                    radial-gradient(circle, rgba(178, 185, 192, 0.4), rgba(180, 180, 180, 0) 80%),
+                    radial-gradient(circle, rgba(125, 131, 137, 0.4), rgba(180, 180, 180, 0) 80%),
+                    radial-gradient(circle, rgba(78, 82, 86, 0.4), rgba(180, 180, 180, 0) 80%),
+                    radial-gradient(circle, rgba(46, 48, 51, 0.3), rgba(180, 180, 180, 0) 80%);
         background-size: 300% 300%;
-        animation: rotateBackground 20s linear infinite;
-       
+        animation: rotateBackground 12s ease-in-out infinite; /* Duração e estilo de animação atualizados */
     }
-     
+    
     @keyframes rotateBackground {
         0% {
-            background-position: 0% 0%, 100% 0%, 0% 100%;
+            background-position: 100% -50%, -50% 100%, 50% 50%; /* Começo: Canto superior direito e inferior esquerdo */
+        }
+        50% {
+            background-position: 50% 50%, 50% 50%, 50% 50%; /* Meio: Gradientes convergem para o centro */
         }
         100% {
-            background-position: 100% 100%, 0% 100%, 100% 0%;
+            background-position: -50% 100%, 100% -50%, 50% 50%; /* Fim: volta ao canto inferior esquerdo e superior direito */
         }
     }
+    
      

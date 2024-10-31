@@ -12,6 +12,7 @@ import ModalComponent from '../../components/FeedBacks/Modal.jsx';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Beneficios from '../../components/Beneficios.jsx';
+import Chat from '../../components/Chatbot/Chatbot.jsx';
 
 
 AOS.init({
@@ -29,12 +30,11 @@ const Home = () => {
       <Carrosel />
       <Monitoramento />
       <div className=" w-[100%]">
-            <img 
-        className="w-full 2xl:h-[500px] md:h-auto " 
-        src={bannerdown} 
-        alt="Banner" 
-      />
-
+        <img 
+          className="w-full 2xl:h-[500px] md:h-auto " 
+          src={bannerdown} 
+          alt="Banner" 
+        />
       </div>
 
      <div>
@@ -42,13 +42,13 @@ const Home = () => {
      </div>
 
       <div
-        className="w-[100%] md:w-[100%] md:h-[90vh] h-[90vh] bg-fixed"
+        className="w-[100%] md:w-[100%] lg:h-[90vh] h-[60vh] bg-fixed"
         style={{
           background: 'linear-gradient(to left, rgba(78, 82, 86, 1) 57%, rgba(46, 48, 51, 1) 100%)',
         }}
       >
         <div className="md:justify-start pl-[45px] md:pl-[80px] pt-[80px] flex">
-          <h1 className="text-white text-[40px] font-semibold">{t('#BatePapo!')}</h1>
+          <h1 className="font-italicBold text-white text-[16px] lg:text-[40px] font-semibold">{t('#BatePapo!')}</h1>
         </div>
         <div className="justify-start pl-[45px] md:pl-[80px] pt-[2px] flex">
           <h1 className="text-white text-[12px] font-medium">
@@ -59,7 +59,7 @@ const Home = () => {
            <Avaliacoes/>
         </div>
        
-        
+        <Chat/>
       </div>
       <Footer/>
     </div>

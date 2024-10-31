@@ -6,7 +6,7 @@ import CardapioCardModaCasa from './CardapioCardModaCasa';
 const SectionModaCasa = () => {
     return (
         // Container principal com classes utilitárias do Tailwind CSS
-        <div className="w-full bg-[#007BC0] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between">
+        <div className="w-full bg-gradient-to-r from-[#007BC0] to-[#003A5A] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between">
             {/* Seção para o ícone e título */}
             <div className="flex flex-col justify-center items-center mt-[70px] ml-[27px]">
                 {/* Imagem da panela */}

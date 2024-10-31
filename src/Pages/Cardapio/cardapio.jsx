@@ -5,7 +5,7 @@ import Cardapio from '../../components/Cardapio/Cardapio'
 
 const cardapio = () => {
   return (
-    <div>
+    <div className='dark:bg-[#2E3033]"'>
       <Navbar />
       <Cardapio/>
       <Footer />

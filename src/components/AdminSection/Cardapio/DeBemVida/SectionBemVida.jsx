@@ -10,7 +10,7 @@ Modal.setAppElement('#root'); // Define o elemento de app para acessibilidade do
 const SectionDeBemVida = () => {
   // Componente funcional SectionDeBemVida
   return (
-    <div className="w-full bg-[#00884A] pt-[63px] pb-[63px] px-[50px] flex items-start space-x-6 justify-between">
+    <div className="w-full bg-gradient-to-r from-[#00884A] to-[#005F32] pt-[63px] pb-[63px] px-[50px] flex items-start space-x-6 justify-between">
       {/* Div principal com classes de estilo para largura, cor de fundo, padding e layout flex */}
       <div className="flex flex-col justify-center items-center mt-[60px]">
         {/* Div para o título e a imagem */}

@@ -92,20 +92,20 @@ const Avaliacoes = () => {
         {feedbacks.map((review) => (
           <div
             key={review.id}
-            className="bg-white px-8 py-10  shadow-custom-pink min-h-[30vh] w-[90%] mt-[90px] flex flex-col relative"
+            className="bg-white px-8 py-10  shadow-custom-pink min-h-[23vh] lg:min-h-[37vh] 2xl:min-h-[30vh] w-[100%] lg:w-[600px] mt-[90px] flex flex-col relative"
           >
             <div className="w-full flex justify-between">
               <div>
-                <h1 className="text-[18px] font-semibold">{review.nome}</h1>
-                <h2 className="text-md text-[14px] text-[#7D8389]">{review.timestampp}</h2>
+                <h1 className="text-[10px] lg:text-[18px] font-semibold">{review.nome}</h1>
+                <h2 className="text-[6px] lg:text-[14px] text-[#7D8389]">{review.timestampp}</h2>
               </div>
               <div>
                 {/* Renderizando o selo com base na cor */}
-                <img className="w-8" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
+                <img className="w-[20px] lg:w-6 2xl:w-8" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
               </div>
             </div>
 
-            <p className="text-[16px] text-left mt-2">{review.comentario}</p>
+            <p className="text-[9px] lg:text-[16px] text-left mt-2">{review.comentario}</p>
 
             {/* Adicione estas classes para fixar o Stars na parte inferior */}
             <div className="absolute bottom-12 w-full">

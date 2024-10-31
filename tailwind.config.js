@@ -7,6 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        italicBold: ['boschItalicBold, sans-serif'],
+        italic: ['boschItalic, sans-serif'],
+        medium: ['boschMedium, sans-serif'],
         sans: ['boschRegular', 'sans-serif'],
         bold: ['boschBold', 'sans-serif'], // Adicione sua fonte aqui
       },

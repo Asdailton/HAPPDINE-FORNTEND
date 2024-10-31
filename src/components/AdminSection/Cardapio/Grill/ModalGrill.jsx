@@ -1,26 +1,23 @@
-import React, { useState, useEffect } from 'react'; // Importa React e hooks necessários
-import { z, ZodError } from 'zod'; // Importa Zod para validação de dados
-import Modal from 'react-modal'; // Importa o componente Modal
-import axios from 'axios'; // Importa axios para fazer requisições HTTP
-import fogoColorido from '../../../../image/CardapioAdmin/FogoColorido.svg'; // Importa imagem de cabeçalho
-import fecharModal from '../../../../image/FeedBacks/FecharModoClaro.svg'; // Importa imagem para fechar o modal
-import check from '../../../../image/Notificacao/success.gif'; // Importa imagem de sucesso
+import React, { useState, useEffect } from 'react';
+import { z, ZodError } from 'zod';
+import Modal from 'react-modal';
+import axios from 'axios';
+import fogoColorido from '../../../../image/CardapioAdmin/FogoColorido.svg';
+import fecharModal from '../../../../image/FeedBacks/FecharModoClaro.svg';
+import check from '../../../../image/Notificacao/success.gif'; // Imagem de sucesso
 
-Modal.setAppElement('#root'); // Define o elemento que representa a aplicação para acessibilidade
+Modal.setAppElement('#root');
 
-// Define o esquema de validação do cardápio usando Zod
 const cardapioSchema = z.object({
-  data: z.string().min(1, "A data é obrigatória"), // Validação para data
-  guarnicao: z.string().min(3, "A guarnição é obrigatória"), // Validação para guarnição
-  pratoPrincipal: z.string().min(3, "O prato principal é obrigatório"), // Validação para prato principal
-  salada: z.string().min(3, 'O tipo de salada é obrigatório'), // Validação para salada
-  sobremesa: z.string().min(3, 'A sobremesa é obrigatória'), // Validação para sobremesa
+  data: z.string().min(1, "A data é obrigatória"),
+  guarnicao: z.string().min(3, "A guarnição é obrigatória"),
+  pratoPrincipal: z.string().min(3, "O prato principal é obrigatório"),
+  salada: z.string().min(3, 'O tipo de salada é obrigatório'),
+  sobremesa: z.string().min(3, 'A sobremesa é obrigatória'),
 });
 
-// Componente ModalGrill
 const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guarnicao, sobremesa, salada, dataCardapio, idCardapio }) => {
     
-  // Estado inicial dos dados do formulário
   const initialFormData = {
     data: dataCardapio, // Data atual no formato yyyy-mm-dd
     pratoPrincipal: '',
@@ -29,14 +26,12 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
     salada: '',
   };
 
-  // Define estados para o formulário e mensagens
-  const [formData, setFormData] = useState(initialFormData); // Dados do formulário
-  const [errors, setErrors] = useState({}); // Erros de validação
-  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
-  const [showErrorModal, setShowErrorModal] = useState(false); // Controle de modal de erro
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Controle de modal de sucesso
+  const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // Atualiza os dados do formulário quando o modal é aberto ou quando as propriedades mudam
   useEffect(() => {
     if (idCardapio) {
       setFormData({
@@ -49,60 +44,57 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
     }
   }, [pratoPrincipal, guarnicao, sobremesa, salada, dataCardapio, idCardapio]);
 
-  // Função para lidar com a mudança dos campos do formulário
   const handleChange = (e) => {
-    const { name, value } = e.target; // Desestrutura o evento
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, // Atualiza o estado do campo correspondente
+      [name]: value,
     }));
   };
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão de envio
-    setIsLoading(true); // Inicia o estado de carregamento
-    setErrors({}); // Reseta os erros
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors({});
     setShowErrorModal(false); 
     setShowSuccessModal(false); 
 
     try {
-      cardapioSchema.parse(formData); // Valida os dados do formulário
-      await enviarInformacoes(); // Envia as informações
-      atualizarCardapio(); // Atualiza o cardápio (não definido no código)
-      setShowSuccessModal(true); // Mostra modal de sucesso
+      cardapioSchema.parse(formData);
+      await enviarInformacoes();
+      atualizarCardapio();
+      setShowSuccessModal(true); 
       console.log('Informações enviadas com sucesso.');
       setTimeout(() => {
-        onRequestClose(); // Fecha o modal após 2 segundos
+        onRequestClose(); 
       }, 2000);
     } catch (err) {
       if (err instanceof ZodError) {
         const fieldErrors = {};
         err.errors.forEach((error) => {
-          fieldErrors[error.path[0]] = error.message; // Mapeia erros de validação
+          fieldErrors[error.path[0]] = error.message;
         });
-        setErrors(fieldErrors); // Atualiza os erros no estado
-        setShowErrorModal(true); // Mostra modal de erro
+        setErrors(fieldErrors);
+        setShowErrorModal(true); 
         console.log('Erro na validação:', fieldErrors);
       }
     }
-    setIsLoading(false); // Finaliza o estado de carregamento
+    setIsLoading(false);
   };
   
-  // Função para fechar o modal
   const handleCloseModal = () => {
     setFormData(initialFormData); // Limpa os campos do formulário
     onRequestClose(); // Fecha o modal
+    
   };
   
-  // Função para enviar as informações ao servidor
   const enviarInformacoes = async () => {
-    const urlPost = "http://127.0.0.1:8080/grillebemestar/cardapios"; // URL para criar um novo cardápio
-    const urlPut = `http://127.0.0.1:8080/grillebemestar/cardapios/${idCardapio}`; // URL para atualizar um cardápio existente
+    const urlPost = "http://127.0.0.1:8080/grillebemestar/cardapios";
+    const urlPut = `http://127.0.0.1:8080/grillebemestar/cardapios/${idCardapio}`;
 
     try {
       if (!idCardapio) {
-        await axios.post(urlPost, { // Envia um POST se idCardapio não existir
+        await axios.post(urlPost, {
           prato_principal: formData.pratoPrincipal,
           guarnicao: formData.guarnicao,
           sobremesa: formData.sobremesa,
@@ -111,7 +103,7 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
           fk_restaurante: "33000000-0000-0000-0000-000000000000",
         });
       } else {
-        await axios.put(urlPut, { // Envia um PUT se idCardapio existir
+        await axios.put(urlPut, {
           data: formData.data,
           prato_principal: formData.pratoPrincipal,
           guarnicao: formData.guarnicao,
@@ -121,13 +113,13 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
         });
       }
       console.log('Requisição realizada com sucesso.');
-      setShowSuccessModal(true); // Mostra modal de sucesso
+      setShowSuccessModal(true);
       setTimeout(() => {
-        setShowSuccessModal(false); // Esconde modal de sucesso após 2 segundos
+        setShowSuccessModal(false);
       }, 2000);
     } catch (error) {
       console.error('Erro ao enviar as informações:', error);
-      setShowErrorModal(true); // Mostra modal de erro
+      setShowErrorModal(true); 
       console.log('Erro de requisição:', error);
     }
   };
@@ -152,13 +144,11 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
           </div>
         </div>
       )}
-
-      {/* Componente Modal */}
       <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
         contentLabel={contentLabel}
-        shouldCloseOnOverlayClick={true} // Fecha o modal ao clicar fora dele
+        shouldCloseOnOverlayClick={true}
         className="fixed inset-0 flex items-center justify-center p-4 z-50"
         overlayClassName="fixed inset-0 bg-black bg-opacity-10 z-40"
       >
@@ -168,74 +158,76 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
               src={fecharModal} 
               alt="Fechar modal" 
               className="cursor-pointer" 
-              onClick={handleCloseModal} // Chama função para fechar o modal
+              onClick={handleCloseModal} 
             />
           </div>
           <div className="flex flex-col items-center w-full pt-[70px]">
             <img src={fogoColorido} alt="Fogo Colorido" className="w-[60px] md:w-[72px]" />
-            <h1 className="text-[16px] md:text-[18px] font-semibold mb-4 mt-2">Cadastrar Cardápio</h1>
-            <form className="w-full flex flex-col" onSubmit={handleSubmit}>
-              <div className="flex flex-col mb-4">
-                <label htmlFor="data" className="text-sm font-semibold">Data:</label>
-                <input 
-                  type="date" 
-                  id="data" 
-                  name="data" 
-                  value={formData.data} 
-                  onChange={handleChange} 
-                  className={`border ${errors.data ? 'border-red-500' : 'border-gray-300'} p-2 rounded`} 
+            <h1 className="text-[16px] md:text-[18px] font-semibold mb-4 mt-2">Grill e Bem Estar</h1>
+            <form className="w-full flex flex-col px-[10px] md:px-[20px]" onSubmit={handleSubmit}>
+              {/* Campos do Formulário */}
+              <div className="mb-4">
+                <label htmlFor="data" className="block text-sm font-medium text-black">Data</label>
+                <input
+                  type="date"
+                  id="data"
+                  name="data"
+                  value={formData.data}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[38px] focus:outline-none px-2 pt-1"
                 />
-                {errors.data && <p className="text-red-500 text-sm">{errors.data}</p>} {/* Mensagem de erro */}
+                {errors.data && <p className="text-red-500 text-sm">{errors.data}</p>}
               </div>
-              <div className="flex flex-col mb-4">
-                <label htmlFor="pratoPrincipal" className="text-sm font-semibold">Prato Principal:</label>
-                <input 
-                  type="text" 
-                  id="pratoPrincipal" 
-                  name="pratoPrincipal" 
-                  value={formData.pratoPrincipal} 
-                  onChange={handleChange} 
-                  className={`border ${errors.pratoPrincipal ? 'border-red-500' : 'border-gray-300'} p-2 rounded`} 
+              <div className="mb-4">
+                <label htmlFor="guarnicao" className="block text-sm font-medium text-black">Guarnição</label>
+                <textarea
+                  id="guarnicao"
+                  name="guarnicao"
+                  value={formData.guarnicao}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
                 />
-                {errors.pratoPrincipal && <p className="text-red-500 text-sm">{errors.pratoPrincipal}</p>} {/* Mensagem de erro */}
+                {errors.guarnicao && <p className="text-red-500 text-sm">{errors.guarnicao}</p>}
               </div>
-              <div className="flex flex-col mb-4">
-                <label htmlFor="guarnicao" className="text-sm font-semibold">Guarnição:</label>
-                <input 
-                  type="text" 
-                  id="guarnicao" 
-                  name="guarnicao" 
-                  value={formData.guarnicao} 
-                  onChange={handleChange} 
-                  className={`border ${errors.guarnicao ? 'border-red-500' : 'border-gray-300'} p-2 rounded`} 
+              <div className="mb-4">
+                <label htmlFor="pratoPrincipal" className="block text-sm font-medium text-black">Prato Principal</label>
+                <textarea
+                  id="pratoPrincipal"
+                  name="pratoPrincipal"
+                  value={formData.pratoPrincipal}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
                 />
-                {errors.guarnicao && <p className="text-red-500 text-sm">{errors.guarnicao}</p>} {/* Mensagem de erro */}
+                {errors.pratoPrincipal && <p className="text-red-500 text-sm">{errors.pratoPrincipal}</p>}
               </div>
-              <div className="flex flex-col mb-4">
-                <label htmlFor="salada" className="text-sm font-semibold">Salada:</label>
-                <input 
-                  type="text" 
-                  id="salada" 
-                  name="salada" 
-                  value={formData.salada} 
-                  onChange={handleChange} 
-                  className={`border ${errors.salada ? 'border-red-500' : 'border-gray-300'} p-2 rounded`} 
+              <div className="mb-4">
+                <label htmlFor="salada" className="block text-sm font-medium text-black">Salada</label>
+                <textarea
+                  id="salada"
+                  name="salada"
+                  value={formData.salada}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
                 />
-                {errors.salada && <p className="text-red-500 text-sm">{errors.salada}</p>} {/* Mensagem de erro */}
+                {errors.salada && <p className="text-red-500 text-sm">{errors.salada}</p>}
               </div>
-              <div className="flex flex-col mb-4">
-                <label htmlFor="sobremesa" className="text-sm font-semibold">Sobremesa:</label>
-                <input 
-                  type="text" 
-                  id="sobremesa" 
-                  name="sobremesa" 
-                  value={formData.sobremesa} 
-                  onChange={handleChange} 
-                  className={`border ${errors.sobremesa ? 'border-red-500' : 'border-gray-300'} p-2 rounded`} 
+              <div className="mb-4">
+                <label htmlFor="sobremesa" className="block text-sm font-medium text-black">Sobremesa</label>
+                <textarea
+                  id="sobremesa"
+                  name="sobremesa"
+                  value={formData.sobremesa}
+                  onChange={handleChange}
+                  className="mt-1 block border w-full h-[60px] resize-none focus:outline-none px-2 pt-1"
                 />
-                {errors.sobremesa && <p className="text-red-500 text-sm">{errors.sobremesa}</p>} {/* Mensagem de erro */}
+                {errors.sobremesa && <p className="text-red-500 text-sm">{errors.sobremesa}</p>}
               </div>
-              <button type="submit" className={`bg-blue-500 text-white py-2 rounded ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
+              {/* Botões de Ação */}
+              <button
+                type="submit"
+                className="px-6 py-2 bg-[#9E2896] text-white text-[15px] md:text-[17px] shadow-sm"
+                disabled={isLoading}
+              >
                 {isLoading ? 'Enviando...' : 'Enviar'}
               </button>
             </form>
@@ -246,4 +238,4 @@ const ModalGrill = ({ isOpen, onRequestClose, contentLabel, pratoPrincipal, guar
   );
 };
 
-export default ModalGrill; // Exporta o componente ModalGrill
+export default ModalGrill;

@@ -18,18 +18,16 @@ const Monitoramento = () => {
       </div>
 
       <div className="flex items-center w-full mb-6">
+          {/* Título */}
         <div className="flex-1 flex justify-end pr-2 sm:pr-4">
-          <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
+            <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
         </div>
-        
-        <h1 className="px-4 text-3xl sm:text-xl md:text-5xl lg:text-3xl font-semibold text-center whitespace-nowrap text-lightText dark:text-darkText">
-          {t('Monitoramento Rápido')}
+        <h1 className=" lg:text-[36px] font-bold px-4 text-[16px] md:text-5xl lg:text-3xl font-semibold text-center whitespace-nowrap text-lightText dark:text-darkText">
+           {t('Monitoramento Real')}
         </h1>
-
         <div className="flex-1 flex justify-start pl-2 sm:pl-4">
-          <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
+           <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
         </div>
-
       </div>
 
       <div className="mb-12 sm:mb-16 md:mb-24 lg:mb-32 mt-[80px]">

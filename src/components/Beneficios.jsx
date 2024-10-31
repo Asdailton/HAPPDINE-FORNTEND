@@ -41,29 +41,32 @@ function Beneficios() {
                 <div className="flex-1 flex justify-end pr-2 sm:pr-4">
                     <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
                 </div>
-
-                <h1 className=" font-bold px-4 text-3xl sm:text-xl md:text-5xl lg:text-3xl font-semibold text-center whitespace-nowrap text-lightText dark:text-darkText">
+                <h1 className=" text-[16px] lg:text-[36px] font-bold px-4 text-3xl sm:text-xl md:text-5xl lg:text-3xl font-semibold text-center whitespace-nowrap text-lightText dark:text-darkText">
                     {t('Benefícios')}
                 </h1>
-
                 <div className="flex-1 flex justify-start pl-2 sm:pl-4">
                     <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
                 </div>
             </div>
 
-            <div className="flex gap-[150px] flex-wrap justify-center px-[90px] md:gap-40 md:h-[40vh] mb-[5%]">
+            <div
+                className="
+                    flex lg:gap-[150px] flex-wrap justify-center px-[90px] 
+                    md:gap-40 md:h-[40vh] mb-[5%] h-[40vh] 
+                     sm:mb-[3%] sm:px-[20px] sm:h-auto
+                "
+                >
                 <div
-                    
                     className="flex flex-col justify-center items-center md:w-[16%]"
                 >
                     <img
                         src={relogio}
-                        className="w-[100px] h-[100px]" // Ajuste o tamanho do ícone do relógio aqui
+                        className="w-[43px] w-[42px] lg:w-[100px] lg:h-[100px]" // Ajuste o tamanho do ícone do relógio aqui
                         alt={t('Rapidez na execução e funcionalidades')}
                     />
                     <p
                        
-                        className="text-center mt-[10px] text-black dark:text-white"
+                        className="text-[9px] lg:text-[16px] text-center mt-[10px] text-black dark:text-white"
                     >
                         {t('Rapidez na execução e funcionalidades')}
                     </p>
@@ -74,10 +77,10 @@ function Beneficios() {
                 >
                     <img
                         src={mao}
-                        className="w-[80px] h-[80px]" // Ajuste o tamanho do ícone da mão aqui
+                        className="w-[52px] h-[46px] lg:w-[80px] lg:h-[80px]" // Ajuste o tamanho do ícone da mão aqui
                         alt={t('Informações na palma da sua mão.')}
                     />
-                    <p className="text-center mt-[10px] text-black dark:text-white">
+                    <p className="text-[9px] lg:text-[16px] text-center mt-[10px] text-black dark:text-white">
                         {t('Informações na palma da sua mão.')}
                     </p>
                 </div>
@@ -87,10 +90,10 @@ function Beneficios() {
                 >
                     <img
                         src={quebracabeca}
-                        className="w-[90px] h-[90px]" // Ajuste o tamanho do ícone do quebra-cabeça aqui
+                        className="w-[49px] h-[46px] lg:w-[90px] lg:h-[90px]" // Ajuste o tamanho do ícone do quebra-cabeça aqui
                         alt={t('Interatividade nas aplicações')}
                     />
-                    <p className="text-center mt-[10px] text-black dark:text-white">
+                    <p className="text-[9px] lg:text-[16px] text-center mt-[10px] text-black dark:text-white">
                         {t('Interatividade nas aplicações')}
                     </p>
                 </div>
