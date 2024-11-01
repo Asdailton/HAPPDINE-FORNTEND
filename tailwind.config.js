@@ -11,7 +11,8 @@ export default {
         italic: ['boschItalic, sans-serif'],
         medium: ['boschMedium, sans-serif'],
         sans: ['boschRegular', 'sans-serif'],
-        bold: ['boschBold', 'sans-serif'], // Adicione sua fonte aqui
+        bold: ['boschBold', 'sans-serif'],
+        black:['boschBlack', 'sans-serif'], // Adicione sua fonte aqui
       },
       colors: {
         lightBackground: "#FFFFFF", 

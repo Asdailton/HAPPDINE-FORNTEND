@@ -11,6 +11,8 @@ import seloPreto from '../../../image/FeedbacksAdmin/preto.png'; // Imagem do se
 import rejected from '../../../image/FeedbacksAdmin/deletanimated.gif'; // Imagem do ícone de rejeição
 import check from '../../../image/FeedbacksAdmin/checkanimated.gif'; // Imagem do ícone de aprovação
 import Stars from './Stars'; // Componente de estrelas
+import setaDireta from '../../../image/CardapioAdmin/arrowRight.svg';
+
 
 Modal.setAppElement('#root'); // Define o elemento raiz para o modal
 
@@ -31,6 +33,7 @@ const Feedbacks = () => {
   const [rejectedReviews, setRejectedReviews] = useState([]); // Feedbacks rejeitados
   const [modalIsVisible, setModalIsVisible] = useState(false); // Controle de mensagem de aprovação
   const [showRejectMessage, setShowRejectMessage] = useState(false); // Controle de mensagem de rejeição
+  const [carouselRef, setCarouselRef] = useState(null);
 
   // Função para buscar os feedbacks da API
   const getFeedbacks = async () => {
@@ -138,13 +141,15 @@ const Feedbacks = () => {
       </div>
 
       {/* Seção de feedbacks pendentes */}
-      <div className="w-full 2xl:h-[45vh] lg:h-[53vh] flex justify-center items-center mb-6">
-        <div className="bg-gradient-to-r from-[#2E3033] to-[#4E5256] px-10 pt-13 w-[95%] 2xl:h-[40vh]">
+      <div className="w-[100%]  flex justify-center items-center mb-10">
+        <div className="bg-gradient-to-r from-[#2E3033] to-[#4E5256] p-10 w-[95%]">
           <p className="text-white mb-4 font-bold text-[27px]">Feedbacks:</p>
           <Carousel
             responsive={responsive}
             centerMode
             infinite
+            arrows={false} // Desativa as setas padrão
+            ref={setCarouselRef}
             showDots={false}
             containerClass="carousel-container"
             itemClass="p-2 flex justify-center items-center"
@@ -179,19 +184,30 @@ const Feedbacks = () => {
                 </div>
               </div>
             ))}
+            
           </Carousel>
+          <button
+              onClick={carouselRef ? () => carouselRef.next() : null}
+              className='ml-7'
+              aria-label="Next Slide"
+            >
+              <img src={setaDireta} alt="Seta para a direita" className=" lg:h-[90px] xl:h-[90px] 2xl:h-[170px]" />
+            </button>
+          
         </div>
       </div>
 
       {/* Seção de feedbacks aprovados */}
-      <div className='w-[100%] 2xl:h-[35vh] flex justify-center items-center mb-10'>
-        <div className='h-screen bg-gradient-to-b from-[#00884A] to-[#37A264] p-10 w-[95%] 2xl:h-[40vh]'>
+      <div className='w-[100%]  flex justify-center items-center mb-10'>
+        <div className=' bg-gradient-to-b from-[#00884A] to-[#37A264] p-10 w-[95%] '>
           <p className='text-white mb-4  text-[27px] font-bold'>Feedbacks Aprovados:</p>
           <Carousel
             responsive={responsive}
             centerMode
             infinite
             showDots={false}
+            arrows={false} // Desativa as setas padrão
+            ref={setCarouselRef}
             containerClass="carousel-container"
             itemClass="p-2 flex justify-center items-center"
           >
@@ -220,6 +236,7 @@ const Feedbacks = () => {
             ))}
           </Carousel>
         </div>
+        
       </div>
 
       {/* Modal de feedback */}

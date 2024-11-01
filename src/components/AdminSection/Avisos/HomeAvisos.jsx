@@ -14,6 +14,7 @@ const HomeAvisos = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    
     const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
@@ -84,7 +85,7 @@ const HomeAvisos = () => {
         <div className="flex flex-col px-[15%] pb-[10%]">
             <div className="flex items-center justify-center p-[90px] gap-6">
                 <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '10%' }} />
-                <p className="text-[34px] font-semibold">Notificações</p>
+                <p className="text-[34px] font-bold">Notificações</p>
                 <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '10%' }} />
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col">

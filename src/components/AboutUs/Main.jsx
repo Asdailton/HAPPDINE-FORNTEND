@@ -33,7 +33,7 @@ const Main = () => {
                         <div className="flex-1 flex  justify-end">
                             <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '40%' }} />
                         </div>
-                        <h1 className="md:text-[36px]  text-[16px] font-bold text-black dark:text-white mx-4">
+                        <h1 className="md:text-[36px]  text-[16px]  text-black dark:text-white mx-4">
                             QUEM SOMOS?
                         </h1>
                         <div className="flex-1 flex items-center justify-start pl-2 sm:pl-4">
@@ -60,11 +60,11 @@ const Main = () => {
                 {/* Layout Desktop: Imagem e Texto Lado a Lado */}
                 <div className="hidden md:flex flex-col md:flex-row items-center justify-center 2xl:gap-[5%] lg:gap-[4%] md:pt-[8%]">
                     <div data-aos="fade-up" className="flex flex-col items-center">
-                        <img className='2xl:w-[900px] xl:w-[800px] lg:w-[600px] h-auto object-cover rounded-lg' src={fotoGrupo} alt="Foto da equipe do HappDine" />
+                        <img className='2xl:w-[900px] xl:w-[800px] lg:w-[600px] h-auto object-cover ' src={fotoGrupo} alt="Foto da equipe do HappDine" />
                     </div>
 
                     <div data-aos="fade-up" className="flex flex-col justify-center items-start w-full md:w-[500px] lg:w-[600px]">
-                        <h1 className="text-[40px] font-extrabold custom-text-color mb-4 dark:text-white">
+                        <h1 className="text-[40px] font-black custom-text-color mb-4 dark:text-white">
                             QUEM SOMOS?
                         </h1>
                         <p className="md:text-[16px] text-[12px] mb-4 dark:text-white">

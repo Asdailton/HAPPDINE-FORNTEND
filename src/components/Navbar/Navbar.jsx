@@ -72,7 +72,7 @@ const Navbar = () => {
         <div className="container mx-auto flex items-center h-full px-4">
           {/* Div para o logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="font-bold text-2xl md:text-3xl lg:text-4xl font-extrabold ml-5">
+            <Link to="/" className="font-black text-2xl md:text-3xl lg:text-4xl font-extrabold ml-5">
               HAPPDINE
             </Link>
           </div>

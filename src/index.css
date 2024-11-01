@@ -73,6 +73,12 @@ body.dark .fixed-card, .fixed-card-content {
   font-style: normal; 
 }
 
+@font-face {
+  font-family: 'boschBlack';
+  src: url('../fontes/BoschSans-Black-v5_003.woff') format('woff'); 
+  font-weight: bold;
+  font-style: normal; 
+}
 
 
 

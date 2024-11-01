@@ -33,6 +33,7 @@
 .dinamico li {
   font-size: calc(64px);
   font-weight: bold;
+  font-family: 'boschBold';
   text-shadow:
     1px 1px 0 rgb(255, 255, 255), /* Sombra do texto clara */
     -1px -1px 0 rgb(255, 255, 255),
