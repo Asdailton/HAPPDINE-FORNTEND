@@ -42,7 +42,7 @@ const Home = () => {
      </div>
 
       <div
-        className="w-[100%] md:w-[100%] lg:h-[90vh] h-[60vh] bg-fixed"
+        className="w-[100%] md:w-[100%] lg:h-[98vh] h-[70vh] bg-fixed"
         style={{
           background: 'linear-gradient(to left, rgba(78, 82, 86, 1) 57%, rgba(46, 48, 51, 1) 100%)',
         }}

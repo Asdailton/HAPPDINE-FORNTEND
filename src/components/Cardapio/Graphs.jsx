@@ -67,14 +67,14 @@ const Graphs = () => {
     const maxVotes = Math.max(...data.map(item => item.votes), 1);
 
     return (
-        <div className="p-5 bg-transparent  flex flex-col items-start justify-center min-h-[60vh] flex-1">
+        <div className="px-[5%] bg-transparent  flex flex-col items-start justify-center mt-10 flex-1">
      
-            <div className="w-[300px] md:w-[450px] lg:[500px]xl:[530px] 2xl:w-[600px] p-2">
+            <div className="w-[300px] md:w-[450px] lg:[500px]xl:[530px] 2xl:w-[600px] px-2">
                 {data.map((item, index) => (
                     <div key={index} className="mb-4 flex flex-col items-start">
-                        <div className="font-medium text-[14px] text-white mb-1 text-left">{item.name}</div>
+                        <div className="font-medium text-[12px] md:text-[14px] text-white mb-1 text-left">{item.name}</div>
                         <div className="flex w-full">
-                            <div className="w-full  h-[30px] bg-[#E0E2E5] relative overflow-hidden mb-1 ">
+                            <div className="w-full h-[20px] md:h-[30px] bg-[#E0E2E5] relative overflow-hidden mb-1 ">
                                 <div
                                     style={{
                                         width: `${(item.votes / maxVotes) * 100}%`,
@@ -93,7 +93,7 @@ const Graphs = () => {
                                 >
                                 </div>
                             </div>
-                            <p className='text-[#B2B9C0] text-[16px] ml-[10px]'> {item.votes} </p>
+                            <p className='text-[#B2B9C0] text-[10px] md:text-[16px] ml-[10px]'> {item.votes} </p>
                             
                         </div>
                     </div>

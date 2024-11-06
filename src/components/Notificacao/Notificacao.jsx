@@ -89,7 +89,7 @@ const Notificacao = () => {
                                     <img
                                         src={
                                             notification.categoria === 'ESTRELA' ? iconeEstrela : 
-                                            notification.categoria === 'AVISO' ? iconeAviso : 
+                                            notification.categoria === 'ATENÇAO' ? iconeAviso : 
                                             notification.categoria === 'MENSAGEM' ? iconeMensagem : ''
                                         } // Exibe o ícone baseado na categoria
                                         alt="Categoria"

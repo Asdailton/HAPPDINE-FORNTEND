@@ -99,7 +99,7 @@ const Cardapio = () => {
 
     return (
         <div className='dark:bg-[#2E3033]'>
-            <div className="flex items-center justify-center gap-4 w-[100%]  pt-[12vh] p-10 dark:bg-[#2E3033] ">
+            <div className="flex items-center justify-center gap-4 w-[100%]  pt-[8vh] p-10 dark:bg-[#C3BEBE] ">
                 <div className="border-t w-[10%] flex dark:border-white border-gray-800"></div>
                 <h1 className="md:text-[36px] text-[16px] font-bold text-black dark:text-white">
                     {t('CARDÁPIO')}
@@ -107,7 +107,7 @@ const Cardapio = () => {
                 <div className="border-t w-[10%] dark:border-white border-gray-800"></div>
             </div>
 
-            <div className='lg:text-[18px] text-[12px] flex w-[100%] font-semibold text-[#7D8389] mb-[30px] justify-center items-center dark:bg-[#2E3033]'>
+            <div className='lg:text-[18px] text-[12px] flex w-[100%] font-semibold text-[#7D8389] mb-[30px] justify-center items-center dark:bg-[#C3BEBE]'>
                 <p>
                     Clique na modalidade e confira o cardápio!
                 </p>
@@ -203,7 +203,7 @@ const Cardapio = () => {
                         </div>
                         <button
                          type='submit'
-                         className='bg-[#3C3F42] 2xl:w-[8%] lg:w-[10%]  text-[10px] lg:text-[18px] mt-[5px] h-[4vh] text-white lg:h-[6vh] 2xl:h-[5vh]'>
+                         className='bg-[#3C3F42] font-bold 2xl:w-[8%] lg:w-[10%]  text-[10px] lg:text-[18px] mt-[5px] h-[4vh] text-white lg:h-[6vh] 2xl:h-[5vh]'>
                             Enviar
                         </button>
                     </form>

@@ -70,6 +70,19 @@ const Avaliacoes = () => {
     getFeedbacks();
   }, []);
 
+  // Função para formatar o dia da semana
+  const formatarDiaSemana = (data) =>
+    new Date(data).toLocaleDateString('pt-BR', { weekday: 'long' }).replace('.', '');
+
+  // Função para formatar a data
+  const formatarData = (data) =>
+    new Date(data).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).replace(',', '');
+  
+
   // Mapeamento das cores para os selos
   const seloMap = {
     '#10AAFD': seloAzul,   // Azul
@@ -92,12 +105,12 @@ const Avaliacoes = () => {
         {feedbacks.map((review) => (
           <div
             key={review.id}
-            className="bg-white px-8 py-10  shadow-custom-pink min-h-[23vh] lg:min-h-[37vh] 2xl:min-h-[30vh] w-[100%] lg:w-[600px] mt-[90px] flex flex-col relative"
+            className="bg-white px-5 py-7 md:px-8 md:py-10  shadow-custom-pink min-h-[23vh] lg:min-h-[37vh] 2xl:min-h-[30vh] w-[100%] lg:w-[120%] mt-[90px] flex flex-col relative"
           >
             <div className="w-full flex justify-between">
               <div>
                 <h1 className="text-[10px] lg:text-[18px] font-semibold">{review.nome}</h1>
-                <h2 className="text-[6px] lg:text-[14px] text-[#7D8389]">{review.timestampp}</h2>
+                <h2 className="text-[6px] lg:text-[14px] text-[#7D8389]">{`${formatarDiaSemana(review.timestampp)}, ${formatarData(review.timestampp)}`}</h2>
               </div>
               <div>
                 {/* Renderizando o selo com base na cor */}

@@ -174,21 +174,30 @@ const Navbar = () => {
 
       {/* Menu de navegação para dispositivos móveis */}
       {isOpen && (
-        <div className={`lg:hidden bg-[#2E3033] text-white border-b border-gray-700`}>
-          <ul className="flex flex-col">
-            {Menus.map((menu) => (
-              <li key={menu.id}>
-                <Link
-                  to={menu.link}
-                  className="block px-4 py-4 text-sm hover:bg-gray-200"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {t(menu.nameKey)}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <div className={`fixed top-0 right-0 h-full bg-gradient-to-r from-secundary to-secundary/90 text-[#000] transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out w-[250px] z-50 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
+        <button
+          className={`absolute top-4 right-4 ${darkMode ? 'text-white' : 'text-black'}`}
+          onClick={() => setIsOpen(false)}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <ul className="flex flex-col items-start mt-16 ml-6 space-y-4">
+          {Menus.map((menu) => (
+            <li key={menu.id}>
+              <Link
+                to={menu.link}
+                // Ajuste o tamanho da fonte aqui para o menu lateral (mobile)
+                className="text-base px-4 py-2 transition duration-200 hover:bg-gray-300 rounded-md"
+                onClick={() => setIsOpen(false)}
+              >
+                {t(menu.nameKey)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
       )}
     </div>
   );

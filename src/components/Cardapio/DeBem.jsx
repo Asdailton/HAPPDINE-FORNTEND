@@ -68,9 +68,11 @@ const DeBem = ({ isOpen, onRequestClose }) => {
     return allDays; // Retorna todos os dias
   };
 
+  // Função para formatar o dia da semana
   const formatarDiaSemana = (data) =>
     new Date(data).toLocaleDateString('pt-BR', { weekday: 'long' }).replace('.', '');
 
+  // Função para formatar a data
   const formatarData = (data) =>
     new Date(data).toLocaleDateString('pt-BR', {
       day: 'numeric',

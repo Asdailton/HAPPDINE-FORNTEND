@@ -11,7 +11,9 @@ import seloPreto from '../../../image/FeedbacksAdmin/preto.png'; // Imagem do se
 import rejected from '../../../image/FeedbacksAdmin/deletanimated.gif'; // Imagem do ícone de rejeição
 import check from '../../../image/FeedbacksAdmin/checkanimated.gif'; // Imagem do ícone de aprovação
 import Stars from './Stars'; // Componente de estrelas
+
 import setaDireta from '../../../image/CardapioAdmin/arrowRight.svg';
+import StarsModal from './StarModal';
 
 
 Modal.setAppElement('#root'); // Define o elemento raiz para o modal
@@ -86,6 +88,19 @@ const Feedbacks = () => {
     '#219557': seloVerde,  // Verde
     '#2E3033': seloPreto,  // Preto
   };
+  
+   // Função para formatar o dia da semana
+   const formatarDiaSemana = (data) =>
+    new Date(data).toLocaleDateString('pt-BR', { weekday: 'long' }).replace('.', '');
+
+  // Função para formatar a data
+  const formatarData = (data) =>
+    new Date(data).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).replace(',', '');
+  
 
   // Função para aceitar um feedback
   const handleAccept = async () => {
@@ -136,7 +151,7 @@ const Feedbacks = () => {
       {/* Título da seção de feedbacks */}
       <div className="flex items-center justify-center p-[90px] gap-6">
         <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '10%' }} />
-        <p className="text-[34px] font-semibold">#BatePapo</p>
+        <p className="text-[34px] font-italicBold">#BatePapo</p>
         <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '10%' }} />
       </div>
 
@@ -157,13 +172,14 @@ const Feedbacks = () => {
             {reviews.map((review) => (
               <div
                 key={review.id}
-                className="bg-[#FFFBFB] shadow-custom-pink   w-[97%] p-5 flex flex-col justify-between transform transition-transform duration-300 hover:scale-105"
+                className="bg-[#FFFBFB] shadow-custom-pink 2xl:h-[23vh] lg:h-[29vh] w-[97%] flex flex-col justify-between p-5 relative
+          transform transition-transform duration-300 hover:scale-105"
               >
                 {/* Informações do feedback */}
                 <div className="flex justify-between items-start">
                   <div className="w-[90%]">
                     <h1 className='2xl:text-[18px] lg:text-[18px] font-semibold'>{review.nome}</h1>
-                    <h2 className='2xl:text-[11px] lg:text-[10px] text-[#7D8389]'>{review.timestampp}</h2>
+                    <p className='2xl:text-[11px] lg:text-[10px] text-[#7D8389]'>{`${formatarDiaSemana(review.timestampp)}, ${formatarData(review.timestampp)}`}</p>
                   </div>
                   <div className="flex justify-end w-[6%]">
                     <img className="w-9" src={seloMap[review.corEstrela]} alt="Selo correspondente" />
@@ -186,13 +202,7 @@ const Feedbacks = () => {
             ))}
             
           </Carousel>
-          <button
-              onClick={carouselRef ? () => carouselRef.next() : null}
-              className='ml-7'
-              aria-label="Next Slide"
-            >
-              <img src={setaDireta} alt="Seta para a direita" className=" lg:h-[90px] xl:h-[90px] 2xl:h-[170px]" />
-            </button>
+        
           
         </div>
       </div>
@@ -220,7 +230,7 @@ const Feedbacks = () => {
                 <div className='flex justify-between items-start'>
                   <div className='w-[90%]'>
                     <h1 className='2xl:text-[18px] lg:text-[18px] font-semibold'>{approvedReview.nome}</h1>
-                    <h2 className='2xl:text-[11px] lg:text-[10px] text-[#7D8389]'>{approvedReview.timestampp}</h2>
+                    <p className='2xl:text-[11px] lg:text-[10px] text-[#7D8389]'>{`${formatarDiaSemana(approvedReview.timestampp)}, ${formatarData(approvedReview.timestampp)}`}</p>
                   </div>
                   <div className='flex justify-end w-[6%]'>
                     <img className='w-9' src={seloMap[approvedReview.corEstrela]} alt="Selo correspondente" />
@@ -240,32 +250,61 @@ const Feedbacks = () => {
       </div>
 
       {/* Modal de feedback */}
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.75)' }, content: { top: '20%', left: '20%', right: '20%', bottom: '20%', backgroundColor: '#2E3033', color: 'white' } }}>
-        {selectedReview && (
-          <>
-            {/* Informações do feedback no modal */}
-            <h2 className="text-xl font-semibold mb-4">{selectedReview.nome}</h2>
-            <p>{selectedReview.timestampp}</p>
-            <p className="my-4">{selectedReview.comentario}</p>
-            <div className="flex justify-between mt-4">
-              <button onClick={handleAccept} className="bg-green-500 text-white px-4 py-2 rounded">Aceitar</button>
-              <button onClick={handleReject} className="bg-red-500 text-white px-4 py-2 rounded">Rejeitar</button>
-            </div>
-          </>
-        )}
+      <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          className="fixed inset-0 flex items-center justify-center p-4 z-50"
+          overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75 z-40"
+      >
+          <div className="bg-white flex flex-col w-[600px] h-[500px] px-[40px] py-[60px] relative">
+              {selectedReview && (
+                  <>
+                      {/* Informações do feedback no modal */}
+                      <h2 className="text-[28px] font-bold">{selectedReview.nome}</h2>
+                      <p className='text-[19px] text-[#7D8389]'>{`${formatarDiaSemana(selectedReview.timestampp)}, ${formatarData(selectedReview.timestampp)}`}</p>
+                      <p className="mt-5 text-[24px] font-regular">{selectedReview.comentario}</p>
+                      <div className="mt-6">
+                          <StarsModal corRegistrada={selectedReview?.corEstrela} quantidade={selectedReview?.estrela} /> {/* Componente de estrelas */}
+                      </div>
+
+                      {/* Botões fixados no rodapé */}
+                      <div className="absolute bottom-14 left-0 right-0 flex justify-start gap-3 px-8">
+                        <button
+                          onClick={handleAccept}
+                          className="bg-[#00884A] text-white text-[24px] font-bold px-9 py-3 transition duration-300 ease-in-out transform hover:bg-[#006837]"
+                        >
+                          Aceitar
+                        </button>
+                        <button
+                          onClick={handleReject}
+                          className="bg-[#2E3033] text-white text-[24px] font-bold px-9 py-3 transition duration-300 ease-in-out transform hover:bg-[#1B1C1D]"
+                        >
+                          Descartar
+                        </button>
+                      </div>
+                  </>
+              )}
+          </div>
       </Modal>
 
-      {/* Mensagens de feedback */}
+
+     {/* Modal de feedback aceito */}
       {modalIsVisible && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-10">
-          <img src={check} alt="Feedback aprovado" className="w-16 h-16 animate-bounce" />
-          <p className="text-green-500 font-bold">Feedback Aceito!</p>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-12 lg:w-[40%] 2xl:w-[30%] text-[86%] border border-gray-300 flex items-center justify-center">
+            <p className="lg:mr-[30px] text-green-500 font-bold">Feedback aceito com <strong>sucesso!</strong></p>
+            <img className="w-[10%]" src={check} alt="Feedback aprovado" />
+          </div>
         </div>
       )}
+
+      {/* Modal de feedback rejeitado */}
       {showRejectMessage && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-10">
-          <img src={rejected} alt="Feedback rejeitado" className="w-16 h-16 animate-bounce" />
-          <p className="text-red-500 font-bold">Feedback Rejeitado!</p>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-12 lg:w-[40%] 2xl:w-[30%] text-[86%] border border-gray-300 flex items-center justify-center">
+            <p className="lg:mr-[30px] text-red-500 font-bold">Feedback <strong>rejeitado!</strong></p>
+            <img className="w-[10%]" src={rejected} alt="Feedback rejeitado" />
+          </div>
         </div>
       )}
     </>
