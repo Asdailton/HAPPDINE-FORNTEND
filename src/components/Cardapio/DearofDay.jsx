@@ -79,12 +79,12 @@ const DearOfDay = () => {
                 <div className="flex items-center justify-center w-full gap-4">
                     <div className="border-t w-[6%] flex border-white"></div>
                     <h1 className="2xl:text-3xl lg:text-3xl text-[19px] font-bold text-white dark:text-white">
-                        {t('QUERIDINHO DO DIA')} {/* Texto traduzido */}
+                    {t('QUERIDINHO_DO_DIA')}{/* Texto traduzido */}
                     </h1>
                     <div className="border-t w-[6%] border-white"></div>
                 </div>
                 <p className="text-center mt-[10px] text-sm text-[#B2B9C0]">
-                    Selecione o seu cardápio favorito
+                  {t('SELECIONE_SEU_CARDAPIO_FAVORITO')}
                 </p>
             </div>
 
@@ -142,7 +142,7 @@ const DearOfDay = () => {
                         onClick={fetchVoto}
                         className="bg-[#4E5256] w-[27%]  md:text-[17px] text-[10px] lg:text-[18px] xl:text-[19px] 2xl:text-[21px] mt-[30px] h-[5vh] text-white"
                     >
-                        Enviar {/* Botão para enviar o voto */}
+                        {t('ENVIAR')} {/* Botão para enviar o voto */}
                     </button>
                 </div>
 

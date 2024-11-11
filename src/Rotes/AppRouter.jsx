@@ -9,20 +9,25 @@ import Cardapio from '../Pages/Cardapio/cardapio';
 import CardapioPage from "../Pages/AdminSection/CardapioPage.jsx";
 import  AvisosPage  from "../Pages/AdminSection/AvisosPage.jsx";
 import FeedBackPage from "../Pages/AdminSection/FeedBackPage.jsx";
-import LoginPage from "../Pages/AdminSection/LoginPage.jsx";
+import LoginPage from "../Pages/AdminSection/LoginPage/LoginPage.jsx";
+import Profile from "../Pages/AdminSection/LoginPage/Profile.jsx";
+
 import HomeAdminPage from "../Pages/AdminSection/HomeAdminPage.jsx";
+import { Inicial } from "../Pages/DineMatchPages/Inicial.jsx";
 const AppRouter = () => (
   <Router>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/sobre-nos" element={<AboutPage />} />
       <Route path="/entretenimento" element={<Entretenimento />} />
+      <Route path="/entretenimento/dine-match" element={<Inicial/>} />
       <Route path="/graficos" element={<Graficos />} />
       <Route path="/cardapio" element={<Cardapio/>} />
 
      
       <Route path="/admin/login" element={<LoginPage/>} />
-      <Route path="admin/home" element={<HomeAdminPage/>}/>
+      <Route path="/profile" element={<Profile/>} />
+      <Route path="/admin/home" element={<HomeAdminPage/>}/>
       <Route path="/admin/cardapio" element={<CardapioPage/>} />
       <Route path="/admin/avisos" element={<AvisosPage/>} />
       <Route path="/admin/feedbacks" element={<FeedBackPage/>}/>

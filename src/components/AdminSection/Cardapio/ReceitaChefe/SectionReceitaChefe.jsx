@@ -8,7 +8,7 @@ const SectionReceitaChefe = () => {
         // Cria um contêiner para a seção com fundo verde e preenchimento
         <div className="w-full bg-gradient-to-r from-[#12818F] to-[#0A4F4B] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between">
             {/* Contêiner para o título da seção */}
-            <div className="flex flex-col justify-center items-center mt-[70px] ml-[25px]">
+            <div className="flex flex-col justify-center items-center mt-[70px] ml-[10px]">
                 {/* Imagem do talher */}
                 <img src={talher} alt="" className="mb-4 w-[52px]" />
                 {/* Texto da seção */}

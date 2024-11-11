@@ -7,7 +7,7 @@ const SectionGrill = () => { // Define o componente funcional SectionGrill.
         <div className="w-full bg-gradient-to-r from-[#9E2896] to-[#671761] pt-[50px] pb-[50px] px-[50px] flex items-start space-x-6 justify-between"> 
             {/* Contêiner principal com largura total, cor de fundo, e espaçamentos verticais e horizontais. */}
             
-            <div className="flex flex-col justify-center items-center mt-[70px] ml-[25px]"> 
+            <div className="flex flex-col justify-center items-center mt-[70px] ml-[10px]"> 
                 {/* Contêiner para a imagem e o texto, centralizando os itens. */}
                 
                 <img src={fogo} alt="" className="mb-4 w-[64px]" /> 

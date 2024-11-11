@@ -18,8 +18,8 @@ const responsive = {
     slidesToSlide: 1,
   },
   desktop: {
-    breakpoint: { max: 1024, min: 768 },
-    items: 2.6,
+    breakpoint: { max: 1500, min: 768 },
+    items: 2.1,
     slidesToSlide: 1,
   },
   tablet: {

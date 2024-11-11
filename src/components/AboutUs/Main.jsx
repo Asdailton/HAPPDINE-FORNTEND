@@ -10,7 +10,8 @@ import fotoIsaLeite from '../../image/Sobre_Nos/fotoIsaLeite.svg'
 import fotoIsaRocha from '../../image/Sobre_Nos/fotoIsaRocha.svg'
 import fotoJoao from '../../image/Sobre_Nos/fotoJoao.svg';
 import fotoMurilo from '../../image/Sobre_Nos/fotoMurilo.svg'
-import fotoSara from '../../image/Sobre_Nos/fotoSara.svg'
+import fotoSara from '../../image/Sobre_Nos/fotoSara.svg';
+import { useTranslation } from 'react-i18next';
 
 const dados = [
     { id: 1, integrante: 'Adailton Filho', foto: fotoAdailton },
@@ -23,6 +24,7 @@ const dados = [
 ];
 
 const Main = () => {
+    const { t } = useTranslation();
     return (
         <div className="dark:bg-[#3A3B3E] ">
             <div className="flex flex-col  md:flex-row items-center justify-center 2xl:gap-[5%] lg:gap-[4%] md:pt-[3%] dark:bg-[#3A3B3E] 2xl:px-[5%] lg:px-[7%]  pt-[10%]">
@@ -34,7 +36,7 @@ const Main = () => {
                             <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '40%' }} />
                         </div>
                         <h1 className="md:text-[36px]  text-[16px]  text-black dark:text-white mx-4">
-                            QUEM SOMOS?
+                         {t('QUEM_SOMOS')}
                         </h1>
                         <div className="flex-1 flex items-center justify-start pl-2 sm:pl-4">
                             <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '40%' }} />
@@ -47,11 +49,11 @@ const Main = () => {
                     </div>
                     <div className="px-[17%]  md:my-0  my-[4%]">
                         <p className="text-[12px] dark:text-white mb-4">
-                            O HAPPDINE iniciou com uma ideia proposta em janeiro de 2024 na 6ª edição do HACKATHON, evento interno de sete dias realizado pela CaP/ETS (Engineering Technical School), onde recebeu a premiação de primeiro lugar. O projeto foi estruturado e, visando implementação na planta de Campinas, o HAPPDINE é desenvolvido como TCC para o terceiro semestre do curso de Desenvolvimento de Sistemas com SENAI e Bosch.
+                        {t('HAPPDINE_DESCRICAO_1')}
                         </p>
                         
                         <p className="text-[12px] dark:text-white">
-                            Formados por integrantes de Digital Solutions das turmas 08, 09 e 10, o HAPPDINE é composto por 7 desenvolvedores: Adailton da Silva Filho, Ana Beatriz Nardy Torrecilas, Isabela Pereira Leite, Isabela Rocha dos Santos, João Vitor de Souza Goulart, Murilo Silva dos Santos e Sara de Oliveira Fernandes.
+                        {t('HAPPDINE_DESCRICAO_2')}
                         </p>
                     </div>
                   
@@ -65,13 +67,13 @@ const Main = () => {
 
                     <div data-aos="fade-up" className="flex flex-col justify-center items-start w-full md:w-[500px] lg:w-[600px]">
                         <h1 className="text-[40px] font-black custom-text-color mb-4 dark:text-white">
-                            QUEM SOMOS?
+                          {t('QUEM_SOMOS')}
                         </h1>
                         <p className="md:text-[16px] text-[12px] mb-4 dark:text-white">
-                            O HAPPDINE iniciou com uma ideia proposta em janeiro de 2024 na 6ª edição do HACKATHON, evento interno de sete dias realizado pela CaP/ETS (Engineering Technical School), onde recebeu a premiação de primeiro lugar.
+                          {t('HAPPDINE_DESCRICAO_1')}
                         </p>
                         <p className="md:text-[16px] text-[12px] dark:text-white">
-                        Formados por integrantes de Digital Solutions das turmas 08, 09 e 10, o HAPPDINE é composto por 7 desenvolvedores: Adailton da Silva Filho, Ana Beatriz Nardy Torrecilas, Isabela Pereira Leite, Isabela Rocha dos Santos, João Vitor de Souza Goulart, Murilo Silva dos Santos e Sara de Oliveira Fernandes.
+                          {t('HAPPDINE_DESCRICAO_2')}
                         </p>
                     </div>
                 </div>
@@ -80,7 +82,7 @@ const Main = () => {
             <div data-aos="fade-up" className="flex flex-col mt-8 md:mt-16 px-4 sm:px-8 md:px-12 lg:px-16 py-[7%]">
                 <div className="2xl:pl-[10%] xl:pl-[5%] lg:pl-[6%]">
                     <h1 className="text-[15px] md:text-[20px] lg:text-[20px] font-sans text-center md:text-left dark:text-white">
-                        <strong className="text-bold">Valores</strong> que definem o <strong className="text-bold">HAPPDINE:</strong>
+                       <strong>{t('VALORES')}</strong> {t('QUE_DEFINEM')} <strong>{t('HAPPDINE')}</strong>:
                     </h1>
                 </div>
                 <div className="mt-[3%]">
@@ -97,10 +99,10 @@ const Main = () => {
                     <div className="flex flex-col items-center mt-8 md:mt-12">
                         <div className="text-left mb-5 w-full justify-start 2xl:ml-[24%] xl:ml-[26%] lg:ml-[15%] lg:text-left ml-[30%] pb-[4%]">
                             <h1 className="text-[24px] md:text-3xl text-white font-semibold italic">
-                                #EQUIPE
+                                {t('#EQUIPE')}
                             </h1>
                             <p className="text-[12px] md:text-lg text-white mt-2  lg:mx-0">
-                                Conheça os integrantes da equipe <strong>HAPPDINE</strong>
+                              {t('CONHECA_INTEGRANTES')}
                             </p>
                         </div>
                         <div className="flex flex-wrap justify-center">

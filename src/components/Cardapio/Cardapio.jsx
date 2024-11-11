@@ -102,14 +102,14 @@ const Cardapio = () => {
             <div className="flex items-center justify-center gap-4 w-[100%]  pt-[8vh] p-10 dark:bg-[#C3BEBE] ">
                 <div className="border-t w-[10%] flex dark:border-white border-gray-800"></div>
                 <h1 className="md:text-[36px] text-[16px] font-bold text-black dark:text-white">
-                    {t('CARDÁPIO')}
+                   {t('Cardápio')}
                 </h1>
                 <div className="border-t w-[10%] dark:border-white border-gray-800"></div>
             </div>
 
             <div className='lg:text-[18px] text-[12px] flex w-[100%] font-semibold text-[#7D8389] mb-[30px] justify-center items-center dark:bg-[#C3BEBE]'>
                 <p>
-                    Clique na modalidade e confira o cardápio!
+                  {t('Clique na modalidade e confira o cardápio!')}
                 </p>
             </div>
 
@@ -121,7 +121,7 @@ const Cardapio = () => {
                     >
                         <div className='w-[70%] text-sm lg:w-[60%] justify-center items-center gap-4 text-center flex text-white'>
                             <img src={fashionOfHome} className='2xl:w-[14%] w-[15%] lg:w-[20%]' alt="" />
-                            <p className='lg:text-[16px] text-[12px]'>Moda da Casa</p>
+                            <p className='lg:text-[16px] text-[12px]'>{t('Moda da Casa')}</p>
                         </div>
                     </button>
 
@@ -131,7 +131,7 @@ const Cardapio = () => {
                     >
                         <div className='flex justify-center text-sm items-center text-white gap-4 w-[80%]'>
                             <img src={DBem} className='2xl:w-[7%] w-[9%]' alt="" />
-                            <p className='lg:text-[16px] text-[12px]'>De Bem com a Vida</p>
+                            <p className='lg:text-[16px] text-[12px]'>{t('De Bem com a Vida')}</p>
                         </div>
                     </button>
 
@@ -141,7 +141,7 @@ const Cardapio = () => {
                     >
                         <div className='lg:w-[80%] 2xl:w-[50%] text-sm text-white justify-center items-center gap-4 text-center flex'>
                             <img className='2xl:w-[12%] lg:w-[8%] w-[9%]' src={grill} alt="" />
-                            <p className='lg:text-[16px] text-[12px]'>Grill e Bem Estar</p>
+                            <p className='lg:text-[16px] text-[12px]'>{t('Grill e Bem Estar')}</p>
                         </div>
                     </button>
 
@@ -151,7 +151,7 @@ const Cardapio = () => {
                     >
                         <div className='flex text-white gap-4 text-sm justify-center items-center lg:w-[80%] 2xl:w-[80%]'>
                             <img src={chefe} className='2xl:w-[6%] w-[8%] lg:w-[5%]' alt="" />
-                            <p className='lg:text-[16px] text-[12px]' >Receita do Chefe</p>
+                            <p className='lg:text-[16px] text-[12px]' >{t('Receita do Chefe')}</p>
                         </div>
                     </button>
                 </div>
@@ -178,7 +178,7 @@ const Cardapio = () => {
             <div className='w-[100%] text-[14px] flex 2xl:p-[130px] p-[20px] lg:p-[100px] justify-center items-center 2xl:w-[100%] lg:w-[100%]'>
                 <div className='flex-col justify-center items-center gap-4 w-[75%] '>
                     <p className='2xl:mr-[81vh] dark:text-white text-[12px] mb-[20px] lg:text-[18px] text-left'>
-                        Deseja receber o cardápio <strong>diretamente </strong> no seu Email?
+                       {t('DESEJA_RECEBER_CARDAPIO_EMAIL')}
                     </p>
                     <form onSubmit={handleSubmit} className='w-full flex-col lg:flex-row 2xl:flex-row 2xl:gap-[30px] lg:gap-[30px] gap-4 flex lg:items-center'>
                         <div className='2xl:w-[44%] lg:w-[44%] h-[90%]'>
@@ -204,7 +204,7 @@ const Cardapio = () => {
                         <button
                          type='submit'
                          className='bg-[#3C3F42] font-bold 2xl:w-[8%] lg:w-[10%]  text-[10px] lg:text-[18px] mt-[5px] h-[4vh] text-white lg:h-[6vh] 2xl:h-[5vh]'>
-                            Enviar
+                             {t('ENVIAR')} 
                         </button>
                     </form>
                 </div>

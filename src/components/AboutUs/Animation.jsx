@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import stylesLight from './AnimationLight.module.css';
 import stylesDark from './AnimationDark.module.css';
+import { useTranslation } from 'react-i18next';
 
 const Animation = () => {
     const containerRef = useRef(null);
+    const { t } = useTranslation(); // Hook de tradução
     const [isVisible, setIsVisible] = useState(false);
     const [darkMode, setDarkMode] = useState(false); // Estado para o modo escuro
 
@@ -52,13 +54,13 @@ const Animation = () => {
         <div ref={containerRef} className={darkMode ? stylesDark.conteiner : stylesLight.conteiner}>
             <ul className={darkMode ? stylesDark.dinamico : stylesLight.dinamico}>
                 <li className={darkMode ? stylesDark.first : stylesLight.first}>
-                    <span>EFICIENTE</span>
+                    <span>{t('EFICIENTE')}</span> 
                 </li>
                 <li className={darkMode ? stylesDark.third : stylesLight.third}>
-                    <span>TECNOLÓGICO</span>
+                    <span>{t('TECNOLÓGICO')}</span> 
                 </li>
                 <li className={darkMode ? stylesDark.second : stylesLight.second}>
-                    <span>RÁPIDO</span>
+                    <span>{t('RÁPIDO')}</span> 
                 </li>
             </ul>
         </div>
