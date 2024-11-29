@@ -36,8 +36,8 @@ function Beneficios() {
     const mao = darkMode ? maoDark : maoLight;
 
     return (
-        <div className="w-[100%]  items-center">
-            <div className="flex items-center mt-[4%] 2xl:mt[2%]">
+        <div className="w-[100%]  items-center xl:mt-[6%] 2x:mt-[4%]">
+            <div className="flex items-center  ">
                 <div className="flex-1 flex justify-end pr-2 sm:pr-4">
                     <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
                 </div>
@@ -52,8 +52,8 @@ function Beneficios() {
             <div
                 className="
                     flex lg:gap-[150px] flex-wrap justify-center px-[90px] 
-                    md:gap-40 md:h-[40vh] mb-[5%] h-[40vh] 
-                     sm:mb-[3%] sm:px-[20px] sm:h-auto
+                    md:gap-40 md:h-[30vh] xl:mb-[4%] 2xl:mb-[1%] h-[40vh] 
+                     sm:px-[20px] sm:h-auto
                 "
                 >
                 <div

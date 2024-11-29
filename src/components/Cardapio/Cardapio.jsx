@@ -99,15 +99,15 @@ const Cardapio = () => {
 
     return (
         <div className='dark:bg-[#2E3033]'>
-            <div className="flex items-center justify-center gap-4 w-[100%]  pt-[8vh] p-10 dark:bg-[#C3BEBE] ">
-                <div className="border-t w-[10%] flex dark:border-white border-gray-800"></div>
+            <div className="flex items-center justify-center gap-4 w-[100%]  xl:pt-[8vh] 2xl:pt-[6vh] p-3 dark:bg-[#2E3033] ">
+                <div className="border-t w-[10%] flex border-[#C3BEBE]"></div>
                 <h1 className="md:text-[36px] text-[16px] font-bold text-black dark:text-white">
-                   {t('Cardápio')}
+                   {t('CARDAPIO_TITLE')}
                 </h1>
-                <div className="border-t w-[10%] dark:border-white border-gray-800"></div>
+                <div className="border-t w-[10%] border-[#C3BEBE]"></div>
             </div>
 
-            <div className='lg:text-[18px] text-[12px] flex w-[100%] font-semibold text-[#7D8389] mb-[30px] justify-center items-center dark:bg-[#C3BEBE]'>
+            <div className='lg:text-[18px] text-[12px] flex w-[100%] font-semibold text-[#7D8389]  justify-center items-center dark:bg-[#2E3033]'>
                 <p>
                   {t('Clique na modalidade e confira o cardápio!')}
                 </p>
@@ -173,9 +173,11 @@ const Cardapio = () => {
                 isOpen={ChefIsOpen}
                 onRequestClose={closeChef}
             />
+
+            {/*Componente do queridinho do dia*/}
             <DearOfDay />
 
-            <div className='w-[100%] text-[14px] flex 2xl:p-[130px] p-[20px] lg:p-[100px] justify-center items-center 2xl:w-[100%] lg:w-[100%]'>
+            <div className='w-[100%] text-[14px] flex 2xl:p-[130px]  py-[50px] px-[20px] lg:p-[100px] justify-center items-center 2xl:w-[100%] lg:w-[100%]'>
                 <div className='flex-col justify-center items-center gap-4 w-[75%] '>
                     <p className='2xl:mr-[81vh] dark:text-white text-[12px] mb-[20px] lg:text-[18px] text-left'>
                        {t('DESEJA_RECEBER_CARDAPIO_EMAIL')}

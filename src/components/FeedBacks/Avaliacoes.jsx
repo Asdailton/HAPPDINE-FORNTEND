@@ -37,12 +37,74 @@ const responsive = {
 const Avaliacoes = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [language, setLanguage] = useState("");
   const { t } = useTranslation();
-
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
 
-  // Função para buscar os feedbacks com axios
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem("language");
+    setLanguage(storedLanguage);
+
+  }, []);
+
+  // Chame getFeedbacks sempre que `language` mudar
+    useEffect(() => {
+      if (language) {
+        getFeedbacks();
+      }
+    }, [language]);
+
+   // Função para traduzir um texto usando a API do DeepL
+   const translateText = async (text, targetLang) => {
+    const apiKey = "5bc4eb4f-79d6-40bc-abf0-58ba19a909a6:fx"; // Substitua com sua chave de API do DeepL
+    const url = `https://api-free.deepl.com/v2/translate`;
+    console.log(targetLang)
+    try {
+      const response = await axios.post(url, null, {
+        params: {
+          auth_key: apiKey,
+          text: text,
+          target_lang: targetLang.toUpperCase(), // DeepL usa o código do idioma em maiúsculo
+        },
+      });
+
+      if (response.data && response.data.translations) {
+        return response.data.translations[0].text;
+      } else {
+        throw new Error("Erro ao traduzir");
+      }
+    } catch (error) {
+      console.error("Erro ao traduzir:", error);
+      return text; // Retorna o texto original caso falhe
+    }
+  };
+
+  // Função para traduzir uma lista de dicionários
+  const translateDictionaryList = async (feedbackList, targetLang) => {
+    const translatedFeedbacks = [];
+
+    for (let feedback of feedbackList) {
+      const translatedFeedback = { ...feedback };
+
+      // Traduzindo os campos de texto
+      if (feedback.comentario) {
+        translatedFeedback.comentario = await translateText(feedback.comentario, targetLang);
+      }
+      if (feedback.nome) {
+        translatedFeedback.nome = await translateText(feedback.nome, targetLang);
+      }
+      if (feedback.opcao) {
+        translatedFeedback.opcao = await translateText(feedback.opcao, targetLang);
+      }
+
+      translatedFeedbacks.push(translatedFeedback);
+    }
+
+    return translatedFeedbacks;
+  };
+
+  // Função para buscar os feedbacks
   const getFeedbacks = async () => {
     try {
       // Fazendo requisição para as duas URLs usando axios
@@ -57,26 +119,33 @@ const Avaliacoes = () => {
         ...restauranteResponse.data
       ];
 
-      // Atualizando o estado com os feedbacks combinados
-      setFeedbacks(combinedFeedbacks);
-      console.log(combinedFeedbacks)
+      // Traduzindo os feedbacks obtidos
+      // Altere o idioma de destino conforme necessário
+    // Determine o idioma para tradução (exemplo: en, pt)
+    const targetLang = language?.split("-")[0] || "PT"; // Exemplo: pt-BR => pt
+    const translatedFeedbacks = await translateDictionaryList(
+      combinedFeedbacks,
+      targetLang
+    );
+
+
+      // Atualizando o estado com os feedbacks traduzidos
+      setFeedbacks(translatedFeedbacks);
+      console.log(feedbacks)
+      console.log(translatedFeedbacks);
     } catch (error) {
       console.error('Erro ao buscar os feedbacks:', error);
     }
   };
 
-  // useEffect para buscar os feedbacks quando o componente for montado
-  useEffect(() => {
-    getFeedbacks();
-  }, []);
 
   // Função para formatar o dia da semana
   const formatarDiaSemana = (data) =>
-    new Date(data).toLocaleDateString('pt-BR', { weekday: 'long' }).replace('.', '');
+    new Date(data).toLocaleDateString(language, { weekday: 'long' }).replace('.', '');
 
   // Função para formatar a data
   const formatarData = (data) =>
-    new Date(data).toLocaleDateString('pt-BR', {
+    new Date(data).toLocaleDateString(language, {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -127,7 +196,7 @@ const Avaliacoes = () => {
           </div>
         ))}
       </Carousel>
-      <div className="bg-[#4E5256] mt-[20px] w-[20%] h-[40px] ml-[47px] md:w-[7%] md:mt-[40px] flex">
+      <div className="bg-[#4E5256] mt-[20px] w-[20%] h-[40px] ml-[47px] md:ml-[110px]  md:w-[7%] md:mt-[40px] flex">
         <button onClick={openModal} className="w-full justify-center flex items-center">
           <img src={mais} alt={t('abrir modal')} />
         </button>

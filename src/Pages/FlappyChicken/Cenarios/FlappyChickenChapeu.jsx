@@ -5,17 +5,62 @@ import birdImage from '../../../image/Jogos/FlappyChicken/Chapeu/ChickenChapeu.p
 import pipeImage1 from '../../../image/Jogos/FlappyChicken/Chapeu/TroncoBosch.png'; // OBSTÁCULO 01 / TRONCO NORMAL
 import pipeImage2 from '../../../image/Jogos/FlappyChicken/Chapeu/TroncoFurado.png'; // OBSTÁCULO 02 / TRONCO COM BURACO
 import pipeImage3 from '../../../image/Jogos/FlappyChicken/Chapeu/TroncoComTucano.png'; // OBSTÁCULO 03 / TRONCO COM TUCANO
+import Musica from '../../../components/MusicasJogo/ChapeuJogo.mp3';
 
 
-const FlappyBird = () => {
 
-    const canvasRef = useRef(null); // REFERÊNCIA AO ELEMENTO CANVAS
+const Chapeu = () => {
+
+    const [isPaused, setIsPaused] = useState(false); // Inicializa o estado com "false"
+    const [isGameOver, setIsGameOver] = useState(false); // Se necessário, inicialize o estado de game over
+    
+    const audio = new Audio(Musica);
+    audio.loop = true;
+    audio.volume = 0.5;
+
+    // Declara a referência para o canvas
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        if (!isPaused) {
+            audio.play();  // Apenas toque a música quando não estiver pausado
+        } else {
+            audio.pause();  // Pausa quando o jogo é pausado
+        }
+    
+        // Limpeza do efeito
+        return () => {
+            audio.pause();
+            audio.currentTime = 0; // Reseta a música, mas esse comportamento pode ser ajustado conforme a necessidade
+        };
+    }, [isPaused]);
+    
+    // Função para alternar o estado de pausa
+    const togglePause = () => {
+        setIsPaused(prev => !prev); // Alterna entre pausar e despausar
+    };
+    
+    // Função para capturar as teclas de pausa (P ou Esc)
+    const handlePauseKey = (event) => {
+        if (event.code === 'KeyP' || event.code === 'Escape') {
+            event.preventDefault();
+            togglePause();
+        }
+    };
+    
+    // Adiciona o evento de pressionamento de tecla
+    useEffect(() => {
+        window.addEventListener('keydown', handlePauseKey);
+    
+        return () => {
+            window.removeEventListener('keydown', handlePauseKey);
+        };
+    }, []);  // Esse efeito só precisa ser executado uma vez, ao montar o componente
 
     // ESTADOS DE CONTROLE DO JOGO
     const [passedPipes, setPassedPipes] = useState(0); // CONTADOR DE OBSTÁCULOS PASSADOS
-    const [isPaused, setIsPaused] = useState(false); // CONTROLE DE PAUSA
-    const [isGameOver, setIsGameOver] = useState(false); // CONTROLE DE GAME OVER
-
+    // A segunda declaração de isGameOver foi removida.
+    // const [isGameOver, setIsGameOver] = useState(false);  // REMOVE AQUI
     // VERIFICA SE O DISPOSITIVO É MOBILE (CELULAR)
     const isMobile = window.innerWidth <= 768;
     
@@ -274,7 +319,7 @@ const FlappyBird = () => {
 
     // FUNÇÃO PARA VOLTAR PARA A TELA INICIAL 
     const goToHome = () => {
-        window.location.href = "/entretenimento/flappybird/tela_inicial";
+        window.location.href = "/entretenimento/flappybird/tela_inicial/tutorial/selecaofase";
     };
 
     return (
@@ -317,4 +362,4 @@ const FlappyBird = () => {
     );
 };
 
-export default FlappyBird;
+export default Chapeu;

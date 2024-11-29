@@ -1,0 +1,44 @@
+.chart-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;  /* Alinha o conteúdo no centro */
+  }
+  
+  .days-filter {
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    margin-top: 20%; 
+  }
+  
+  .days-filter button {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid transparent; 
+    font-size: 16px; 
+    text-align: left; 
+  }
+  
+  .days-filter button.active {
+    background-color: transparent;
+    color: black;
+    border-bottom: 1px solid black; 
+  }
+  
+  .days-filter button:hover {
+    background-color: transparent;
+    color: black;
+    border-bottom: 1px solid black; 
+  }
+  
+  .chart {
+    flex-grow: 1;
+    width: 600px;   /* Aumentando a largura do gráfico */
+    height: 600px;  /* Aumentando a altura do gráfico */
+  }

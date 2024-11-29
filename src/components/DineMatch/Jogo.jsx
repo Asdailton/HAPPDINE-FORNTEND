@@ -24,10 +24,10 @@ export function Jogo() {
             // Requisição dos 4 cardápios 
             try {
                 const responses = await Promise.all([
-                    axios.get('http://localhost:8081/debemcomavida/cardapios'),
-                    axios.get('http://localhost:8081/modadacasa/cardapios'),
-                    axios.get('http://localhost:8081/receitadochefe/cardapios'),
-                    axios.get('http://localhost:8081/grillebemestar/cardapios')
+                    axios.get('http://localhost:8080/debemcomavida/cardapios'),
+                    axios.get('http://localhost:8080/modadacasa/cardapios'),
+                    axios.get('http://localhost:8080/receitadochefe/cardapios'),
+                    axios.get('http://localhost:8080/grillebemestar/cardapios')
                 ]);
 
                 // Data do dia para filtrar cardápios do dia atual
@@ -35,12 +35,13 @@ export function Jogo() {
                 // Extrai os dados da resposta da API
                 const cardapiosDoDia = responses.map(response => response.data.find(cardapio => cardapio.data === today)); 
                 console.log('Resposta: ', responses)
+                console.log(cardapiosDoDia)
 
                 // Organização dos 4 opções de cardápio 
                 const formatoCardapio = {
-                    'De Bem com a Vida': cardapiosDoDia.find(c => c.restauranteModel.nome === 'De Bem com a Vida'),
-                    'Moda da Casa': cardapiosDoDia.find(c => c.restauranteModel.nome === 'Moda da Casa'),
-                    'Receita do Chefe': cardapiosDoDia.find(c => c.restauranteModel.nome === 'Receita do Chefe'),
+                    'De Bem com a Vida': cardapiosDoDia.find(c => c.restauranteModel.nome === 'De Bem Com a Vida'),
+                    'Moda da Casa': cardapiosDoDia.find(c => c.restauranteModel.nome === 'Moda Da Casa'),
+                    'Receita do Chefe': cardapiosDoDia.find(c => c.restauranteModel.nome === 'Receita Do Chefe'),
                     'Grill e Bem Estar': cardapiosDoDia.find(c => c.restauranteModel.nome === 'Grill e Bem-Estar')
                 };
     
@@ -71,10 +72,14 @@ export function Jogo() {
                 for (let j = i + 1; j < cardapioNomes.length; j++) {
                     const firstCardapio = cardapioNomes[i];
                     const secondCardapio = cardapioNomes[j];
+                    console.log(firstCardapio)
+                    console.log(secondCardapio)
                     
                     // Opções das categorias separadas por ', '
                     const firstOptions = cardapios[firstCardapio]?.[categoria]?.split(', ').filter(Boolean) || [];
                     const secondOptions = cardapios[secondCardapio]?.[categoria]?.split(', ').filter(Boolean) || [];
+
+                    
 
     
                     // Verifica se a categoria está vazia, se sim pular
@@ -212,7 +217,9 @@ export function Jogo() {
         };
 
         return (
-            <div className={estilos.container}>
+            <>
+            
+              <div className={estilos.container}>
                 <div>
                     <img src={elementos} className={estilos.elementos}></img>
                     <img src={elementos} className={`${estilos.elementos} ${estilos.duplicado}`}></img>
@@ -247,6 +254,8 @@ export function Jogo() {
                     <img src={elementos} className={`${estilos.elementos} ${estilos.duplicado}`}></img>
                 </div>
             </div>
+            </>
+           
         );
     }
 

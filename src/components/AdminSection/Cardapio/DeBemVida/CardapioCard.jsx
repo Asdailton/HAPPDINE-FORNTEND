@@ -33,18 +33,17 @@ const CardapioCardBemVida = () => {
 
   const formatarDiaSemana = (data) => {
     return new Date(data).toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
-  };
+  }; //Formata os dias da semana 
 
   const formatarData = (data) => {
-    return new Date(data).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+    return new Date(data).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }); //formata a data para dd/mm/yy
   };
 
-  const fetchCardapios = async () => {
+  const fetchCardapios = async () => { 
     try {
       const response = await axios.get('http://127.0.0.1:8080/debemcomavida/cardapios');
       const data = response.data;
-      console.log("Dados recebidos da API:", data);
-
+      console.log("Dados recebidos da API:", data);  //Chama os dados do cardápio da semana com a api
       const cardapiosFormatados = data.map(item => ({
         id: item.id_cardapio,
         diaSemana: formatarDiaSemana(item.data),
@@ -60,8 +59,9 @@ const CardapioCardBemVida = () => {
       const dayOfWeek = today.getDay();
       const thisMonday = new Date(today);
       thisMonday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      //Lógica para renderização dos dias da semana
 
-      const allDays = [];
+      const allDays = []; //Armazena os dias de semana
       for (let i = 0; i < 7; i++) {
         const day = new Date(thisMonday);
         day.setDate(thisMonday.getDate() + i);
@@ -73,6 +73,9 @@ const CardapioCardBemVida = () => {
           sobremesa: 'Nenhuma disponível',
           salada: 'Nenhuma disponível',
           dataCompleta: day.toISOString().split('T')[0],
+          //Dados para serem renderizados em carda card no formato padrão 
+          //caso não haja dados cadastrados ainda
+          
         });
       }
 
@@ -193,7 +196,8 @@ const CardapioCardBemVida = () => {
             </button>
           </div>
 
-          <ModalBemVida
+          {/* renderização do componente do modal com a passagem dos dados */}
+          <ModalBemVida 
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Modal de Bem Vida"

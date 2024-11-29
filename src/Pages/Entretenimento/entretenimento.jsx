@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
-import Footer from '../../components/Footer/Footer';
+import Footer from '../../components/Footer/footer';
 import image1 from '../../image/Entretenimento/DineMatchLogo.png'; 
 import image2 from '../../image/Entretenimento/FlappyChickenLogo.png'; 
 
@@ -17,15 +17,13 @@ const Entretenimento = () => {
       <Navbar />
       <div className="flex flex-col items-center mb-[160px]">
         <div className="flex items-center w-full mb-[60px]">
-          <div className="flex-1 flex justify-end pr-2 sm:pr-4 mt-[110px]">
-            <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
-          </div>
-          <h1 className="mt-[110px] px-4 text-[36px] sm:text-xl md:text-5xl lg:text-3xl font-bold text-center whitespace-nowrap">
-            {t('ENTRETENIMENTO')}
-          </h1>
-          <div className="flex-1 flex justify-start pl-4 sm:pl-4 mt-[110px]">
-            <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '20%' }} />
-          </div>
+          <div className="flex items-center justify-center gap-4 w-[100%]  xl:pt-[8vh] 2xl:pt-[6vh] p-3 dark:bg-[#2E3033] ">
+                <div className="border-t w-[7%] flex border-[#C3BEBE]"></div>
+                <h1 className="md:text-[36px] text-[16px] font-bold text-black dark:text-white">
+                   {t('ENTRETENIMENTO')}
+                </h1>
+                <div className="border-t w-[7%] border-[#C3BEBE]"></div>
+            </div>
         </div>
         <div className="flex flex-col md:flex-row justify-center items-center mt-9 px-4">
           <div className="flex flex-col items-center mb-10 md:mb-0 md:mr-32">

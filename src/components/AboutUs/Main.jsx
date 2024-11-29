@@ -35,7 +35,7 @@ const Main = () => {
                         <div className="flex-1 flex  justify-end">
                             <hr className="border-t border-gray-300 dark:border-gray-600" style={{ width: '40%' }} />
                         </div>
-                        <h1 className="md:text-[36px]  text-[16px]  text-black dark:text-white mx-4">
+                        <h1 className="md:text-[36px]  text-[16px]  font-bold  text-black dark:text-white mx-4">
                          {t('QUEM_SOMOS')}
                         </h1>
                         <div className="flex-1 flex items-center justify-start pl-2 sm:pl-4">
@@ -98,7 +98,7 @@ const Main = () => {
                 <div className="flex flex-col items-center justify-start w-full pt-[2%]">
                     <div className="flex flex-col items-center mt-8 md:mt-12">
                         <div className="text-left mb-5 w-full justify-start 2xl:ml-[24%] xl:ml-[26%] lg:ml-[15%] lg:text-left ml-[30%] pb-[4%]">
-                            <h1 className="text-[24px] md:text-3xl text-white font-semibold italic">
+                            <h1 className="text-[24px] md:text-3xl text-white font-italicBold">
                                 {t('#EQUIPE')}
                             </h1>
                             <p className="text-[12px] md:text-lg text-white mt-2  lg:mx-0">

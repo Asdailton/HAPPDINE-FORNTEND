@@ -57,7 +57,8 @@ const CardapioGrillCard = () => {
   const formatarData = (data) => {
     return new Date(data).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
   };
-
+ 
+  //função para trazer os cardápios da api caso estejam cadastrados
   const fetchCardapios = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8080/grillebemestar/cardapios');
@@ -140,7 +141,7 @@ const CardapioGrillCard = () => {
   };
 
   const atualizarCardapios = async () => {
-    await fetchCardapios();
+    await fetchCardapios(); //função que chama a função de pegar os cardápios quando há uma atualização dos dados'
   };
 
   useEffect(() => {
@@ -212,7 +213,8 @@ const CardapioGrillCard = () => {
           <img src={setaDireta} alt="Seta para a direita" className=" lg:h-[90px] xl:h-[90px] 2xl:h-[170px]" />
         </button>
       </div>
-
+      
+      {/* componente do modal com a passagem dos dados */}
       <ModalGrill
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

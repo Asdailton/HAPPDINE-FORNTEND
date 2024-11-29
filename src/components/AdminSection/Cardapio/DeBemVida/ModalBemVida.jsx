@@ -60,7 +60,7 @@ const ModalBemVida = ({
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value, //função de atualizar quando algum campo do form for alterado
     }));
   };
 
@@ -69,7 +69,8 @@ const ModalBemVida = ({
     onRequestClose(); // Fecha o modal
     
   };
-
+  
+  //função de enviar as informações para a api
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);

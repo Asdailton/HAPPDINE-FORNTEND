@@ -7,26 +7,8 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("id_token");
-    if (!token) {
-      navigate('/'); // Redireciona para o login se o token não estiver presente
-    }
-
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get('http://localhost:5173/userinfo');
-        const userData = response.data;
-
-        setUserInfo(userData);
-      } catch (error) {
-        console.error("Erro ao buscar informações do usuário:", error);
-        setError("Erro ao buscar informações do usuário.");
-      }
-    };
-
-    fetchUserInfo();
-  }, [navigate]);
+   
+ 
 
   return (
     <div>

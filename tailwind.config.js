@@ -12,7 +12,8 @@ export default {
         medium: ['boschMedium, sans-serif'],
         sans: ['boschRegular', 'sans-serif'],
         bold: ['boschBold', 'sans-serif'],
-        black:['boschBlack', 'sans-serif'], // Adicione sua fonte aqui
+        black:['boschBlack', 'sans-serif'],
+        pixel: ["'Press Start 2P'", "cursive"], // Adiciona a fonte pixel // Adicione sua fonte aqui
       },
       colors: {
         lightBackground: "#FFFFFF", 

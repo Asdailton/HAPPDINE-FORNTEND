@@ -1,64 +1,69 @@
 import React, { useEffect, useRef, useState } from 'react';
-import backgroundImage from '../../../image/Jogos/FlappyChicken/Grill/GrilCenario.png'; // IMAGEM DO FUNDO DO JOGO
-import birdImage from '../../../image/Jogos/FlappyChicken/Grill/ChickenGrill.png'; // IMAGEM DO FRANGO (PERSONAGEM)
-import pipeImage from '../../../image/Jogos/FlappyChicken/Grill/Faca.png'; // OBSTÁCULO 01 / FACA
-import forkImage from '../../../image/Jogos/FlappyChicken/Grill/Garfo.png'; // OBSTÁCULO 02 / GARFO
+import backgroundImage from '../../../image/Jogos/FlappyChicken/Grill/GrilCenario.png';
+import birdImage from '../../../image/Jogos/FlappyChicken/Grill/ChickenGrill.png';
+import pipeImage from '../../../image/Jogos/FlappyChicken/Grill/Faca.png';
+import forkImage from '../../../image/Jogos/FlappyChicken/Grill/Garfo.png';
 import smallPipeImage from '../../../image/Jogos/FlappyChicken/Clube/TuboClubePequeno.png';
 
-const FlappyBird = () => {
-    const canvasRef = useRef(null); // REFERÊNCIA PARA O ELEMENTO CANVAS
-    const [passedPipes, setPassedPipes] = useState(0); // ESTADO PARA CONTAR OS OBSTÁCULOS PASSADOS
-    const [isPaused, setIsPaused] = useState(false); // ESTADO PARA CONTROLAR A PAUSA DO JOGO
-    const [isGameOver, setIsGameOver] = useState(false); // ESTADO PARA CONTROLAR SE O JOGO TERMINOU
+import backgroundMusic from '../../../components/MusicasJogo/Cozinha.mp3'; // Caminho para o arquivo de áudio
 
-    // DETECTA SE O DISPOSITIVO É MÓVEL
-    const isMobile = window.innerWidth <= 768; 
+const Grill = () => {
+    const canvasRef = useRef(null);
+    const [passedPipes, setPassedPipes] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+    const [isGameOver, setIsGameOver] = useState(false);
+
+    const isMobile = window.innerWidth <= 768;
     const bird = {
-        x: 50, // POSIÇÃO X DO FRANGO (PERSONAGEM)
-        y: 0, // POSIÇÃO Y INICIAL DO FRANGO (PERSONAGEM)
-        width: isMobile ? 100 : 110,  // LARGURA DO FRANGO (PERSONAGEM)
-        height: isMobile ? 100 : 110  // ALTURA DO FRANGO (PERSONAGEM)
+        x: 50,
+        y: 0,
+        width: isMobile ? 100 : 110,
+        height: isMobile ? 100 : 110
     };
 
     const pipeDimensions = {
-        width: isMobile ? 100 : 140,     // LARGURA DOS OBSTÁCULOS: 100px PRA CELULAR, 140px PRA TELAS MAIORES
-        minHeight: isMobile ? 100 : 140, // ALTURA MÍNIMA OBSTÁCULOS: 100px PRA CELULAR, 140px PRA TELAS MAIORES
-        maxHeight: isMobile ? 230 : 330  // ALTURA MÁXIMA OBSTÁCULOS: 230px PRA CELULAR, 330px PRA TELAS MAIORES
+        width: isMobile ? 100 : 140,
+        minHeight: isMobile ? 100 : 140,
+        maxHeight: isMobile ? 230 : 330
     };
 
-    const gravity = 0.1; // GRAVIDADE APLICADA AO FRANGO (PERSONAGEM)
-    const jumpVelocity = -4; // VELOCIDADE DO SALTO DO FRANGO (PERSONAGEM)
+    const gravity = 0.1;
+    const jumpVelocity = -4;
 
-    let velocity = 0; // VELOCIDADE VERTICAL DO FRANGO (PERSONAGEM)
-    const pipes = []; // ARRAY PARA ARMAZENAR OS OBSTÁCULOS
-    const pipeGap = 250; // ESPAÇO ENTRE OS OBSTÁCULOS
-    const pipeInterval = 225; // INTERVALO DE CRIAÇÃO DE NOVOS OBSTÁCULOS
-    let frameCount = 0; // CONTADOR DE FRAMES PARA CONTROLE DE TEMPO
+    let velocity = 0;
+    const pipes = [];
+    const pipeGap = 250;
+    const pipeInterval = 225;
+    let frameCount = 0;
 
-    // VELOCIDADE DOS OBSTÁCULOS, AJUSTADA PARA DISPOSITIVOS MÓVEIS
-    let pipeSpeed = isMobile ? 1 : 2; 
+    let pipeSpeed = isMobile ? 1 : 2;
 
-    const speedMultiplier = 0.5; // MULTIPLICADOR DE VELOCIDADE
-    const gameOverFontSize = Math.min(window.innerWidth * 0.06, 50); // TAMANHO DA FONTE PARA "GAME OVER"
-    const scoreFontSize = Math.min(window.innerWidth * 0.025, 30); // TAMANHO DA FONTE PARA O SCORE
+    const speedMultiplier = 0.5;
+    const gameOverFontSize = Math.min(window.innerWidth * 0.06, 50);
+    const scoreFontSize = Math.min(window.innerWidth * 0.025, 30);
 
-    // FUNÇÃO PARA REINICIAR O JOGO
+    // Recarrega o jogo
     const resetGame = () => {
-        setPassedPipes(0); // RESETA O SCORE
-        setIsPaused(false); // RESETA O ESTADO DE PAUSA
-        setIsGameOver(false); // RESETA O ESTADO DE GAME OVER
-        velocity = 0; // RESETA A VELOCIDADE DO FRANGO (PERSONAGEM)
-        pipes.length = 0; // LIMPA OS OBSTÁCULOS
-        frameCount = 0; // RESETA O CONTADOR DE FRAMES
-        pipeSpeed = isMobile ? 1 : 2; // RESETA A VELOCIDADE DOS OBSTÁCULOS
-        bird.y = canvasRef.current.height * 0.5; // REPOSICIONA O FRANGO (PERSONAGEM) VERTICALMENTE
+        setPassedPipes(0);
+        setIsPaused(false);
+        setIsGameOver(false);
+        velocity = 0;
+        pipes.length = 0;
+        frameCount = 0;
+        pipeSpeed = isMobile ? 1 : 2;
+        bird.y = canvasRef.current.height * 0.5;
+        backgroundAudio.play(); // Reinicia a música quando o jogo for reiniciado
     };
+
+    // Música de fundo
+    const backgroundAudio = new Audio(backgroundMusic);
+    backgroundAudio.loop = true; // Faz a música tocar em loop
 
     useEffect(() => {
-        const canvas = canvasRef.current; // OBTÉM A REFERÊNCIA DO CANVAS
-        const context = canvas.getContext('2d'); // CONTEXTO 2D PARA DESENHAR NO CANVAS
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
 
-        // CARREGAMENTO DAS IMAGENS
+        // Carregamento das imagens
         const birdImg = new Image();
         birdImg.src = birdImage;
 
@@ -71,99 +76,92 @@ const FlappyBird = () => {
         const smallPipeImg = new Image();
         smallPipeImg.src = smallPipeImage;
 
-        const forkImg = new Image(); // IMAGEM DO GARFO
+        const forkImg = new Image();
         forkImg.src = forkImage;
 
-        // FUNÇÃO PARA REDIMENSIONAR O CANVAS
+        // Função para redimensionar o canvas
         const resizeCanvas = () => {
-            canvas.width = window.innerWidth; // AJUSTA A LARGURA DO CANVAS
-            canvas.height = window.innerHeight; // AJUSTA A ALTURA DO CANVAS
-            bird.y = canvas.height * 0.5; // REPOSICIONA O FRANGO (PERSONAGEM) NO MEIO VERTICALMENTE
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            bird.y = canvas.height * 0.5;
         };
 
-        window.addEventListener('resize', resizeCanvas); // ADICIONA UM LISTENER PARA REDIMENSIONAMENTO
-        resizeCanvas(); // REDIMENSIONA O CANVAS INICIALMENTE
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        let backgroundOffset = 0; // DESLOCAMENTO DO FUNDO
-        const backgroundSpeed = 0.1; // VELOCIDADE DO FUNDO
+        let backgroundOffset = 0;
+        const backgroundSpeed = 0.1;
 
-        // FUNÇÃO PARA DESENHAR O FUNDO
+        // Função para desenhar o fundo
         const drawBackground = () => {
             context.drawImage(bgImage, backgroundOffset, 0, canvas.width * 2, canvas.height);
             context.drawImage(bgImage, backgroundOffset + canvas.width * 2, 0, canvas.width * 2, canvas.height);
         };
 
-        // ATUALIZA O DESLOCAMENTO DO FUNDO
         const updateBackground = () => {
             backgroundOffset -= backgroundSpeed;
             if (backgroundOffset <= -canvas.width * 2) {
-                backgroundOffset = 0; // RESETA O DESLOCAMENTO DO FUNDO
+                backgroundOffset = 0;
             }
         };
 
-        // FUNÇÃO PARA DESENHAR OS OBSTÁCULOS
+        // Função para desenhar o frango
         const drawBird = () => {
             context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
         };
 
-        // FUNÇÃO PARA DESENHAR OS OBSTÁCULOS
+        // Função para desenhar os obstáculos
         const drawPipes = () => {
             pipes.forEach(pipe => {
-                const upperPipeHeight = pipe.height; // ALTURA DO OBSTÁCULOS SUPERIOR
-                const lowerPipeHeight = canvas.height - upperPipeHeight - pipeGap; // ALTURA DO OBSTÁCULOS INFERIOR
+                const upperPipeHeight = pipe.height;
+                const lowerPipeHeight = canvas.height - upperPipeHeight - pipeGap;
 
-                context.save(); // SALVA O ESTADO DO CONTEXTO
-                context.translate(pipe.x, 0); // MOVE O CONTEXTO PARA A POSIÇÃO DO OBSTÁCULO
-                context.scale(1, -1); // INVERTE O EIXO Y PARA DESENHAR O OBSTÁCULO SUPERIOR
-                const pipeToDraw = pipe.type === 'fork' ? forkImg : pipeImg; // ESCOLHE A IMAGEM COM BASE NO TIPO
-                context.drawImage(pipeToDraw, 0, -upperPipeHeight, pipeDimensions.width, upperPipeHeight); 
+                context.save();
+                context.translate(pipe.x, 0);
+                context.scale(1, -1);
+                const pipeToDraw = pipe.type === 'fork' ? forkImg : pipeImg;
+                context.drawImage(pipeToDraw, 0, -upperPipeHeight, pipeDimensions.width, upperPipeHeight);
                 context.restore();
 
-                // DESENHA O OBSTÁCULO INFERIOR
-                const lowerPipeToDraw = pipe.type === 'fork' ? pipeImg : forkImg; // INVERTE O TIPO PARA O TUBO DE BAIXO
+                const lowerPipeToDraw = pipe.type === 'fork' ? pipeImg : forkImg;
                 context.drawImage(lowerPipeToDraw, pipe.x, canvas.height - lowerPipeHeight, pipeDimensions.width, lowerPipeHeight);
             });
         };
 
-        // ATUALIZA A POSIÇÃO DOS OBSTÁCULOS
         const updatePipes = () => {
-            frameCount++; // INCREMENTA O CONTADOR DE FRAMES
-            if (frameCount % pipeInterval === 0) { // GERA UM NOVO TUBO BASEADO NO INTERVALO
+            frameCount++;
+            if (frameCount % pipeInterval === 0) {
                 const height = Math.random() * (pipeDimensions.maxHeight - pipeDimensions.minHeight) + pipeDimensions.minHeight;
-                const isFork = Math.random() < 0.5; // 50% DE CHANCE PARA O TUBO DE CIMA SER UM GARFO
+                const isFork = Math.random() < 0.5;
                 pipes.push({ x: canvas.width, height, passed: false, type: isFork ? 'fork' : 'knife' });
             }
 
-            // MOVE OS OBSTÁCULOS PARA A ESQUERDA
             pipes.forEach(pipe => {
                 pipe.x -= pipeSpeed;
             });
 
-            // VERIFICA SE O FRANGO (PERSONAGEM) PASSOU PELOS OBSTÁCULOS
             pipes.forEach(pipe => {
                 if (!isGameOver && pipe.x + pipeDimensions.width < bird.x && !pipe.passed) {
                     setPassedPipes(prev => {
                         const newScore = prev + 1;
 
                         if (isMobile) {
-                            pipeSpeed += 0.2; // AUMENTA A VELOCIDADE NO MOBILE
+                            pipeSpeed += 0.2;
                         } else {
-                            pipeSpeed += 0.4; // AUMENTA A VELOCIDADE NO DESKTOP
+                            pipeSpeed += 0.4;
                         }
 
-                        return newScore; // ATUALIZA O SCORE
+                        return newScore;
                     });
-                    pipe.passed = true; // MARCA O TUBO COMO PASSADO
+                    pipe.passed = true;
                 }
             });
 
-            // REMOVE OBSTÁCULOS QUE SAEM DA TELA
             if (pipes.length > 0 && pipes[0].x < -pipeDimensions.width) {
                 pipes.shift();
             }
         };
 
-        // VERIFICA COLISÕES
         const checkCollision = () => {
             for (let pipe of pipes) {
                 if (
@@ -171,32 +169,30 @@ const FlappyBird = () => {
                     bird.x + bird.width > pipe.x &&
                     (bird.y < pipe.height || bird.y + bird.height > canvas.height - (canvas.height - pipe.height - pipeGap))
                 ) {
-                    setIsGameOver(true); // DEFINE O ESTADO DE GAME OVER
+                    setIsGameOver(true);
+                    backgroundAudio.pause(); // Pausa a música quando o jogo acaba
                 }
             }
 
-            // VERIFICA SE O FRANGO (PERSONAGEM) CAIU
             if (bird.y + bird.height > canvas.height) {
                 setIsGameOver(true);
+                backgroundAudio.pause(); // Pausa a música quando o jogo acaba
             }
         };
 
-        // FUNÇÃO PRINCIPAL PARA DESENHAR TUDO NO CANVAS
         const draw = () => {
-            context.clearRect(0, 0, canvas.width, canvas.height); // LIMPA O CANVAS
-            drawBackground(); // DESENHA O FUNDO
-            drawBird(); // DESENHA O FRANGO (PERSONAGEM)
-            drawPipes(); // DESENHA OS OBSTÁCULOS
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawBackground();
+            drawBird();
+            drawPipes();
 
-            // ATUALIZA A LÓGICA DO JOGO SE NÃO ESTIVER PAUSADO OU EM GAME OVER
             if (!isPaused && !isGameOver) {
-                updatePipes(); // ATUALIZA OS OBSTÁCULOS
-                checkCollision(); // VERIFICA COLISÕES
-                bird.y += velocity; // ATUALIZA A POSIÇÃO DO FRANGO (PERSONAGEM)
-                velocity += gravity; // APLICA A GRAVIDADE
-                updateBackground(); // ATUALIZA O FUNDO
+                updatePipes();
+                checkCollision();
+                bird.y += velocity;
+                velocity += gravity;
+                updateBackground();
             } else if (isGameOver) {
-                // SE O JOGO ACABOU, DESENHA A TELA DE GAME OVER
                 context.fillStyle = 'rgba(0, 0, 0, 0.8)';
                 context.fillRect(0, 0, canvas.width, canvas.height);
                 context.fillStyle = 'white';
@@ -208,60 +204,58 @@ const FlappyBird = () => {
                 context.fillText(`Score: ${passedPipes}`, canvas.width / 2, canvas.height / 2 + 60);
             }
 
-            requestAnimationFrame(draw); // CHAMA A FUNÇÃO DE DESENHO NOVAMENTE
+            requestAnimationFrame(draw);
         };
 
-        // FUNÇÃO PARA LIDAR COM O CLIQUE
         const handleClick = () => {
             if (!isPaused && !isGameOver) {
-                velocity = jumpVelocity; // FAZ O FRANGO (PERSONAGEM) SALTAR
+                velocity = jumpVelocity;
             }
         };
 
-        // FUNÇÃO PARA LIDAR COM A TECLA ESPAÇO
         const handleSpacebar = (event) => {
             if (event.code === 'Space') {
                 event.preventDefault();
                 if (!isPaused && !isGameOver) {
-                    velocity = jumpVelocity; // FAZ O FRANGO (PERSONAGEM) SALTAR
+                    velocity = jumpVelocity;
                 }
             }
         };
 
-        // ADICIONA EVENTOS DE CLIQUE E TECLA
         canvas.addEventListener('click', handleClick);
         window.addEventListener('keydown', handleSpacebar);
 
-        draw(); // INICIA A ANIMAÇÃO
+        // Começa a música de fundo assim que o jogo inicia
+        backgroundAudio.play(); 
 
-        // LIMPEZA DOS EVENTOS AO DESMONTAR O COMPONENTE
+        draw();
+
         return () => {
             canvas.removeEventListener('click', handleClick);
             window.removeEventListener('keydown', handleSpacebar);
+            backgroundAudio.pause(); // Pausa a música quando o componente é desmontado
         };
     }, [isPaused, isGameOver]);
 
-    // FUNÇÃO PARA RECARREGAR A PÁGINA
     const reloadPage = () => {
         window.location.reload();
     };
 
-    // FUNÇÃO PARA IR PARA A TELA INICIAL
     const goToHome = () => {
-        window.location.href = "/entretenimento/flappybird/tela_inicial";
+        window.location.href = "/entretenimento/flappybird/tela_inicial/tutorial/selecaofase";
     };
 
     return (
         <div className="flex flex-col h-screen text-white overflow-hidden" style={{ margin: 0 }}>
             <div className="flex-grow relative">
                 <canvas
-                    ref={canvasRef} // REFERÊNCIA DO CANVAS
+                    ref={canvasRef}
                     className="border border-black w-full h-full"
                     style={{ 
                         backgroundImage: `url(${backgroundImage})`, 
-                        backgroundSize: '10px', // TAMANHO DO FUNDO
+                        backgroundSize: '10px',
                         backgroundPosition: 'center', 
-                        backgroundRepeat: 'no-repeat' // PARA EVITAR REPETIÇÃO DA IMAGEM
+                        backgroundRepeat: 'no-repeat' 
                     }} 
                 />
                 {!isGameOver && (
@@ -272,14 +266,14 @@ const FlappyBird = () => {
                 {isGameOver && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <button
-                            onClick={reloadPage} // REINICIA O JOGO
+                            onClick={reloadPage}
                             className="text-white text-sm py-1 px-4 rounded mt-[440px] font-pixel transition duration-300 ease-in-out hover:text-yellow-500 relative"
                         >
                             Reiniciar Jogo
                             <span className="absolute left-0 bottom-0 w-full h-0.5 bg-yellow-500 transform scale-x-0 transition-transform duration-300 ease-in-out hover:scale-x-100" />
                         </button>
                         <button
-                            onClick={goToHome} // VAI PARA A TELA INICIAL
+                            onClick={goToHome}
                             className="text-white text-sm py-1 px-4 rounded mt-2 font-pixel transition duration-300 ease-in-out hover:text-yellow-500 relative"
                         >
                             Escolher Outro Cenário
@@ -292,4 +286,4 @@ const FlappyBird = () => {
     );
 };
 
-export default FlappyBird;
+export default Grill;

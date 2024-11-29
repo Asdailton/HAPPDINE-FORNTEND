@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-
-
 import backgroundImage from '../../../image/Jogos/FlappyChicken/Clube/Clube04.png'; // IMAGEM DO FUNDO DO JOGO
 import birdImage from '../../../image/Jogos/FlappyChicken/Clube/ChickenClube.png'; // IMAGEM DO FRANGO (PERSONAGEM)
 import pipeImage from '../../../image/Jogos/FlappyChicken/Clube/TuboClubeGrande.png'; // OBSTÁCULO 01 / GRANDE
 import smallPipeImage from '../../../image/Jogos/FlappyChicken/Clube/TuboClubePequeno.png'; // OBSTÁCULO 02 / PEQUENO
-
+import musica from '../../../components/MusicasJogo/SomClube01.mp3'; // Música de fundo
 
 // COMPONENTE PRINCIPAL DO JOGO FLAPPY BIRD
-const FlappyBird = () => {
+const Clube = () => {
     const canvasRef = useRef(null); // REFERÊNCIA AO ELEMENTO CANVAS
     const [passedPipes, setPassedPipes] = useState(0); // CONTADOR DE OBSTÁCULOS PASSADOS
     const [isPaused, setIsPaused] = useState(false); // ESTADO DE PAUSA DO JOGO
@@ -235,12 +233,18 @@ const FlappyBird = () => {
         canvas.addEventListener('click', handleClick);
         window.addEventListener('keydown', handleSpacebar);
 
+        // Reproduz a música de fundo em loop
+        const audio = new Audio(musica);
+        audio.loop = true;
+        audio.play();
+
         draw(); // INICIA O DESENHO
 
         // LIMPEZA DOS LISTENERS QUANDO O COMPONENTE É DESMONTADO
         return () => {
             canvas.removeEventListener('click', handleClick);
             window.removeEventListener('keydown', handleSpacebar);
+            audio.pause(); // PAUSA A MÚSICA AO SAIR DO COMPONENTE
         };
     }, [isPaused, isGameOver]); // DEPENDÊNCIAS DO USEEFFECT
 
@@ -251,7 +255,7 @@ const FlappyBird = () => {
 
     // FUNÇÃO PARA VOLTAR À TELA INICIAL
     const goToHome = () => {
-        window.location.href = "/entretenimento/flappybird/tela_inicial";
+        window.location.href = "/entretenimento/flappybird/tela_inicial/tutorial/selecaofase";
     };
 
     return (
@@ -297,4 +301,4 @@ const FlappyBird = () => {
     );
 };
 
-export default FlappyBird;
+export default Clube;

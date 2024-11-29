@@ -49,7 +49,7 @@
     .second,
     .third,
     .fourth {
-        width: 40%; /* Para telas grandes */
+        width: 42%; /* Para telas grandes */
         height: 45%; /* Para telas grandes */
     }
 }

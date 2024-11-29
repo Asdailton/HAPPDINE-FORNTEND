@@ -78,7 +78,7 @@ const DearOfDay = () => {
             <div className="flex flex-col justify-center w-full">
                 <div className="flex items-center justify-center w-full gap-4">
                     <div className="border-t w-[6%] flex border-white"></div>
-                    <h1 className="2xl:text-3xl lg:text-3xl text-[19px] font-bold text-white dark:text-white">
+                    <h1 className="md:text-[36px]  text-[19px] font-bold text-white dark:text-white">
                     {t('QUERIDINHO_DO_DIA')}{/* Texto traduzido */}
                     </h1>
                     <div className="border-t w-[6%] border-white"></div>

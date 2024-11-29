@@ -15,16 +15,21 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
-  const [notificationsOpen, setNotificationsOpen] = useState(false); // Estado para notificações
-  const [notifications, setNotifications] = useState([]); // Estado para armazenar as notificações
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications] = useState([]); // Estado para armazenar notificações
+
+  // Sincronizar idioma com o localStorage
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('language') || 'en';
+    i18n.changeLanguage(savedLanguage);
+  }, [i18n]);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 700) { // Define o breakpoint para telas grandes
+      if (window.innerWidth >= 700) {
         setIsOpen(false);
       }
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -34,28 +39,36 @@ const Navbar = () => {
     localStorage.setItem('darkMode', darkMode ? 'true' : 'false');
   }, [darkMode]);
 
+  // Atualizar idioma no localStorage em tempo real
+  useEffect(() => {
+    localStorage.setItem('language', i18n.language);
+  }, [i18n.language]);
+
   const languageIcons = {
-    en: darkMode ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TEnglish.png' : './src/image/ModosTemas/ModoClaro/IconesTraducao/TEnglish.png',
-    pt: darkMode ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TBrasil.png' : './src/image/ModosTemas/ModoClaro/IconesTraducao/TBrasil.png',
-    es: darkMode ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TEspanha.png' : './src/image/ModosTemas/ModoClaro/IconesTraducao/TEspanha.png',
-    de: darkMode ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TAlemanha.png' : './src/image/ModosTemas/ModoClaro/IconesTraducao/TAlemanha.png'
+    en: darkMode
+      ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TEnglish.png'
+      : './src/image/ModosTemas/ModoClaro/IconesTraducao/TEnglish.png',
+    pt: darkMode
+      ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TBrasil.png'
+      : './src/image/ModosTemas/ModoClaro/IconesTraducao/TBrasil.png',
+    es: darkMode
+      ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TEspanha.png'
+      : './src/image/ModosTemas/ModoClaro/IconesTraducao/TEspanha.png',
+    de: darkMode
+      ? './src/image/ModosTemas/ModoNoturno/IconesTraducao/TAlemanha.png'
+      : './src/image/ModosTemas/ModoClaro/IconesTraducao/TAlemanha.png',
   };
 
   const translationIcon = languageIcons[i18n.language] || languageIcons.en;
 
   const toggleDarkMode = () => {
-    setDarkMode(prevMode => !prevMode);
+    setDarkMode((prevMode) => !prevMode);
   };
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setDropdownOpen(false);
   };
-
-
-
-
-
 
   return (
     <div className="relative">
@@ -67,17 +80,18 @@ const Navbar = () => {
         ></div>
       )}
 
-      {/* Barra de navegação principal */}
-      <div className={`z-50 border-b dark:border-b-[#555555] h-[123px] transition-transform duration-300 ease-in-out ${isOpen ? 'lg:hidden' : ''} ${darkMode ? 'bg-[#2E3033] text-white' : 'bg-white text-black'}`}>
+      <div
+        className={`z-50 border-b dark:border-b-[#555555] h-[123px] transition-transform duration-300 ease-in-out ${
+          isOpen ? 'lg:hidden' : ''
+        } ${darkMode ? 'bg-[#2E3033] text-white' : 'bg-white text-black'}`}
+      >
         <div className="container mx-auto flex items-center h-full px-4">
-          {/* Div para o logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="font-black text-2xl md:text-3xl lg:text-4xl font-extrabold ml-5">
               HAPPDINE
             </Link>
           </div>
 
-          {/* Div para os itens de navegação */}
           <div className="flex-grow lg:flex lg:items-center lg:justify-center">
             <ul className="hidden lg:flex lg:flex-row lg:items-center lg:gap-4 md:gap-6 lg:gap-8">
               {Menus.map((menu) => (
@@ -93,18 +107,23 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Div para os ícones */}
           <div className="flex items-center gap-4 ml-auto">
             <button
               className={`flex items-center justify-center w-10 h-10 rounded-full relative ${darkMode ? 'text-white' : 'text-black'}`}
               onClick={() => setNotificationsOpen(!notificationsOpen)}
             >
-              <img src={darkMode ? './src/image/ModosTemas/ModoNoturno/IconesNavbar/Sininho.svg' : './src/image/ModosTemas/ModoClaro/IconesNavbar/Sininho.svg'} alt="Notificação" className="w-6 h-6" />
+              <img
+                src={
+                  darkMode
+                    ? './src/image/ModosTemas/ModoNoturno/IconesNavbar/Sininho.svg'
+                    : './src/image/ModosTemas/ModoClaro/IconesNavbar/Sininho.svg'
+                }
+                alt="Notificação"
+                className="w-6 h-6"
+              />
             </button>
-            {/* Exibir notificações se estiver aberto */}
-            {notificationsOpen && (
-              <Notificacao />
-            )}
+
+            {notificationsOpen && <Notificacao />}
 
             <button
               className={`flex items-center justify-center w-10 h-10 rounded-full relative ${darkMode ? 'text-white' : 'text-black'}`}
@@ -112,7 +131,9 @@ const Navbar = () => {
             >
               <img src={translationIcon} alt="Tradução" className="w-6 h-6" />
               {dropdownOpen && (
-                <div className={`absolute top-full right-0 mt-2 rounded-lg w-[120px] z-50 ${darkMode ? 'bg-white text-black' : 'bg-gray-900 text-white'}`}>
+                <div
+                  className={`absolute top-full right-0 mt-2 rounded-lg w-[120px] z-50 ${darkMode ? 'bg-white text-black' : 'bg-gray-900 text-white'}`}
+                >
                   <button
                     onClick={() => changeLanguage('en')}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-200"
@@ -145,23 +166,23 @@ const Navbar = () => {
               className={`flex items-center justify-center w-10 h-10 rounded-full ${darkMode ? 'text-white' : 'text-black'}`}
               onClick={toggleDarkMode}
             >
-              <img src={darkMode ? './src/image/ModosTemas/ModoNoturno/IconesNavbar/Solzinho.svg' : './src/image/ModosTemas/ModoClaro/IconesNavbar/Temaescuro.png'} alt="Modo Noturno" className="w-6 h-6" />
+              <img
+                src={
+                  darkMode
+                    ? './src/image/ModosTemas/ModoNoturno/IconesNavbar/Solzinho.svg'
+                    : './src/image/ModosTemas/ModoClaro/IconesNavbar/Temaescuro.png'
+                }
+                alt="Modo Noturno"
+                className="w-6 h-6"
+              />
             </button>
           </div>
 
-          {/* Botão do menu hambúrguer */}
           <button
             className={`lg:hidden ml-4 p-2 ${isOpen ? 'text-gray-700' : ''}`}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
               {isOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -174,30 +195,23 @@ const Navbar = () => {
 
       {/* Menu de navegação para dispositivos móveis */}
       {isOpen && (
-        <div className={`fixed top-0 right-0 h-full bg-gradient-to-r from-secundary to-secundary/90 text-[#000] transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out w-[250px] z-50 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
-        <button
-          className={`absolute top-4 right-4 ${darkMode ? 'text-white' : 'text-black'}`}
-          onClick={() => setIsOpen(false)}
+        <div
+          className={`fixed top-0 right-0 h-full bg-gradient-to-r from-secundary to-secundary/90 text-[#000] transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out w-[250px] z-50 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        <ul className="flex flex-col items-start mt-16 ml-6 space-y-4">
-          {Menus.map((menu) => (
-            <li key={menu.id}>
-              <Link
-                to={menu.link}
-                // Ajuste o tamanho da fonte aqui para o menu lateral (mobile)
-                className="text-base px-4 py-2 transition duration-200 hover:bg-gray-300 rounded-md"
-                onClick={() => setIsOpen(false)}
-              >
-                {t(menu.nameKey)}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+          <ul className="mt-16 flex flex-col gap-6 p-6">
+            {Menus.map((menu) => (
+              <li key={menu.id}>
+                <Link
+                  to={menu.link}
+                  className="text-base font-bold transition duration-200"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {t(menu.nameKey)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

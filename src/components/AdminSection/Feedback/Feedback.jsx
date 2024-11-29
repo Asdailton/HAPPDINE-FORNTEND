@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'; // Importa React e hooks
+import { useNavigate } from 'react-router-dom';
 import Carousel from 'react-multi-carousel'; // Importa componente de carousel
 import 'react-multi-carousel/lib/styles.css'; // Importa estilos do carousel
 import axios from 'axios'; // Importa biblioteca Axios para fazer requisições HTTP
@@ -36,8 +37,32 @@ const Feedbacks = () => {
   const [modalIsVisible, setModalIsVisible] = useState(false); // Controle de mensagem de aprovação
   const [showRejectMessage, setShowRejectMessage] = useState(false); // Controle de mensagem de rejeição
   const [carouselRef, setCarouselRef] = useState(null);
+  const navigate = useNavigate();
 
   // Função para buscar os feedbacks da API
+  
+  //hook para validar se existe o token para poder liberar o acesso a página
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    console.log(token)
+    if (!token) {
+      navigate('/admin/login'); // Redireciona para o login se o token não estiver presente
+    }
+
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('http://localhost:5173/userinfo');
+        const userData = response.data;
+
+        setUserInfo(userData);
+      } catch (error) {
+        console.error("Erro ao buscar informações do usuário:", error);
+        setError("Erro ao buscar informações do usuário.");
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate]);
   const getFeedbacks = async () => {
     try {
       // Faz requisições simultâneas para buscar feedbacks do site e do restaurante
@@ -169,11 +194,12 @@ const Feedbacks = () => {
             containerClass="carousel-container"
             itemClass="p-2 flex justify-center items-center"
           >
-            {reviews.map((review) => (
+           {reviews.length > 0 ? (
+            reviews.map((review) => (
               <div
                 key={review.id}
                 className="bg-[#FFFBFB] shadow-custom-pink 2xl:h-[23vh] lg:h-[29vh] w-[97%] flex flex-col justify-between p-5 relative
-          transform transition-transform duration-300 hover:scale-105"
+                transform transition-transform duration-300 hover:scale-105"
               >
                 {/* Informações do feedback */}
                 <div className="flex justify-between items-start">
@@ -191,7 +217,7 @@ const Feedbacks = () => {
                   <p className="2xl:text-[16px] lg:text-[13px] text-start w-[80%]">{review.comentario}</p>
                 </div>
                 <div>
-                 <Stars corRegistrada={review?.corEstrela} quantidade={review?.estrela}/> {/* Componente de estrelas */}
+                  <Stars corRegistrada={review?.corEstrela} quantidade={review?.estrela}/> {/* Componente de estrelas */}
                 </div>
 
                 {/* Ícone para abrir o modal */}
@@ -199,7 +225,12 @@ const Feedbacks = () => {
                   <img className='w-5 h-3' src={eye} alt="Eye icon" />
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="w-full flex text-center p-5">
+              <p className="text-center  text-white">Não há feedbacks disponíveis no momento.</p>
+            </div>
+          )}
             
           </Carousel>
         
@@ -208,7 +239,7 @@ const Feedbacks = () => {
       </div>
 
       {/* Seção de feedbacks aprovados */}
-      <div className='w-[100%]  flex justify-center items-center mb-10'>
+      <div className='w-[100%]  flex justify-center items-center mb-[6%]'>
         <div className=' bg-gradient-to-b from-[#00884A] to-[#37A264] p-10 w-[95%] '>
           <p className='text-white mb-4  text-[27px] font-bold'>Feedbacks Aprovados:</p>
           <Carousel
@@ -221,11 +252,12 @@ const Feedbacks = () => {
             containerClass="carousel-container"
             itemClass="p-2 flex justify-center items-center"
           >
-            {approvedReviews.map((approvedReview) => (
+          {approvedReviews.length > 0 ? (
+            approvedReviews.map((approvedReview) => (
               <div
                 key={approvedReview.id}
                 className='bg-[#FFFBFB] shadow-custom-pink 2xl:h-[23vh] lg:h-[29vh] w-[97%] flex flex-col justify-between p-5 relative
-          transform transition-transform duration-300 hover:scale-105'
+                transform transition-transform duration-300 hover:scale-105'
               >
                 <div className='flex justify-between items-start'>
                   <div className='w-[90%]'>
@@ -240,10 +272,15 @@ const Feedbacks = () => {
                   <p className='2xl:text-[16px] lg:text-[13px] text-start w-[80%]'>{approvedReview.comentario}</p>
                 </div>
                 <div>
-                 <Stars corRegistrada={approvedReview?.corEstrela} quantidade={approvedReview?.estrela}/> {/* Componente de estrelas */}
+                  <Stars corRegistrada={approvedReview?.corEstrela} quantidade={approvedReview?.estrela}/> {/* Componente de estrelas */}
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="flex w-full p-5">
+              <p className="text-white text-center">Não há feedbacks aprovados disponíveis no momento.</p>
+            </div>
+          )}
           </Carousel>
         </div>
         

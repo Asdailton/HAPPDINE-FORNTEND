@@ -126,7 +126,7 @@ const HomeAvisos = () => {
                             )}
                         </div>
                     </div>
-                    <div className="flex flex-col 2xl:pr-[5%]">
+                    <div className="flex flex-col 2xl:pr-[5%] mt-[7px]">
                         <p className="mb-2 font-medium">Selecione a categoria:</p>
                         <div className="flex flex-col gap-6">
                             <div className="flex items-center gap-4" onClick={() => handleCategoryClick('ATENCAO')}>
